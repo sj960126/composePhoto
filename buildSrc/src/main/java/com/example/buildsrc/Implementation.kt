@@ -32,3 +32,9 @@ fun DependencyHandler.implementationHilt() {
     add("testImplementation", Dependencies.Google.Hilt.androidTesting)
     add("kaptTest", Dependencies.Google.Hilt.androidCompiler)
 }
+
+
+// Coroutines
+fun DependencyHandler.implementaionCoroutines() {
+    add("implementation", Dependencies.coroutines)
+}
