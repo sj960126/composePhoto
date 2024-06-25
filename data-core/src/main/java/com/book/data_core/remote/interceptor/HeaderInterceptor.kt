@@ -11,6 +11,8 @@ class HeaderInterceptor : Interceptor {
 
     companion object {
         const val HEADER_AUTHORIZATION = "Authorization"
+        const val KEY = "KakaoAK"
+        const val REST_API_KEY = "36d7b2c2539dba219c482334ce8fe04d"
 
 
         fun Request.Builder.addHeaderDeduplication(name: String, value: String) = this.apply {
@@ -36,8 +38,7 @@ class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         chain.request().run {
             newBuilder().apply {
-
-                addHeaderDeduplication(HEADER_AUTHORIZATION, "apiKey")
+                addHeaderDeduplication(HEADER_AUTHORIZATION, "${KEY} ${REST_API_KEY}")
                 method(method, body)
 
             }.let { builder ->

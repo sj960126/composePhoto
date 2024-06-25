@@ -31,9 +31,11 @@ android {
 
 dependencies {
     implementation(project(":data-core"))
+    implementation(project(":domain"))
 
     // Hilt
     implementationHilt()
     // Retrofit, OkHttp, Gson
     implementationRetrofitOkHttp()
+
 }
