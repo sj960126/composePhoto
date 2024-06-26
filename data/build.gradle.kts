@@ -37,5 +37,5 @@ dependencies {
     implementationHilt()
     // Retrofit, OkHttp, Gson
     implementationRetrofitOkHttp()
-
+    implementaionPaging()
 }

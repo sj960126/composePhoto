@@ -38,3 +38,8 @@ fun DependencyHandler.implementationHilt() {
 fun DependencyHandler.implementaionCoroutines() {
     add("implementation", Dependencies.coroutines)
 }
+// Paging
+fun DependencyHandler.implementaionPaging() {
+    add("implementation", Dependencies.Paging.pagingRuntime)
+    add("implementation", Dependencies.Paging.pagingCompose)
+}

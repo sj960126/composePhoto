@@ -21,6 +21,10 @@ object Dependencies {
         val extensions = "android.arch.lifecycle:extensions:1.1.1"
     }
 
+    object Paging {
+        val pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
+        val pagingCompose= "androidx.paging:paging-compose:1.0.0-alpha14"
+    }
     object Google {
         val gson = "com.google.code.gson:gson:2.8.9"
 
@@ -41,7 +45,6 @@ object Dependencies {
     }
 
     object ThirdParty {
-
         object Github {
             val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
             val okhttp3 = "com.github.bumptech.glide:okhttp3-integration:${Versions.glide}"
