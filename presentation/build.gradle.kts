@@ -15,7 +15,6 @@ android {
         targetSdk = ConfigData.targetSdkVersion
         versionCode = ConfigData.versionCode
         versionName = ConfigData.versionName
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -55,4 +54,5 @@ dependencies {
     implementationAndroidXCore()
     implementationCompose()
     implementationHilt()
+
 }

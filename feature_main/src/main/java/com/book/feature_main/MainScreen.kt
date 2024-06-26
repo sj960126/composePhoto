@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.book.feature_list.ListScreen
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalMaterialApi
@@ -17,8 +18,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
-        topBar = {
-            var selectedTabIndex by remember { mutableStateOf(TabDefine.Search.ordinal) }
+        bottomBar = {
+            var selectedTabIndex by remember { mutableStateOf(TabDefine.List.ordinal) }
             TabRow(selectedTabIndex = selectedTabIndex) {
                 TabDefine.values().forEachIndexed { index, tab ->
                     Tab(
@@ -26,8 +27,8 @@ fun MainScreen() {
                         onClick = {
                             selectedTabIndex = index
                             when (index) {
-                                0 -> navController.navigate(MainNavigationConst.Search.route)
-                                1 -> navController.navigate(MainNavigationConst.Bookmark.route)
+                                TabDefine.List.ordinal -> navController.navigate(MainNavigationConst.List.route)
+                                TabDefine.Bookmark.ordinal -> navController.navigate(MainNavigationConst.Bookmark.route)
                             }
                         },
                         text = { Text(tab.title) }
@@ -45,9 +46,9 @@ private fun MainScreenNavigation(
     navController: NavHostController,
     paddingValues: PaddingValues
 ) {
-    NavHost(navController = navController, startDestination = MainNavigationConst.Search.route) {
-        composable(MainNavigationConst.Search.route) {
-            SearchScreen()
+    NavHost(navController = navController, startDestination = MainNavigationConst.List.route) {
+        composable(MainNavigationConst.List.route) {
+            ListScreen(navController = navController)
         }
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen()
@@ -56,10 +57,6 @@ private fun MainScreenNavigation(
 }
 
 
-@Composable
-fun SearchScreen() {
-    Text("Search Screen")
-}
 
 @Composable
 fun BookmarkScreen() {

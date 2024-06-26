@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = ConfigData.nameSpace
+    namespace = "com.book.domain"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {

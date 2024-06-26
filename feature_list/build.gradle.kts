@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.book.feature_main"
+    namespace = "com.book.feature_list"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
         minSdk = ConfigData.minSdkVersion
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -40,7 +41,6 @@ android {
 
 dependencies {
     implementation(project(":presentation-core"))
-    implementation(project(":feature_list"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
