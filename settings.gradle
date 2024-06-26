@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "book"
-include ':app'
+include ':presentation'
 include ':domain'
 include ':data'
 include ':data-core'
