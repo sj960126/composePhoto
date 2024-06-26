@@ -16,7 +16,7 @@ val LocalColors = staticCompositionLocalOf { lightColors }
 val LocalTypography = staticCompositionLocalOf { TypographySystem(lightColors) }
 
 @Composable
-fun NBTheme(
+fun MainTheme(
     isDarkMode: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
