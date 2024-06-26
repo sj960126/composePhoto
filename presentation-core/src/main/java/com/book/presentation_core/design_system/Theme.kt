@@ -6,11 +6,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalDensity
 
-/**
- * @author songhyeonsu
- * Created 3/5/24 at 3:24 PM
- */
-
 val LocalColors = staticCompositionLocalOf { lightColors }
 
 val LocalTypography = staticCompositionLocalOf { TypographySystem(lightColors) }

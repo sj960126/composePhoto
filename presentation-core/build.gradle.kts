@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "com.book.presentation_core"
-    compileSdk = 34
+    compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        minSdk = 24
+        minSdk = ConfigData.minSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementationKotlin()
     implementationAndroidXCore()
     implementaionCoroutines()
     implementationCompose()

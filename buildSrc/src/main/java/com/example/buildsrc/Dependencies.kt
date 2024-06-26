@@ -5,6 +5,7 @@ object Dependencies {
     val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
     val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
     val jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlinVersion}"
+    val kotlinBom = "org.jetbrains.kotlin:kotlin-bom:${Versions.kotlinVersion}"
 
     object AndroidX {
         val core = "androidx.core:core:${Versions.coreKtx}"

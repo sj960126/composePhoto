@@ -34,6 +34,7 @@ android {
 
 dependencies {
     implementation(project(":presentation-core"))
+    implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
 }

@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-
+    implementationKotlin()
     // AndroidX-Core
     implementationAndroidXCore()
     // Retrofit, OkHttp, Gson

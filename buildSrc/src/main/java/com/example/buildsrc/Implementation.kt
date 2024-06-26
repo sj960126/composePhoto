@@ -6,6 +6,10 @@ fun DependencyHandler.implementationAndroidXCore() {
     add("implementation", Dependencies.AndroidX.appcompat)
     add("implementation", Dependencies.AndroidX.annotation)
 }
+fun DependencyHandler.implementationKotlin() {
+    add("implementation", Dependencies.jdk7)
+    add("implementation", Dependencies.kotlinBom)
+}
 
 
 // Retrofit, OkHttp, Gson
