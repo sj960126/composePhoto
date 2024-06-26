@@ -27,6 +27,6 @@ interface ISearchApi {
         @Query("page") page : Int?,
         @Query("size") size : Int?,
         @Query("target") target : String?,
-    ) : Response<BookResponse>
+    ) : BookResponse
 
 }

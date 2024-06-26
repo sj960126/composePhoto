@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class BookEntities(
     val documents: ArrayList<Document>,
-    val meta: Meta
 ) {
     data class Document(
         val authors: ArrayList<String>,
@@ -22,12 +21,4 @@ data class BookEntities(
         val url: String
     )
 
-    data class Meta(
-        @SerializedName("is_end")
-        val isEnd: Boolean,
-        @SerializedName("pageable_count")
-        val pageableCount: Int,
-        @SerializedName("total_count")
-        val totalCount: Int
-    )
 }

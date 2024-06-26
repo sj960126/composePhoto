@@ -8,9 +8,6 @@ import javax.inject.Inject
 class SearchRemoteDataSource @Inject constructor(
     private val iSearchApi: ISearchApi
 ) : AbstractBaseRetrofitRemoteDataSource(){
-
-    suspend fun getSearchBook(searchBookRequest: SearchBookRequest) : Result<BookResponse?> = runWithHandlingResult {
-        iSearchApi.getSearchBook(query = searchBookRequest.query,sort = searchBookRequest.sort,page = searchBookRequest.page,size = searchBookRequest.size, target = searchBookRequest.target)
-    }
+    suspend fun getSearchBook(searchBookRequest: SearchBookRequest) : BookResponse = iSearchApi.getSearchBook(query = searchBookRequest.query,sort = searchBookRequest.sort,page = searchBookRequest.page,size = searchBookRequest.size, target = searchBookRequest.target)
 
 }

@@ -40,8 +40,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     implementation(project(":presentation-core"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
+    implementaionPaging()
 }

@@ -5,5 +5,5 @@ import com.book.domain.search.entities.BookEntities
 import kotlinx.coroutines.flow.Flow
 
 interface ISearchRepository {
-    fun getSearchBook() : Flow<PagingData<BookEntities>>
+    fun getBookList() : Flow<PagingData<BookEntities.Document>>
 }

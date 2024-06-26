@@ -4,9 +4,9 @@ import androidx.paging.PagingData
 import com.book.domain.search.entities.BookEntities
 import com.book.domain.search.repository.ISearchRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetSearchBook (private val repository: ISearchRepository) {
-    operator fun invoke(): Flow<PagingData<BookEntities>> {
-        return repository.getSearchBook()
-    }
+class GetBookListUseCase @Inject constructor(private val repository: ISearchRepository) {
+    operator fun invoke(): Flow<PagingData<BookEntities.Document>> = repository.getBookList()
+
 }
