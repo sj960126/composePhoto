@@ -38,3 +38,19 @@ fun DependencyHandler.implementationHilt() {
 fun DependencyHandler.implementaionCoroutines() {
     add("implementation", Dependencies.coroutines)
 }
+fun DependencyHandler.implementationCompose() {
+    add("implementation", Dependencies.Compose.composeUi)
+    add("implementation", Dependencies.Compose.composeRuntime)
+    add("implementation", Dependencies.Compose.composeFoundation)
+    add("implementation", Dependencies.Compose.composeFoundationLayout)
+    add("implementation", Dependencies.Compose.composeMaterial)
+    add("implementation", Dependencies.Compose.composeLiveData)
+    add("implementation", Dependencies.Compose.composeUiTooling)
+    add("implementation", Dependencies.Compose.composeActivity)
+    add("implementation", Dependencies.Compose.composeCoil)
+    add("implementation", Dependencies.Compose.material3)
+    add("implementation", Dependencies.Compose.navigation)
+    add("implementation", Dependencies.Compose.hilt)
+    add("implementation", Dependencies.Compose.pager)
+    add("implementation", Dependencies.Compose.pagerIndicators)
+}

@@ -32,6 +32,22 @@ object Dependencies {
         }
 
     }
+    object Compose {
+        val composeRuntime ="androidx.compose.runtime:runtime"
+        val composeUi = "androidx.compose.ui:ui"
+        val composeFoundation = "androidx.compose.foundation:foundation"
+        val composeFoundationLayout = "androidx.compose.foundation:foundation-layout"
+        val composeMaterial = "androidx.compose.material:material"
+        val composeLiveData = "androidx.compose.runtime:runtime-livedata"
+        val composeUiTooling = "androidx.compose.ui:ui-tooling"
+        val composeActivity = "androidx.activity:activity-compose:1.4.0"
+        val composeCoil = "io.coil-kt:coil-compose:2.2.0"
+        val material3 = "androidx.compose.material3:material3:1.1.2"
+        val navigation  ="androidx.navigation:navigation-compose:2.5.3"
+        val hilt =  "androidx.hilt:hilt-navigation-compose:1.0.0"
+        val pager = "com.google.accompanist:accompanist-pager:0.24.3-alpha"
+        val pagerIndicators ="com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
+    }
 
     object SquareUp {
         val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
