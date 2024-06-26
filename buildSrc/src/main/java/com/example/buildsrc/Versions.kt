@@ -14,5 +14,5 @@ object Versions {
     const val room = "2.2.5"
     const val rxbinding = "4.0.0"
     const val glide = "4.11.0"
-
+    const val compose = "1.2.0"
 }

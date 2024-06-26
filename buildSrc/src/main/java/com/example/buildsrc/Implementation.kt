@@ -42,26 +42,24 @@ fun DependencyHandler.implementationHilt() {
 fun DependencyHandler.implementaionCoroutines() {
     add("implementation", Dependencies.coroutines)
 }
-<<<<<<< HEAD
 // Paging
 fun DependencyHandler.implementaionPaging() {
     add("implementation", Dependencies.Paging.pagingRuntime)
     add("implementation", Dependencies.Paging.pagingCompose)
-=======
+}
+
 fun DependencyHandler.implementationCompose() {
     add("implementation", Dependencies.Compose.composeUi)
     add("implementation", Dependencies.Compose.composeRuntime)
     add("implementation", Dependencies.Compose.composeFoundation)
     add("implementation", Dependencies.Compose.composeFoundationLayout)
     add("implementation", Dependencies.Compose.composeMaterial)
-    add("implementation", Dependencies.Compose.composeLiveData)
     add("implementation", Dependencies.Compose.composeUiTooling)
     add("implementation", Dependencies.Compose.composeActivity)
     add("implementation", Dependencies.Compose.composeCoil)
-    add("implementation", Dependencies.Compose.material3)
+//    add("implementation", Dependencies.Compose.material3)
     add("implementation", Dependencies.Compose.navigation)
     add("implementation", Dependencies.Compose.hilt)
     add("implementation", Dependencies.Compose.pager)
     add("implementation", Dependencies.Compose.pagerIndicators)
->>>>>>> a211e9f1f7a3a80c36f34935a63d6a13a1ec10b3
 }
