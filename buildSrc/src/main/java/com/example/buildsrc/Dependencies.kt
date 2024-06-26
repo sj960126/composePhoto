@@ -5,6 +5,7 @@ object Dependencies {
     val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
     val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
     val jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlinVersion}"
+    val kotlinBom = "org.jetbrains.kotlin:kotlin-bom:${Versions.kotlinVersion}"
 
     object AndroidX {
         val core = "androidx.core:core:${Versions.coreKtx}"
@@ -35,6 +36,22 @@ object Dependencies {
             val androidTesting = "com.google.dagger:hilt-android-testing:${Versions.hiltVersion}"
         }
 
+    }
+    object Compose {
+        val composeRuntime ="androidx.compose.runtime:runtime"
+        val composeUi = "androidx.compose.ui:ui"
+        val composeFoundation = "androidx.compose.foundation:foundation"
+        val composeFoundationLayout = "androidx.compose.foundation:foundation-layout"
+        val composeMaterial = "androidx.compose.material:material"
+        val composeLiveData = "androidx.compose.runtime:runtime-livedata"
+        val composeUiTooling = "androidx.compose.ui:ui-tooling"
+        val composeActivity = "androidx.activity:activity-compose:1.4.0"
+        val composeCoil = "io.coil-kt:coil-compose:2.2.0"
+        val material3 = "androidx.compose.material3:material3:1.1.2"
+        val navigation  ="androidx.navigation:navigation-compose:2.5.3"
+        val hilt =  "androidx.hilt:hilt-navigation-compose:1.0.0"
+        val pager = "com.google.accompanist:accompanist-pager:0.24.3-alpha"
+        val pagerIndicators ="com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
     }
 
     object SquareUp {

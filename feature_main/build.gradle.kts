@@ -4,12 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.book.data_core"
-    compileSdk = 33
+    namespace = "com.book.feature_main"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,11 +33,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":presentation-core"))
     implementationKotlin()
-    // AndroidX-Core
-    implementationAndroidXCore()
-    // Retrofit, OkHttp, Gson
-    implementationRetrofitOkHttp()
-    // Coroutines
+    implementationCompose()
     implementaionCoroutines()
 }

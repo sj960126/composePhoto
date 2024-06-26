@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation(project(":data-core"))
     implementation(project(":domain"))
+    implementationKotlin()
 
     // Hilt
     implementationHilt()
