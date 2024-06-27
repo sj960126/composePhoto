@@ -1,6 +1,7 @@
 package com.book.feature_list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -23,6 +25,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import com.book.domain.search.entities.BookEntities
+import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
 import com.book.presentation_core.extension.noRippleClickable
 
@@ -57,9 +60,12 @@ fun ListLayout(lazyPagingItems: LazyPagingItems<BookEntities.Document>, navContr
 fun ListItemCard(navController: NavController, item: BookEntities.Document) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp,
+        elevation = 0.dp,
         modifier = Modifier
+            .background(LocalColors.current.transparent)
             .padding(8.dp)
+            .fillMaxWidth()
+            .height(400.dp)
             .noRippleClickable {
                 // Navigate to detail screen
                 // navController.navigate("detail/${item.id}")
@@ -71,20 +77,27 @@ fun ListItemCard(navController: NavController, item: BookEntities.Document) {
             Image(
                 painter = rememberAsyncImagePainter(model = item.thumbnail),
                 contentDescription = null,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
-                    .size(128.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
                     .align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = item.title,
-                style = LocalTypography.current.body2
+                style = LocalTypography.current.caption1,
+                color= LocalColors.current.black
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = item.contents,
-                style = LocalTypography.current.body2
-            )
+            if(item.price > item.salePrice) Row{
+                Text(text = "원가", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
+                Text(text = item.price.toString(), style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
+            }
+            Row{
+                Text(text = "판매가", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
+                Text(text = item.salePrice.toString(), style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
+            }
         }
     }
 }

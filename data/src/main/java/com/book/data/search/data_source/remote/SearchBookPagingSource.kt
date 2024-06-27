@@ -9,31 +9,27 @@ import com.book.domain.search.entities.SearchBookRequest
 
 class SearchBookPagingSource(
     private val remoteDataSource: SearchRemoteDataSource,
-    val query : String
+    val query: String
 ) : PagingSource<Int, BookEntities.Document>() {
 
     override fun getRefreshKey(state: PagingState<Int, BookEntities.Document>): Int? {
-        // 이전에 로드된 데이터의 가장 마지막 페이지 번호를 반환
         return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.nextKey
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, BookEntities.Document> {
         return try {
-            // 페이지 넘버와 페이지 사이즈 설정
-            val pageNumber = params.key ?: 0 // 초기 페이지는 0으로 설정
-            val pageSize = params.loadSize
-
-            val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = 20))
+            val pageNumber = params.key ?: 1
+            val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = params.loadSize))
 
             LoadResult.Page(
                 data = BookMapper.mapToDomain(response).documents,
-                prevKey = if (pageNumber == 0) null else pageNumber - 1,
+                prevKey = if (pageNumber == 1) null else pageNumber - 1,
                 nextKey = if (response.documents.isEmpty()) null else pageNumber + 1
             )
         } catch (e: Exception) {
-            // 에러 발생 시 처리
             LoadResult.Error(e)
         }
     }

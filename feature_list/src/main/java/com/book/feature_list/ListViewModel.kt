@@ -17,7 +17,6 @@ class ListViewModel @Inject constructor(
 ) : BaseViewModel<ListContract.ListEvent, ListContract.ListUiState, ListContract.ListSideEffect>() {
 
     init {
-        // Initial event to trigger data loading
         handleEvent(ListContract.ListEvent.LoadBooks)
     }
 
@@ -30,14 +29,13 @@ class ListViewModel @Inject constructor(
                 viewModelScope.launch {
                     getSearchResults()
                         .cachedIn(viewModelScope)
-                        .collect { pagingData ->
+                        .collectLatest { pagingData ->
                             setState {
                                 copy(state = ListContract.ListState.Success(flowOf(pagingData)))
                             }
                         }
                 }
             }
-            // Handle other events if necessary
         }
     }
 
