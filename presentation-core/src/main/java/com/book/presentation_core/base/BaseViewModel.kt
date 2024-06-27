@@ -13,19 +13,6 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiSideEffect> : ViewModel() {
 
-    init {
-        subscribeEvents()
-    }
-
-    private fun subscribeEvents() {
-        viewModelScope.launch {
-            event.collect {
-                handleEvent(it)
-            }
-        }
-    }
-    abstract fun handleEvent(event : Event)
-
     private val initialState: State by lazy { createInitialState() }
     abstract fun createInitialState(): State
 
@@ -40,6 +27,19 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiSideEf
 
     private val _effect: Channel<Effect> = Channel()
     val effect = _effect.receiveAsFlow()
+
+    init {
+        subscribeEvents()
+    }
+
+    private fun subscribeEvents() {
+        viewModelScope.launch {
+            event.collect {
+                handleEvent(it)
+            }
+        }
+    }
+    abstract fun handleEvent(event : Event)
 
     fun setEvent(event: Event) {
         val newEvent = event

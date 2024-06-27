@@ -1,21 +1,27 @@
 package com.book.feature_list
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil.compose.rememberAsyncImagePainter
 import com.book.domain.search.entities.BookEntities
 import com.book.presentation_core.design_system.LocalTypography
 import com.book.presentation_core.extension.noRippleClickable
@@ -28,27 +34,21 @@ fun ListScreen(navController: NavController,listViewModel: ListViewModel = hiltV
         ListContract.ListState.Init -> {}
         ListContract.ListState.Error -> {}
         is ListContract.ListState.Success ->{
-            ListLayout(listViewModel = listViewModel, pagingData = (viewUiState.state as ListContract.ListState.Success).item, navController = navController)
+            val lazyPagingItems = (viewUiState.state as ListContract.ListState.Success).item.collectAsLazyPagingItems()
+            ListLayout(lazyPagingItems = lazyPagingItems, navController = navController)
         }
-    }
-    val lazyPagingItems = listViewModel.getSearchResults().collectAsLazyPagingItems()
-
-    Column{
-
     }
 }
 
 @Composable
-fun ListLayout(listViewModel: ListViewModel, pagingData: PagingData<BookEntities.Document>, navController: NavController) {
-    val lazyPagingItems = pagingData.collectAsLazyPagingItems()
-
+fun ListLayout(lazyPagingItems: LazyPagingItems<BookEntities.Document>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {
-        itemsIndexed(lazyPagingItems) { index, item ->
-            ListItemCard(navController = navController, item = item)
+        items(lazyPagingItems.itemCount) {
+            lazyPagingItems[it]?.let { item -> ListItemCard(navController = navController, item = item) }
         }
     }
 }
@@ -68,6 +68,14 @@ fun ListItemCard(navController: NavController, item: BookEntities.Document) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
+            Image(
+                painter = rememberAsyncImagePainter(model = item.thumbnail),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(128.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = item.title,
                 style = LocalTypography.current.body2
@@ -77,8 +85,6 @@ fun ListItemCard(navController: NavController, item: BookEntities.Document) {
                 text = item.contents,
                 style = LocalTypography.current.body2
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

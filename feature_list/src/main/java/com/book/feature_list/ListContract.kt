@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 class ListContract {
     sealed class ListEvent : UiEvent {
-
+        object LoadBooks : ListEvent()
     }
     data class ListUiState(
         val state : ListState

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -41,9 +42,12 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":data"))
     implementation(project(":presentation-core"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
     implementaionPaging()
+    implementationHilt()
+
 }

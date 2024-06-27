@@ -4,6 +4,7 @@ import com.book.data.search.data_source.remote.ISearchApi
 import com.book.data.search.data_source.remote.SearchRemoteDataSource
 import com.book.data.search.repository.SearchRepositoryImp
 import com.book.domain.search.repository.ISearchRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

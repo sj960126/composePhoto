@@ -50,6 +50,8 @@ android {
 dependencies {
     implementation(project(":presentation-core"))
     implementation(project(":feature_main"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
     implementationKotlin()
     implementationAndroidXCore()
     implementationCompose()

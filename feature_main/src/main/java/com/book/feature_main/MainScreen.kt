@@ -13,7 +13,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalMaterialApi
 @InternalCoroutinesApi
-@Preview
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
