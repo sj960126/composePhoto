@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
     implementationKotlin()
     implementationAndroidXCore()
     implementaionCoroutines()
