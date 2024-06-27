@@ -6,8 +6,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,6 +30,7 @@ import com.google.gson.Gson
 
 @Composable
 fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
+    var isBookmarked by remember { mutableStateOf(false) }
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
@@ -41,15 +47,29 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
                 .background(LocalColors.current.white)
                 .padding(16.dp)
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(model = item.thumbnail),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .align(Alignment.CenterHorizontally)
-            )
+            Box(
+                modifier = Modifier.height(200.dp)
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = item.thumbnail),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopEnd,
+                ) {
+                    BookmarkIcon(
+                        isBookmarked = isBookmarked,
+                        onClick = {
+                            isBookmarked = !isBookmarked
+                        }
+                    )
+                }
+            }
             Spacer(modifier = Modifier.height(8.dp))
             if (item.title?.isNotEmpty() == true )Text(
                 text = item.title ?:"",
@@ -68,5 +88,27 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
                 Text(modifier = Modifier.padding(start = 3.dp),text = item.salePrice?.convertPriceFormat() ?:"", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
             }
         }
+    }
+}
+
+@Composable
+private fun BookmarkIcon(isBookmarked: Boolean, onClick: () -> Unit) {
+    LaunchedEffect(isBookmarked) {
+        // This effect will execute when isBookmarked changes
+        // It can be used for animations or any side effects related to the bookmark state change
+    }
+
+    IconButton(
+        onClick = onClick,
+    ) {
+        Icon(
+            imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+            contentDescription = "Bookmark",
+            tint = if (isBookmarked) {
+                LocalColors.current.primary
+            } else {
+                LocalColors.current.gray02
+            }
+        )
     }
 }
