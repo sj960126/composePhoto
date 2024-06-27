@@ -33,16 +33,16 @@ fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (Stri
 }
 
 @Composable
-fun ListLayout(lazyPagingItems: LazyPagingItems<BookEntities.Document>,onItemClick: (String) -> Unit) {
+fun ListLayout(lazyPagingItems: LazyPagingItems<BookEntities.Document>, onItemClick: (String) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {
-        items(lazyPagingItems.itemCount) {
-            lazyPagingItems[it]?.let { item -> ItemCard(onItemClick = onItemClick, item = item) }
+        items(lazyPagingItems.itemCount) { index ->
+            lazyPagingItems[index]?.let { item ->
+                ItemCard(onItemClick = onItemClick, item = item)
+            }
         }
     }
 }
-
-
