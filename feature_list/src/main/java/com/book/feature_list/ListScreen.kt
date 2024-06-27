@@ -17,7 +17,6 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.search.entities.BookEntities
 import com.book.presentation_core.component.ItemCard
-import com.google.gson.Gson
 
 
 @Composable

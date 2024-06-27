@@ -45,23 +45,25 @@ fun MainScreen() {
     }
     Scaffold(
         bottomBar = {
-            TabRow(selectedTabIndex = selectedTabIndex.value) {
-                TabDefine.values().forEachIndexed { index, tab ->
-                    Tab(
-                        selected = selectedTabIndex.value == index,
-                        onClick = {
-                            selectedTabIndex.value = index
-                            when (index) {
-                                TabDefine.List.ordinal -> navController.navigate(MainNavigationConst.List.route) {
-                                    popUpTo(MainNavigationConst.List.route) { inclusive = true }
+            if (selectedTabIndex.value == TabDefine.List.ordinal) {
+                TabRow(selectedTabIndex = selectedTabIndex.value) {
+                    TabDefine.values().forEachIndexed { index, tab ->
+                        Tab(
+                            selected = selectedTabIndex.value == index,
+                            onClick = {
+                                selectedTabIndex.value = index
+                                when (index) {
+                                    TabDefine.List.ordinal -> navController.navigate(MainNavigationConst.List.route) {
+                                        popUpTo(MainNavigationConst.List.route) { inclusive = true }
+                                    }
+                                    TabDefine.Bookmark.ordinal -> navController.navigate(MainNavigationConst.Bookmark.route) {
+                                        popUpTo(MainNavigationConst.Bookmark.route) { inclusive = true }
+                                    }
                                 }
-                                TabDefine.Bookmark.ordinal -> navController.navigate(MainNavigationConst.Bookmark.route) {
-                                    popUpTo(MainNavigationConst.Bookmark.route) { inclusive = true }
-                                }
-                            }
-                        },
-                        text = { Text(tab.title) }
-                    )
+                            },
+                            text = { Text(tab.title) }
+                        )
+                    }
                 }
             }
         }
