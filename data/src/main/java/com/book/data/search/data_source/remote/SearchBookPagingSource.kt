@@ -25,7 +25,7 @@ class SearchBookPagingSource(
             val pageNumber = params.key ?: 0 // 초기 페이지는 0으로 설정
             val pageSize = params.loadSize
 
-            val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = pageSize))
+            val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = 20))
 
             LoadResult.Page(
                 data = BookMapper.mapToDomain(response).documents,

@@ -8,8 +8,9 @@ import retrofit2.http.Query
 interface ISearchApi {
 
     companion object{
+        private const val V3 = "v3"
         private const val SEARCH ="/search"
-        private const val BOOK ="${SEARCH}/book"
+        private const val BOOK ="/${V3}${SEARCH}/book"
     }
 
     /**
