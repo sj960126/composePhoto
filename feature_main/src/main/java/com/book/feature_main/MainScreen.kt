@@ -1,5 +1,6 @@
 package com.book.feature_main
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,12 +11,18 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.os.bundleOf
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.book.domain.search.entities.BookEntities
+import com.book.feature_detail.DetailScreen
 import com.book.feature_list.ListScreen
 import com.book.presentation_core.design_system.LocalColors
+import com.google.gson.Gson
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalMaterialApi
@@ -24,7 +31,18 @@ import kotlinx.coroutines.InternalCoroutinesApi
 fun MainScreen() {
     val navController = rememberNavController()
     val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.List.ordinal) }
-
+    val navigation = remember {
+        object : MainNavigation {
+            override fun navigateToDetail(item: String) {
+                navController.navigate(
+                    route = "${MainNavigationConst.Detail.route}/$item",
+                ) {
+                     launchSingleTop = true
+                    popUpTo(MainNavigationConst.List.route) { inclusive = true }
+                }
+            }
+        }
+    }
     Scaffold(
         bottomBar = {
             TabRow(selectedTabIndex = selectedTabIndex.value) {
@@ -53,7 +71,7 @@ fun MainScreen() {
                 .fillMaxSize()
                 .background(LocalColors.current.white)
         ) {
-            MainScreenNavigation(navController = navController, paddingValues = innerPadding)
+            MainScreenNavigation(navController = navController, paddingValues = innerPadding,navigation = navigation)
         }
     }
 }
@@ -61,7 +79,8 @@ fun MainScreen() {
 @Composable
 private fun MainScreenNavigation(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigation: MainNavigation
 ) {
     NavHost(
         navController = navController,
@@ -69,10 +88,17 @@ private fun MainScreenNavigation(
         modifier = Modifier.padding(paddingValues)
     ) {
         composable(MainNavigationConst.List.route) {
-            ListScreen(navController = navController)
+            ListScreen(onItemClick = {navigation.navigateToDetail(it)})
         }
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen()
+        }
+        composable(
+            route = MainNavigationConst.Detail.route + "/{item}",
+            arguments = listOf(navArgument("item") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val bookDetailJson = backStackEntry.arguments?.getString("item")
+            if (bookDetailJson != null) DetailScreen(bookDetail = Gson().fromJson(bookDetailJson, BookEntities.Document::class.java))
         }
     }
 }

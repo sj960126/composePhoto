@@ -1,5 +1,6 @@
 package com.book.presentation_core.component
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,9 +21,10 @@ import com.book.presentation_core.design_system.LocalTypography
 import com.book.presentation_core.design_system.MainTheme
 import com.book.presentation_core.extension.convertPriceFormat
 import com.book.presentation_core.extension.noRippleClickable
+import com.google.gson.Gson
 
 @Composable
-fun ItemCard(onItemClick: (BookEntities.Document) -> Unit, item: BookEntities.Document) {
+fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
@@ -31,9 +33,7 @@ fun ItemCard(onItemClick: (BookEntities.Document) -> Unit, item: BookEntities.Do
             .fillMaxWidth()
             .height(300.dp)
             .noRippleClickable {
-                onItemClick.invoke(item)
-                // Navigate to detail screen
-                // navController.navigate("detail/${item.id}")
+                onItemClick.invoke(Uri.encode(Gson().toJson(item)))
             }
     ) {
         Column(

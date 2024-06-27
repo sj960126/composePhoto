@@ -1,6 +1,8 @@
 package com.book.domain.search.entities
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class BookEntities(
     val documents: ArrayList<Document>,
@@ -19,6 +21,6 @@ data class BookEntities(
         val title: String?,
         val translators: ArrayList<String>?,
         val url: String?
-    )
+    )  : Serializable
 
 }

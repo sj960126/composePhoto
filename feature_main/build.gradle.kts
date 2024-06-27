@@ -42,11 +42,12 @@ android {
 dependencies {
     implementation(project(":presentation-core"))
     implementation(project(":feature_list"))
+    implementation(project(":feature_detail"))
     implementation(project(":data"))
     implementation(project(":domain"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
     implementationHilt()
-
+    implementationGson()
 }

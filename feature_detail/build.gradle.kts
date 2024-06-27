@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.book.feature_list"
+    namespace = "com.book.feature_detail"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
@@ -46,7 +46,4 @@ dependencies {
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
-    implementaionPaging()
-    implementationHilt()
-
 }

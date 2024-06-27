@@ -57,9 +57,11 @@ fun DependencyHandler.implementationCompose() {
     add("implementation", Dependencies.Compose.composeUiTooling)
     add("implementation", Dependencies.Compose.composeActivity)
     add("implementation", Dependencies.Compose.composeCoil)
-//    add("implementation", Dependencies.Compose.material3)
     add("implementation", Dependencies.Compose.navigation)
     add("implementation", Dependencies.Compose.hilt)
     add("implementation", Dependencies.Compose.pager)
     add("implementation", Dependencies.Compose.pagerIndicators)
+}
+fun DependencyHandler.implementationGson() {
+    add("implementation", Dependencies.Google.gson)
 }

@@ -43,4 +43,5 @@ dependencies {
     implementationAndroidXCore()
     implementaionCoroutines()
     implementationCompose()
+    implementationGson()
 }
