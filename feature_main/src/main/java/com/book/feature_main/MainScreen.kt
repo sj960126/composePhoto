@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.book.domain.common.entities.BookEntities
@@ -24,7 +25,6 @@ import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
 import com.google.gson.Gson
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.delay
 
 @ExperimentalMaterialApi
 @InternalCoroutinesApi
@@ -32,13 +32,14 @@ import kotlinx.coroutines.delay
 fun MainScreen() {
     val navController = rememberNavController()
     val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.List.ordinal) }
+
     val navigation = remember {
         object : MainNavigation {
             override fun navigateToDetail(item: String) {
                 navController.navigate(
                     route = "${MainNavigationConst.Detail.route}/$item",
                 ) {
-                     launchSingleTop = true
+                    launchSingleTop = true
                     popUpTo(MainNavigationConst.List.route)
                 }
             }

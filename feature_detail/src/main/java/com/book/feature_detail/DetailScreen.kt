@@ -22,10 +22,6 @@ import com.book.presentation_core.extension.convertPriceFormat
 @Composable
 fun DetailScreen(bookDetail: BookEntities.Document) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text(text = "도서 상세 정보", style = LocalTypography.current.caption3, color = LocalColors.current.white) },
-            backgroundColor = LocalColors.current.primary
-        )
         LazyColumn(modifier = Modifier.padding(16.dp)) {
             item {
                 Image(
