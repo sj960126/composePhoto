@@ -33,7 +33,7 @@ dependencies {
     implementation(project(":data-core"))
     implementation(project(":domain"))
     implementationKotlin()
-
+    implementationRoom()
     // Hilt
     implementationHilt()
     // Retrofit, OkHttp, Gson

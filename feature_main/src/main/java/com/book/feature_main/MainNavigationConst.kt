@@ -1,7 +1,5 @@
 package com.book.feature_main
 
-import com.book.domain.search.entities.BookEntities
-
 sealed class MainNavigationConst(
     val route: String
 ) {

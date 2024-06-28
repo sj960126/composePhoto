@@ -47,6 +47,11 @@ fun DependencyHandler.implementaionPaging() {
     add("implementation", Dependencies.Paging.pagingRuntime)
     add("implementation", Dependencies.Paging.pagingCompose)
 }
+fun DependencyHandler.implementationRoom() {
+    add("implementation", Dependencies.Room.runtime)
+    add("implementation", Dependencies.Room.roomKtx)
+    add("kapt", Dependencies.Room.compiler)
+}
 
 fun DependencyHandler.implementationCompose() {
     add("implementation", Dependencies.Compose.composeUi)

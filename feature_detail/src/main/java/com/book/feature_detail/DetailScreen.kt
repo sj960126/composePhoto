@@ -6,20 +6,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.book.domain.search.entities.BookEntities
+import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
 import com.book.presentation_core.design_system.MainTheme
 import com.book.presentation_core.extension.convertPriceFormat
-import com.book.presentation_core.extension.noRippleClickable
-
 
 
 @Composable

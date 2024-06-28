@@ -3,8 +3,7 @@ package com.book.data.search.data_source.remote
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.book.data.search.mapper.BookMapper
-import com.book.data.search.model.BookResponse
-import com.book.domain.search.entities.BookEntities
+import com.book.domain.common.entities.BookEntities
 import com.book.domain.search.entities.SearchBookRequest
 
 class SearchBookPagingSource(

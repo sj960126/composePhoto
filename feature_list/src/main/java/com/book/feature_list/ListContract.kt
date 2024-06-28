@@ -1,7 +1,7 @@
 package com.book.feature_list
 
 import androidx.paging.PagingData
-import com.book.domain.search.entities.BookEntities
+import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.base.UiEvent
 import com.book.presentation_core.base.UiSideEffect
 import com.book.presentation_core.base.UiState

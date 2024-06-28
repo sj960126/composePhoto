@@ -3,7 +3,7 @@ package com.book.feature_list
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.book.domain.search.entities.BookEntities
+import com.book.domain.common.entities.BookEntities
 import com.book.domain.search.usecase.GetBookListUseCase
 import com.book.presentation_core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

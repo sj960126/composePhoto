@@ -1,11 +1,11 @@
 package com.book.data.search.mapper
 
 import com.book.data.search.model.BookResponse
-import com.book.domain.search.entities.BookEntities
+import com.book.domain.common.entities.BookEntities
 
 object BookMapper {
 
-    fun mapToDomain(bookResponse: BookResponse): BookEntities  = BookEntities(documents = ArrayList(bookResponse.documents.map { mapDocumentToDomain(it) }))
+    fun mapToDomain(bookResponse: BookResponse): BookEntities = BookEntities(documents = ArrayList(bookResponse.documents.map { mapDocumentToDomain(it) }))
 
     private fun mapDocumentToDomain(document: BookResponse.Document): BookEntities.Document =
         BookEntities.Document(

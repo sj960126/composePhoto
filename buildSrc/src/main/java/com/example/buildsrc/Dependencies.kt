@@ -21,7 +21,11 @@ object Dependencies {
     object Android {
         val extensions = "android.arch.lifecycle:extensions:1.1.1"
     }
-
+    object Room {
+        val runtime = "androidx.room:room-runtime:${Versions.room}"
+        val roomKtx = "androidx.room:room-ktx:${Versions.room}"
+        val compiler = "androidx.room:room-compiler:${Versions.room}"
+    }
     object Paging {
         val pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
         val pagingCompose= "androidx.paging:paging-compose:1.0.0-alpha14"
