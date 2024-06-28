@@ -10,14 +10,16 @@ import kotlinx.coroutines.flow.Flow
 class ListContract {
     sealed class ListEvent : UiEvent {
         object LoadBooks : ListEvent()
+        data class RemoveBookmark(val item : BookEntities.Document) : ListEvent()
+        data class AddBookmark(val item : BookEntities.Document) : ListEvent()
     }
     data class ListUiState(
         val state : ListState
     ) : UiState
 
     sealed class ListState {
-        object Init : ListState()
-
+        object Loading : ListState()
+        object Empty : ListState()
         object Error : ListState()
         data class Success(
             val item : Flow<PagingData<BookEntities.Document>>

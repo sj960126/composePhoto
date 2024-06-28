@@ -11,7 +11,7 @@ object Versions {
     const val firebasePerfVersion = "1.4.1"
     const val applovinSdk = "11.8.2"
     const val lifecycle = "2.5.1"
-    const val room = "2.2.5"
+    const val room = "2.5.0"
     const val rxbinding = "4.0.0"
     const val glide = "4.11.0"
     const val compose = "1.2.0"

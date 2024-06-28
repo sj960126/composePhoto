@@ -27,8 +27,7 @@ import com.book.presentation_core.extension.noRippleClickable
 import com.google.gson.Gson
 
 @Composable
-fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
-    var isBookmarked by remember { mutableStateOf(false) }
+fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
@@ -61,9 +60,10 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document) {
                     contentAlignment = Alignment.TopEnd,
                 ) {
                     BookmarkIcon(
-                        isBookmarked = isBookmarked,
+                        isBookmarked = item.isBookMark,
                         onClick = {
-                            isBookmarked = !isBookmarked
+                            onBookmarkClick.invoke(!item.isBookMark)
+                            item.isBookMark = !item.isBookMark
                         }
                     )
                 }

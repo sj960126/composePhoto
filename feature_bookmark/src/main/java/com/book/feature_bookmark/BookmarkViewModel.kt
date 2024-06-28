@@ -1,5 +1,6 @@
 package com.book.feature_bookmark
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.book.domain.bookmark.usecase.AddBookmarkUseCase
 import com.book.domain.bookmark.usecase.GetBookmarksUseCase
@@ -22,6 +23,10 @@ class BookmarkViewModel @Inject constructor(
 ) : BaseViewModel<BookmarkContract.BookmarkEvent,BookmarkContract.BookmarkUiState,BookmarkContract.BookmarkSideEffect>(){
     override fun createInitialState(): BookmarkContract.BookmarkUiState = BookmarkContract.BookmarkUiState(state = BookmarkContract.BookmarkState.Loading)
 
+    init {
+        getBookmarkList()
+    }
+
     override fun handleEvent(event: BookmarkContract.BookmarkEvent) {
         when(event){
             BookmarkContract.BookmarkEvent.GetBookmarkList -> getBookmarkList()
@@ -35,6 +40,7 @@ class BookmarkViewModel @Inject constructor(
         viewModelScope.launch {
             getBookmarkUseCase.invoke().let {bookmarkList ->
                 setState {
+                    Log.d("디버그","${bookmarkList}")
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(itemList = bookmarkList))
                 }
             }

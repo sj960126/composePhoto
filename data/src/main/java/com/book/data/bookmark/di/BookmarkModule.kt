@@ -7,6 +7,7 @@ import com.book.data.bookmark.data_source.local.BookmarkLocalDataSource
 import com.book.data.bookmark.model.BookmarkDao
 import com.book.data.bookmark.repository.BookmarkRepositoryImp
 import com.book.domain.bookmark.repository.IBookmarkRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

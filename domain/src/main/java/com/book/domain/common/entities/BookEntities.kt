@@ -19,7 +19,8 @@ data class BookEntities(
         val thumbnail: String?,
         val title: String?,
         val translators: ArrayList<String>?,
-        val url: String?
+        val url: String?,
+        var isBookMark : Boolean = false
     )  : Serializable
 
 }
