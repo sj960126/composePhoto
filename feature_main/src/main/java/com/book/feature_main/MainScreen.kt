@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.book.domain.common.entities.BookEntities
+import com.book.feature_bookmark.BookmarkScreen
 import com.book.feature_detail.DetailScreen
 import com.book.feature_list.ListScreen
 import com.book.presentation_core.design_system.LocalColors
@@ -90,7 +91,7 @@ private fun MainScreenNavigation(
             ListScreen(onItemClick = {navigation.navigateToDetail(it)})
         }
         composable(MainNavigationConst.Bookmark.route) {
-            BookmarkScreen()
+            BookmarkScreen(onItemClick = {navigation.navigateToDetail(it)})
         }
         composable(
             route = MainNavigationConst.Detail.route + "/{item}",
@@ -102,8 +103,3 @@ private fun MainScreenNavigation(
     }
 }
 
-
-@Composable
-fun BookmarkScreen() {
-    Text("Bookmark Screen")
-}

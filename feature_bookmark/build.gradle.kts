@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.book.feature_main"
+    namespace = "com.book.feature_bookmark"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
@@ -40,15 +40,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":presentation-core"))
-    implementation(project(":feature_list"))
-    implementation(project(":feature_detail"))
-    implementation(project(":feature_bookmark"))
-    implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":presentation-core"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
+    implementaionPaging()
     implementationHilt()
-    implementationGson()
+
 }
