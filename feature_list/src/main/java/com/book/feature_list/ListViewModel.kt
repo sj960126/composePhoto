@@ -3,6 +3,7 @@ package com.book.feature_list
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.book.domain.bookmark.usecase.AddBookmarkUseCase
 import com.book.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.book.domain.common.entities.BookEntities
@@ -33,6 +34,7 @@ class ListViewModel @Inject constructor(
                     getSearchResults()
                         .cachedIn(viewModelScope)
                         .collectLatest { pagingData ->
+                            pagingData.map {  }
                             setState {
                                 copy(state = ListContract.ListState.Success(flowOf(pagingData)))
                             }
@@ -45,7 +47,7 @@ class ListViewModel @Inject constructor(
     }
     private fun removeBookmark(item: BookEntities.Document){
         viewModelScope.launch {
-            removeBookmarkUseCase.invoke(item)
+            if(!item.title.isNullOrEmpty())removeBookmarkUseCase.invoke(item.title?:"")
         }
     }
 

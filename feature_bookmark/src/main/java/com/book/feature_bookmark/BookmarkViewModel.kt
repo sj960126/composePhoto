@@ -50,7 +50,7 @@ class BookmarkViewModel @Inject constructor(
     private fun removeBookmark(item: BookEntities.Document){
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
-            removeBookmarkUseCase.invoke(item)
+            if(!item.title.isNullOrEmpty())removeBookmarkUseCase.invoke(item.title?:"")
             getBookmarkList()
         }
     }

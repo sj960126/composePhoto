@@ -30,8 +30,6 @@ fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (Stri
                 lazyPagingItems = lazyPagingItems,
                 onItemClick = onItemClick,
                 onBookmarkClick = {
-                    Log.d("디버그","${it.first}")
-                    Log.d("디버그","${it.second}")
                     listViewModel.handleEvent(if(it.second) ListContract.ListEvent.AddBookmark(it.first) else ListContract.ListEvent.RemoveBookmark(it.first))
                 }
             )

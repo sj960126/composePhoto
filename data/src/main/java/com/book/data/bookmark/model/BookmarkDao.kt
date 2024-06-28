@@ -13,10 +13,11 @@ import androidx.room.Query
 interface BookmarkDao {
     @Query("SELECT * FROM bookmarks")
     suspend fun getAll(): List<BookmarkEntity>
-
+    @Query("SELECT title FROM bookmarks")
+    suspend fun getAllTitles(): List<String>
     @Insert
     suspend fun insert(bookmark: BookmarkEntity)
+    @Query("DELETE FROM bookmarks WHERE title = :title")
+    suspend fun delete(title: String)
 
-    @Delete
-    suspend fun delete(bookmark: BookmarkEntity)
 }

@@ -8,7 +8,8 @@ import com.book.domain.search.entities.SearchBookRequest
 
 class SearchBookPagingSource(
     private val remoteDataSource: SearchRemoteDataSource,
-    val query: String
+    private val query: String,
+    private val bookmarkList : List<String>
 ) : PagingSource<Int, BookEntities.Document>() {
 
     override fun getRefreshKey(state: PagingState<Int, BookEntities.Document>): Int? {
@@ -22,9 +23,8 @@ class SearchBookPagingSource(
         return try {
             val pageNumber = params.key ?: 1
             val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = params.loadSize))
-
             LoadResult.Page(
-                data = BookMapper.mapToDomain(response).documents,
+                data = BookMapper.mapToDomain(response, bookMarkList = bookmarkList).documents,
                 prevKey = if (pageNumber == 1) null else pageNumber - 1,
                 nextKey = if (response.documents.isEmpty()) null else pageNumber + 1
             )

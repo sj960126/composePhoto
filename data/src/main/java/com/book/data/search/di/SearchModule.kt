@@ -1,5 +1,6 @@
 package com.book.data.search.di
 
+import com.book.data.bookmark.data_source.local.BookmarkLocalDataSource
 import com.book.data.search.data_source.remote.ISearchApi
 import com.book.data.search.data_source.remote.SearchRemoteDataSource
 import com.book.data.search.repository.SearchRepositoryImp
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 object SearchModule {
     @Provides
     @Singleton
-    fun provideSearchRepository(remoteDataSource: SearchRemoteDataSource) : ISearchRepository = SearchRepositoryImp(remoteDataSource)
+    fun provideSearchRepository(remoteDataSource: SearchRemoteDataSource,bookmarkLocalDataSource: BookmarkLocalDataSource) : ISearchRepository = SearchRepositoryImp(remoteDataSource,bookmarkLocalDataSource)
 
     @Provides
     @Singleton

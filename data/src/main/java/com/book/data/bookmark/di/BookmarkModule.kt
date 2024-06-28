@@ -26,7 +26,7 @@ object BookmarkModule {
     private const val DATABASE_NAME ="bookmark_database"
 
     @Provides
-    fun provideBookmarkRepository(bookmarkLocalDataSource: BookmarkLocalDataSource): IBookmarkRepository =BookmarkRepositoryImp(bookmarkLocalDataSource)
+    fun provideBookmarkRepository(bookmarkLocalDataSource: BookmarkLocalDataSource): IBookmarkRepository = BookmarkRepositoryImp(bookmarkLocalDataSource)
 
     @Provides
     fun provideBookmarkLocalDataSource(bookmarkDao: BookmarkDao):  BookmarkLocalDataSource  = BookmarkLocalDataSource(bookmarkDao)

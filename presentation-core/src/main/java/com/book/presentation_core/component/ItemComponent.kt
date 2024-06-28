@@ -28,13 +28,15 @@ import com.google.gson.Gson
 
 @Composable
 fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
+    var isBookmarked by remember { mutableStateOf(item.isBookMark) }
+
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .height(300.dp)
+            .wrapContentHeight()
             .noRippleClickable {
                 onItemClick.invoke(Uri.encode(Gson().toJson(item)))
             }
@@ -60,10 +62,10 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
                     contentAlignment = Alignment.TopEnd,
                 ) {
                     BookmarkIcon(
-                        isBookmarked = item.isBookMark,
-                        onClick = {
+                        isBookmarked = isBookmarked,
+                        onBookmarkClick = {
+                            isBookmarked = !isBookmarked
                             onBookmarkClick.invoke(!item.isBookMark)
-                            item.isBookMark = !item.isBookMark
                         }
                     )
                 }
@@ -90,23 +92,17 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
 }
 
 @Composable
-private fun BookmarkIcon(isBookmarked: Boolean, onClick: () -> Unit) {
-    LaunchedEffect(isBookmarked) {
-        // This effect will execute when isBookmarked changes
-        // It can be used for animations or any side effects related to the bookmark state change
-    }
-
+private fun BookmarkIcon(
+    isBookmarked: Boolean,
+    onBookmarkClick: () -> Unit
+) {
     IconButton(
-        onClick = onClick,
+        onClick = onBookmarkClick,
     ) {
         Icon(
             imageVector = if (isBookmarked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-            contentDescription = "Bookmark",
-            tint = if (isBookmarked) {
-                LocalColors.current.primary
-            } else {
-                LocalColors.current.gray02
-            }
+            contentDescription = null,
+            tint = if (isBookmarked) LocalColors.current.primary else LocalColors.current.gray02
         )
     }
 }

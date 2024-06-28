@@ -13,10 +13,8 @@ import javax.inject.Inject
  */
 class BookmarkRepositoryImp @Inject constructor(private val localDataSource: BookmarkLocalDataSource) : IBookmarkRepository {
     override suspend fun getBookmarks(): List<BookEntities.Document> = localDataSource.getBookmarks().map { it.toDomain() }
-
     override suspend fun addBookmark(document: BookEntities.Document) = localDataSource.addBookmark(document.toEntity())
-
-    override suspend fun removeBookmark(document: BookEntities.Document) =  localDataSource.removeBookmark(document.toEntity())
+    override suspend fun removeBookmark(title: String) =  localDataSource.removeBookmark(title)
 
 
 }

@@ -9,5 +9,5 @@ import javax.inject.Inject
  * Created 6/28/24 at 11:01 AM
  */
 class RemoveBookmarkUseCase @Inject constructor(private val repository: IBookmarkRepository) {
-    suspend fun invoke(document: BookEntities.Document) = repository.removeBookmark(document)
+    suspend fun invoke(title: String) = repository.removeBookmark(title = title)
 }
