@@ -16,5 +16,4 @@ class BookmarkRepositoryImp @Inject constructor(private val localDataSource: Boo
     override suspend fun addBookmark(document: BookEntities.Document) = localDataSource.addBookmark(document.toEntity())
     override suspend fun removeBookmark(title: String) =  localDataSource.removeBookmark(title)
 
-
 }

@@ -22,5 +22,6 @@ data class BookmarkEntity(
     val thumbnail: String?,
     val title: String?,
     val translators: String?,
-    val url: String?
+    val url: String?,
+    val isBookmark :Boolean
 )

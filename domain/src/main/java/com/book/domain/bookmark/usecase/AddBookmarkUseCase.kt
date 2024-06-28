@@ -9,6 +9,6 @@ import javax.inject.Inject
  * Created 6/28/24 at 10:59 AM
  */
 class AddBookmarkUseCase @Inject constructor(private val repository: IBookmarkRepository) {
-    suspend fun invoke(document: BookEntities.Document) = repository.addBookmark(document)
+    suspend fun invoke(document: BookEntities.Document) = repository.addBookmark(document.apply { isBookMark = true })
 
 }

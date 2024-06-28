@@ -20,7 +20,8 @@ object BookmarkMapper {
         thumbnail = this.thumbnail,
         title = this.title,
         translators = this.translators?.split(",")?.map { it.trim() } as ArrayList<String>?,
-        url = this.url
+        url = this.url,
+        isBookMark = this.isBookmark
     )
 
     fun BookEntities.Document.toEntity(): BookmarkEntity = BookmarkEntity(
@@ -35,6 +36,7 @@ object BookmarkMapper {
         thumbnail = this.thumbnail,
         title = this.title,
         translators = this.translators?.joinToString(","),
-        url = this.url
+        url = this.url,
+        isBookmark = this.isBookMark
     )
 }

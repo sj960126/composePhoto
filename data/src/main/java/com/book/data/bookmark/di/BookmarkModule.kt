@@ -36,6 +36,6 @@ object BookmarkModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext appContext: Context): BookmarkDatabase = Room.databaseBuilder(appContext, BookmarkDatabase::class.java, DATABASE_NAME).build()
+    fun provideDatabase(@ApplicationContext appContext: Context): BookmarkDatabase = Room.databaseBuilder(appContext, BookmarkDatabase::class.java, DATABASE_NAME) .addMigrations(BookmarkDatabase.MIGRATION_1_2).build()
 
 }
