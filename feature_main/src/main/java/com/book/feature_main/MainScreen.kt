@@ -1,5 +1,6 @@
 package com.book.feature_main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,8 +21,10 @@ import com.book.feature_bookmark.BookmarkScreen
 import com.book.feature_detail.DetailScreen
 import com.book.feature_list.ListScreen
 import com.book.presentation_core.design_system.LocalColors
+import com.book.presentation_core.design_system.LocalTypography
 import com.google.gson.Gson
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 
 @ExperimentalMaterialApi
 @InternalCoroutinesApi
@@ -36,14 +39,14 @@ fun MainScreen() {
                     route = "${MainNavigationConst.Detail.route}/$item",
                 ) {
                      launchSingleTop = true
-                    popUpTo(MainNavigationConst.List.route) { inclusive = true }
+                    popUpTo(MainNavigationConst.List.route)
                 }
             }
         }
     }
     Scaffold(
         bottomBar = {
-            TabRow(selectedTabIndex = selectedTabIndex.value) {
+            TabRow(selectedTabIndex = selectedTabIndex.value, backgroundColor = LocalColors.current.primary) {
                 TabDefine.values().forEachIndexed { index, tab ->
                     Tab(
                         selected = selectedTabIndex.value == index,
@@ -57,7 +60,7 @@ fun MainScreen() {
                                     popUpTo(MainNavigationConst.Bookmark.route) { inclusive = true }
                                 }
                             } },
-                        text = { Text(tab.title) }
+                        text = { Text(text= tab.title, style = LocalTypography.current.caption2) }
                     )
                 }
             }
