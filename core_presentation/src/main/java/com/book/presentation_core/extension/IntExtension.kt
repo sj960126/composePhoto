@@ -9,11 +9,6 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
-/**
- * @author songhyeonsu
- * Created 6/26/24 at 2:05 PM
- */
-
 fun Int.textDp(density: Density?): TextUnit =
     if(density == null) {
         this.sp

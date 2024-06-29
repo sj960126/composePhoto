@@ -4,11 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 
-/**
- * @author songhyeonsu
- * Created 3/5/24 at 11:23 AM
- */
-
 @Immutable
 data class ColorSystem(
     val black : Color,
