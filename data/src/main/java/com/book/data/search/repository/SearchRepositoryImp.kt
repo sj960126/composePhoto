@@ -18,14 +18,14 @@ class SearchRepositoryImp @Inject constructor(
 ) : ISearchRepository {
     companion object{
         private const val PAGING_SIZE = 20
-        private const val QUERY = "여행"
+        private const val QUERY = "안드로이드"
     }
     override fun getBookList(): Flow<PagingData<BookEntities.Document>> =
         Pager(
             config = PagingConfig(
                 pageSize = PAGING_SIZE,
-                initialLoadSize = PAGING_SIZE * 2,  // 첫 로딩 크기 설정
-                prefetchDistance = PAGING_SIZE      // 미리 로딩할 아이템의 거리 설정
+                initialLoadSize = PAGING_SIZE ,
+                prefetchDistance = PAGING_SIZE
             ),
             pagingSourceFactory = {
                 SearchBookPagingSource(

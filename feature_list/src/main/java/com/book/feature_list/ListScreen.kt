@@ -2,8 +2,7 @@ package com.book.feature_list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -14,7 +13,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.EmptyLayout
-import com.book.presentation_core.component.ItemCard
+import com.book.presentation_core.component.ItemRow
 
 
 @Composable
@@ -36,16 +35,26 @@ fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (Stri
     }
 }
 
+/**
+ * LazyVerticalGrid 이미지 로드 성능 이슈로 직접 구현하였습니다.
+ * https://github.com/coil-kt/coil/issues/1610
+ */
 @Composable
-fun ListLayout(lazyPagingItems: LazyPagingItems<BookEntities.Document>, onItemClick: (String) -> Unit, onBookmarkClick : (Pair<BookEntities.Document,Boolean>) -> Unit) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp)
-    ) {
+fun ListLayout(
+    lazyPagingItems: LazyPagingItems<BookEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<BookEntities.Document, Boolean>) -> Unit
+) {
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp)) {
         items(lazyPagingItems.itemCount) { index ->
-            lazyPagingItems[index]?.let { item ->
-                ItemCard(onItemClick = onItemClick, item = item, onBookmarkClick = {onBookmarkClick.invoke(Pair(item,it))})
+            val item = lazyPagingItems[index] ?: return@items
+            if (index % 2 == 0) {
+                ItemRow(
+                    firstItem = item,
+                    secondItem = if (index + 1 < lazyPagingItems.itemCount) lazyPagingItems[index + 1] else null,
+                    onItemClick = onItemClick,
+                    onBookmarkClick = onBookmarkClick
+                )
             }
         }
     }

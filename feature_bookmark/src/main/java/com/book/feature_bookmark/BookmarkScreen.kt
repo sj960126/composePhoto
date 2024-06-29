@@ -1,9 +1,7 @@
 package com.book.feature_bookmark
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -14,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.EmptyLayout
-import com.book.presentation_core.component.ItemCard
+import com.book.presentation_core.component.ItemRow
 import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
 
@@ -136,15 +134,23 @@ fun FilterEditLayout(
         keyboardOptions= keyboardType
     )
 }
+
+/**
+ * LazyVerticalGrid 이미지 로드 성능 이슈로 직접 구현하였습니다.
+ * https://github.com/coil-kt/coil/issues/1610
+ */
 @Composable
 fun BookmarkListLayout(itemList: List<BookEntities.Document>, onItemClick: (String) -> Unit,onBookmarkClick : (Pair<BookEntities.Document,Boolean>) -> Unit) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        items(itemList){item ->
-            ItemCard(onItemClick = onItemClick, item = item,onBookmarkClick = {onBookmarkClick.invoke(Pair(item,it))})
+    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp)) {
+        items(itemList.size) { index ->
+            if (index % 2 == 0) {
+                ItemRow(
+                    firstItem = itemList[index],
+                    secondItem = itemList.getOrNull(index +1),
+                    onItemClick = onItemClick,
+                    onBookmarkClick = onBookmarkClick
+                )
+            }
         }
     }
 }

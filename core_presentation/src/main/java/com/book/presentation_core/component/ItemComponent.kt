@@ -27,7 +27,7 @@ import com.book.presentation_core.extension.noRippleClickable
 import com.google.gson.Gson
 
 @Composable
-fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
+fun ItemCard(modifier: Modifier,onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
     var isBookmarked by remember { mutableStateOf(item.isBookMark) }
     LaunchedEffect(item.isBookMark) {
         isBookmarked = item.isBookMark
@@ -36,7 +36,7 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight()
@@ -124,5 +124,21 @@ fun EmptyLayout(title : String) {
             style = LocalTypography.current.title2,
             color = LocalColors.current.gray03
         )
+    }
+}
+
+@Composable
+fun ItemRow(
+    firstItem: BookEntities.Document,
+    secondItem: BookEntities.Document?,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<BookEntities.Document, Boolean>) -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        ItemCard(modifier = Modifier.weight(1f),item = firstItem, onItemClick = onItemClick, onBookmarkClick = {onBookmarkClick.invoke(Pair(firstItem,it))})
+        if (secondItem != null) ItemCard(modifier = Modifier.weight(1f),item = secondItem, onItemClick = onItemClick, onBookmarkClick = {onBookmarkClick.invoke(Pair(secondItem,it))}) else Spacer(modifier = Modifier.weight(1f))
     }
 }
