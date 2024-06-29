@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.ItemCard
 import com.book.presentation_core.design_system.LocalColors
@@ -23,8 +21,8 @@ import com.book.presentation_core.design_system.LocalTypography
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onItemClick: (String) -> Unit) {
     val viewUiState by bookmarkViewModel.uiState.collectAsState()
     Column{
-        PriceFilter( onSearchClick = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.PriceFilter(it.first,it.second))})
-        AuthorFilter()
+        PriceFilter(onSearchClick = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.PriceFilter(it.first,it.second))})
+        AuthorFilter(onAuthorSearch = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.AuthorFilter(it))})
         SortFilterLayout(onSortClick = { bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.SortTitle(it))})
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
@@ -56,53 +54,87 @@ fun SortFilterLayout(onSortClick :(SortDefine) -> Unit ){
 }
 
 @Composable
-fun PriceFilter(onSearchClick: (Pair<Int,PriceFilterDefine>) -> Unit) {
+fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
     var filterPrice by remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        OutlinedTextField(
-            value = filterPrice,
-            onValueChange = { filterPrice = it },
-            label = { Text("금액 필터", style = LocalTypography.current.caption2) },
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = LocalColors.current.transparent,
-                focusedBorderColor = LocalColors.current.primary,
-                unfocusedBorderColor = LocalColors.current.primary,
-                cursorColor = LocalColors.current.primary
-            ),
-            textStyle = LocalTypography.current.caption2,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        FilterEditLayout(
+            labelTitle = "금액 필터",
+            text = filterPrice,
+            onTextChange = { filterPrice = it },
+            keyboardType = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         PriceFilterDefine.values().forEach { filterDefine ->
             Button(
-                onClick = { if(filterPrice.toIntOrNull() != null){ onSearchClick(Pair(filterPrice.toIntOrNull()?:0,filterDefine)) } },
+                onClick = {
+                    filterPrice.toIntOrNull()?.let { price ->
+                        onSearchClick(Pair(price, filterDefine))
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = LocalColors.current.primary,
                     contentColor = LocalColors.current.tintWhite
                 ),
+                modifier = Modifier.padding(start = 8.dp)
             ) {
                 Text(filterDefine.title)
             }
         }
     }
 }
+@Composable
+fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
+    var filterAuthor by remember { mutableStateOf("") }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        FilterEditLayout(
+            labelTitle = "저자검색",
+            text = filterAuthor,
+            onTextChange = { filterAuthor = it }
+        )
+        Button(
+            onClick = { onAuthorSearch(filterAuthor) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = LocalColors.current.primary,
+                contentColor = LocalColors.current.tintWhite
+            ),
+        ) {
+            Text("검색")
+        }
+    }
+}
 
 @Composable
-fun AuthorFilter(){
-    var filterAuthor by remember { mutableStateOf("") }
-    // Filter by author (optional)
+fun FilterEditLayout(
+    labelTitle: String,
+    text: String,
+    onTextChange: (String) -> Unit,
+    keyboardType: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+) {
     OutlinedTextField(
-        value = filterAuthor,
-        onValueChange = { filterAuthor = it },
-        label = { Text("저자 검색") },
-        modifier = Modifier.width(120.dp)
+        value = text,
+        onValueChange = onTextChange,
+        label = { Text(labelTitle, style = LocalTypography.current.caption2) },
+        modifier = Modifier
+            .padding(end = 8.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = LocalColors.current.transparent,
+            focusedBorderColor = LocalColors.current.primary,
+            unfocusedBorderColor = LocalColors.current.primary,
+            cursorColor = LocalColors.current.primary
+        ),
+        textStyle = LocalTypography.current.caption2,
+        keyboardOptions= keyboardType
     )
 }
 @Composable

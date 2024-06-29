@@ -34,6 +34,20 @@ class BookmarkViewModel @Inject constructor(
             is BookmarkContract.BookmarkEvent.AddBookmark -> addBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.SortTitle -> sortBookmarksByTitle(sortDefine = event.sortDefine)
             is BookmarkContract.BookmarkEvent.PriceFilter -> filterBookmarksByPrice(filterDefine = event.priceFilterDefine, price = event.price)
+            is BookmarkContract.BookmarkEvent.AuthorFilter -> filterBookmarksByAuthor(author = event.author)
+        }
+    }
+
+    private fun filterBookmarksByAuthor(author : String) {
+        viewModelScope.launch {
+            setState { copy(BookmarkContract.BookmarkState.Loading) }
+            getBookmarkUseCase.invoke().let { bookmarkList ->
+                setState {
+                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
+                        itemList = bookmarkList.filter { it.authors?.contains(author) ?: false}
+                    ))
+                }
+            }
         }
     }
     private fun filterBookmarksByPrice(filterDefine: PriceFilterDefine, price : Int) {
