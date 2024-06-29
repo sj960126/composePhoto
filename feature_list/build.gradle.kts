@@ -48,5 +48,4 @@ dependencies {
     implementaionCoroutines()
     implementaionPaging()
     implementationHilt()
-
 }

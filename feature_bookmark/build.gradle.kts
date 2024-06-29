@@ -10,7 +10,6 @@ android {
 
     defaultConfig {
         minSdk = ConfigData.minSdkVersion
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -48,5 +47,4 @@ dependencies {
     implementaionCoroutines()
     implementaionPaging()
     implementationHilt()
-
 }

@@ -34,9 +34,7 @@ dependencies {
     implementation(project(":domain"))
     implementationKotlin()
     implementationRoom()
-    // Hilt
     implementationHilt()
-    // Retrofit, OkHttp, Gson
     implementationRetrofitOkHttp()
     implementaionPaging()
 }
