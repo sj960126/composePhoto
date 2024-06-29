@@ -24,7 +24,7 @@ class SearchBookPagingSource(
             val pageNumber = params.key ?: 1
             val response = remoteDataSource.getSearchBook(SearchBookRequest(query = query, page = pageNumber, size = params.loadSize))
             LoadResult.Page(
-                data = BookMapper.mapToDomain(response, bookMarkList = bookmarkList).documents,
+                data = BookMapper.toDomain(response, bookMarkList = bookmarkList).documents,
                 prevKey = if (pageNumber == 1) null else pageNumber - 1,
                 nextKey = if (response.documents.isEmpty()) null else pageNumber + 1
             )

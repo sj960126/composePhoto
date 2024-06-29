@@ -18,7 +18,7 @@ class SearchRepositoryImp @Inject constructor(
 ) : ISearchRepository {
     companion object{
         private const val PAGING_SIZE = 20
-        private const val QUERY = "컴퓨터"
+        private const val QUERY = "여행"
     }
     override fun getBookList(): Flow<PagingData<BookEntities.Document>> =
         Pager(

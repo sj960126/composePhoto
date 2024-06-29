@@ -27,8 +27,5 @@ object SearchModule {
 
     @Provides
     @Singleton
-    fun provideSearchApi(retrofit: Retrofit): ISearchApi {
-        return retrofit.create()
-    }
-
+    fun provideSearchApi(retrofit: Retrofit): ISearchApi = retrofit.create()
 }

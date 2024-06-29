@@ -15,10 +15,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/**
- * @author songhyeonsu
- * Created 6/28/24 at 11:31 AM
- */
 @Module
 @InstallIn(SingletonComponent::class)
 object BookmarkModule {

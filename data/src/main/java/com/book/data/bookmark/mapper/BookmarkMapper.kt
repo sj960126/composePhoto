@@ -3,10 +3,6 @@ package com.book.data.bookmark.mapper
 import com.book.data.bookmark.model.BookmarkEntity
 import com.book.domain.common.entities.BookEntities
 
-/**
- * @author songhyeonsu
- * Created 6/28/24 at 11:27 AM
- */
 object BookmarkMapper {
     fun BookmarkEntity.toDomain(): BookEntities.Document = BookEntities.Document(
         authors = this.authors?.split(",")?.map { it.trim() } as ArrayList<String>?,

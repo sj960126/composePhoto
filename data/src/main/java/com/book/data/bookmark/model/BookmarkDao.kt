@@ -5,10 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
-/**
- * @author songhyeonsu
- * Created 6/28/24 at 11:09 AM
- */
 @Dao
 interface BookmarkDao {
     @Query("SELECT * FROM bookmarks")
