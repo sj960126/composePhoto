@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.BookmarkIcon
 import com.book.presentation_core.design_system.LocalColors
@@ -44,7 +45,9 @@ fun DetailItem(bookDetail: BookEntities.Document, onBookmarkClick : (Boolean) ->
             item {
                 Box{
                     Image(
-                        painter = rememberAsyncImagePainter(bookDetail.thumbnail),
+                        painter = rememberImagePainter(data = bookDetail.thumbnail, builder = {
+                            crossfade(true)
+                        }),
                         contentDescription = null,
                         contentScale = ContentScale.FillWidth,
                         modifier = Modifier

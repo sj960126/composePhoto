@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
@@ -29,6 +29,9 @@ import com.google.gson.Gson
 @Composable
 fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
     var isBookmarked by remember { mutableStateOf(item.isBookMark) }
+    LaunchedEffect(item.isBookMark) {
+        isBookmarked = item.isBookMark
+    }
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -50,7 +53,9 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
                 modifier = Modifier.height(200.dp)
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = item.thumbnail),
+                    painter = rememberImagePainter(data = item.thumbnail,builder = {
+                        crossfade(true)
+                    }),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     modifier = Modifier
