@@ -14,7 +14,6 @@ abstract class AbstractBaseRetrofitRemoteDataSource {
 
                 withContext(Dispatchers.Main) {
                     when {
-                        // statusCode 200..300
                         response.isSuccessful -> {
                             Result.success(response.body())
                         }
