@@ -42,7 +42,7 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":core-presentation"))
+    implementation(project(":core_presentation"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()

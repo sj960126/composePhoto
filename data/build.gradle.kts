@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-data"))
+    implementation(project(":core_data"))
     implementation(project(":domain"))
     implementationKotlin()
     implementationRoom()

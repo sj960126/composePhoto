@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-presentation"))
+    implementation(project(":core_presentation"))
     implementation(project(":feature_list"))
     implementation(project(":feature_detail"))
     implementation(project(":feature_bookmark"))
