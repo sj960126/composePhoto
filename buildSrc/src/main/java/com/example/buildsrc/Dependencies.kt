@@ -30,16 +30,15 @@ object Dependencies {
         val pagingRuntime = "androidx.paging:paging-runtime:3.1.1"
         val pagingCompose= "androidx.paging:paging-compose:1.0.0-alpha14"
     }
-    object Google {
+    object Gson {
         val gson = "com.google.code.gson:gson:2.8.9"
+    }
 
-        object Hilt {
-            val android = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
-            val compiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
-            val androidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}"
-            val androidTesting = "com.google.dagger:hilt-android-testing:${Versions.hiltVersion}"
-        }
-
+    object Hilt {
+        val android = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
+        val compiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
+        val androidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}"
+        val androidTesting = "com.google.dagger:hilt-android-testing:${Versions.hiltVersion}"
     }
     object Compose {
         val composeRuntime ="androidx.compose.runtime:runtime:${Versions.compose}"
@@ -53,8 +52,6 @@ object Dependencies {
         val composeCoil = "io.coil-kt:coil-compose:2.2.0"
         val navigation  ="androidx.navigation:navigation-compose:2.5.3"
         val hilt =  "androidx.hilt:hilt-navigation-compose:1.0.0"
-        val pager = "com.google.accompanist:accompanist-pager:0.24.3-alpha"
-        val pagerIndicators ="com.google.accompanist:accompanist-pager-indicators:0.24.3-alpha"
     }
 
     object SquareUp {
@@ -62,14 +59,6 @@ object Dependencies {
         val okhttp = "com.squareup.okhttp3:okhttp:4.8.1"
         val okhttpLogging =  "com.squareup.okhttp3:logging-interceptor:4.9.3"
         val converterGson = "com.squareup.retrofit2:converter-gson:2.9.0"
-    }
-
-    object ThirdParty {
-        object Github {
-            val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-            val okhttp3 = "com.github.bumptech.glide:okhttp3-integration:${Versions.glide}"
-            val glideCompiler = "com.github.bumptech.glide:compiler:${Versions.glide}"
-        }
     }
 
 }
