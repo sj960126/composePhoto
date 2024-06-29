@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
  * @author songhyeonsu
  * Created 6/28/24 at 11:08 AM
  */
-
 @Entity(tableName = "bookmarks")
 data class BookmarkEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,

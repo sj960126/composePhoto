@@ -4,26 +4,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.ItemCard
+import com.book.presentation_core.design_system.LocalColors
+import com.book.presentation_core.design_system.LocalTypography
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onItemClick: (String) -> Unit) {
     val viewUiState by bookmarkViewModel.uiState.collectAsState()
-    Column() {
-        FilterLayout()
-        PriceFilter()
+    Column{
+        PriceFilter( onSearchClick = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.PriceFilter(it.first,it.second))})
         AuthorFilter()
+        SortFilterLayout(onSortClick = { bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.SortTitle(it))})
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
             BookmarkContract.BookmarkState.Empty -> {}
@@ -40,40 +42,61 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onIte
         }
     }
 }
-enum class SortOrder {
-    ASCENDING,
-    DESCENDING
-}
 @Composable
-fun FilterLayout(){
+fun SortFilterLayout(onSortClick :(SortDefine) -> Unit ){
     Row(modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-        // Sorting buttons
-        Button(onClick = {  }) {
-            Text("오름차순 정렬")
+        .padding(horizontal = 16.dp, vertical = 8.dp)) {
+        SortDefine.values().forEach {
+            Button(modifier = Modifier.weight(1f),onClick = { onSortClick.invoke(it) }, colors = ButtonDefaults.buttonColors( backgroundColor = LocalColors.current.primary,contentColor = LocalColors.current.tintWhite,)) {
+                Text("${it.title}정렬")
+            }
         }
-        Button(onClick = {  }) {
-            Text("내림차순 정렬")
-        }
-
     }
 }
-@Composable
-fun PriceFilter(){
-    var filterPrice by remember { mutableStateOf("") }
 
-    OutlinedTextField(
-        value = filterPrice,
-        onValueChange = { filterPrice = it },
-        label = { Text("금액 필터") },
-        modifier = Modifier.width(120.dp)
-    )
+@Composable
+fun PriceFilter(onSearchClick: (Pair<Int,PriceFilterDefine>) -> Unit) {
+    var filterPrice by remember { mutableStateOf("") }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlinedTextField(
+            value = filterPrice,
+            onValueChange = { filterPrice = it },
+            label = { Text("금액 필터", style = LocalTypography.current.caption2) },
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                backgroundColor = LocalColors.current.transparent,
+                focusedBorderColor = LocalColors.current.primary,
+                unfocusedBorderColor = LocalColors.current.primary,
+                cursorColor = LocalColors.current.primary
+            ),
+            textStyle = LocalTypography.current.caption2,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        PriceFilterDefine.values().forEach { filterDefine ->
+            Button(
+                onClick = { if(filterPrice.toIntOrNull() != null){ onSearchClick(Pair(filterPrice.toIntOrNull()?:0,filterDefine)) } },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = LocalColors.current.primary,
+                    contentColor = LocalColors.current.tintWhite
+                ),
+            ) {
+                Text(filterDefine.title)
+            }
+        }
+    }
 }
+
 @Composable
 fun AuthorFilter(){
     var filterAuthor by remember { mutableStateOf("") }
-
     // Filter by author (optional)
     OutlinedTextField(
         value = filterAuthor,
@@ -93,4 +116,13 @@ fun BookmarkListLayout(itemList: List<BookEntities.Document>, onItemClick: (Stri
             ItemCard(onItemClick = onItemClick, item = item,onBookmarkClick = {onBookmarkClick.invoke(Pair(item,it))})
         }
     }
+}
+
+enum class SortDefine(val title : String) {
+    ASCENDING("오름차순"),
+    DESCENDING("내림차순")
+}
+enum class PriceFilterDefine(val title : String) {
+    UP("이상"),
+    DOWN("이하")
 }

@@ -12,7 +12,10 @@ class BookmarkContract {
         object GetBookmarkList : BookmarkEvent()
         data class RemoveBookmark(val item : BookEntities.Document) : BookmarkEvent()
         data class AddBookmark(val item : BookEntities.Document) : BookmarkEvent()
+        data class SortTitle(val sortDefine: SortDefine) : BookmarkEvent()
+        data class PriceFilter(val price : Int, val priceFilterDefine: PriceFilterDefine) : BookmarkEvent()
     }
+
     data class BookmarkUiState(
         val state : BookmarkState
     ) : UiState

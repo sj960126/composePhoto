@@ -29,8 +29,8 @@ data class ColorSystem(
     val dimHigh : Color,
     val dimMid : Color,
     val dimLow : Color,
-
     val transparent : Color,
+    val tintWhite : Color
 )
 
 val lightColors: ColorSystem = ColorSystem(
@@ -52,7 +52,8 @@ val lightColors: ColorSystem = ColorSystem(
     dimMax = Color(0xFF000000),
     dimHigh = Color(0xB3000000),
     dimMid = Color(0x7F000000),
-    dimLow = Color(0x4D000000)
+    dimLow = Color(0x4D000000),
+    tintWhite = Color(0xFFFFFFFF)
 )
 
 val darkColors: ColorSystem = ColorSystem(
@@ -74,5 +75,6 @@ val darkColors: ColorSystem = ColorSystem(
     dimMax = Color(0xFF000000),
     dimHigh = Color(0xB3000000),
     dimMid = Color(0x7F000000),
-    dimLow = Color(0x4D000000)
+    dimLow = Color(0x4D000000),
+    tintWhite = Color(0xFFFFFFFF)
 )

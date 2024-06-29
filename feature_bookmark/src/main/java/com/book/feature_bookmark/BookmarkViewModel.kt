@@ -32,15 +32,45 @@ class BookmarkViewModel @Inject constructor(
             BookmarkContract.BookmarkEvent.GetBookmarkList -> getBookmarkList()
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.AddBookmark -> addBookmark(item = event.item)
-
+            is BookmarkContract.BookmarkEvent.SortTitle -> sortBookmarksByTitle(sortDefine = event.sortDefine)
+            is BookmarkContract.BookmarkEvent.PriceFilter -> filterBookmarksByPrice(filterDefine = event.priceFilterDefine, price = event.price)
+        }
+    }
+    private fun filterBookmarksByPrice(filterDefine: PriceFilterDefine, price : Int) {
+        viewModelScope.launch {
+            setState { copy(BookmarkContract.BookmarkState.Loading) }
+            getBookmarkUseCase.invoke().let { bookmarkList ->
+                setState {
+                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
+                        itemList = when(filterDefine){
+                            PriceFilterDefine.UP -> bookmarkList.filter { (it.salePrice ?: 0) >= price }
+                            PriceFilterDefine.DOWN -> bookmarkList.filter { (it.salePrice ?: 0) <= price }
+                        }
+                    ))
+                }
+            }
+        }
+    }
+    private fun sortBookmarksByTitle(sortDefine: SortDefine){
+        viewModelScope.launch {
+            setState { copy(BookmarkContract.BookmarkState.Loading) }
+            getBookmarkUseCase.invoke().let { bookmarkList ->
+                setState {
+                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
+                        itemList = when(sortDefine){
+                            SortDefine.ASCENDING -> bookmarkList.sortedBy { it.title }
+                            SortDefine.DESCENDING -> bookmarkList.sortedByDescending { it.title }
+                        }
+                    ))
+                }
+            }
         }
     }
 
     private fun getBookmarkList(){
         viewModelScope.launch {
-            getBookmarkUseCase.invoke().let {bookmarkList ->
+            getBookmarkUseCase.invoke().let { bookmarkList ->
                 setState {
-                    Log.d("디버그","${bookmarkList}")
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(itemList = bookmarkList))
                 }
             }
