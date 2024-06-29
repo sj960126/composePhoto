@@ -46,4 +46,6 @@ dependencies {
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()
+    implementationHilt()
+
 }

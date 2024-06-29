@@ -93,7 +93,7 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
 }
 
 @Composable
-private fun BookmarkIcon(
+fun BookmarkIcon(
     isBookmarked: Boolean,
     onBookmarkClick: () -> Unit
 ) {
