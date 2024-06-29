@@ -44,7 +44,7 @@ class BookmarkViewModel @Inject constructor(
             getBookmarkUseCase.invoke().let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = bookmarkList.filter { it.authors?.contains(author) ?: false}
+                        itemList = if(author.isNotEmpty()) bookmarkList.filter { it.authors?.contains(author) ?: false} else bookmarkList
                     ))
                 }
             }
@@ -56,7 +56,7 @@ class BookmarkViewModel @Inject constructor(
             getBookmarkUseCase.invoke().let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = when(filterDefine){
+                        itemList = if(price == 0) bookmarkList else when(filterDefine){
                             PriceFilterDefine.UP -> bookmarkList.filter { (it.salePrice ?: 0) >= price }
                             PriceFilterDefine.DOWN -> bookmarkList.filter { (it.salePrice ?: 0) <= price }
                         }

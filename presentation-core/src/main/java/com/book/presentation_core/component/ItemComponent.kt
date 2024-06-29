@@ -79,12 +79,13 @@ fun ItemCard(onItemClick: (String) -> Unit, item: BookEntities.Document, onBookm
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "글쓴이 ${item.authors?.joinToString()}", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
             if((item.price ?: 0) > (item.salePrice ?: 0)) Row{
                 Text(text = "원가", style = LocalTypography.current.caption2, color = LocalColors.current.primary)
                 Text(modifier = Modifier.padding(start = 3.dp),text = item.price?.convertPriceFormat() ?:"", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
             }
             Row{
-                Text(text = "판매가", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
+                Text(text = "판매가", style = LocalTypography.current.caption2, color = LocalColors.current.primary)
                 Text(modifier = Modifier.padding(start = 3.dp),text = item.salePrice?.convertPriceFormat() ?:"", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
             }
         }

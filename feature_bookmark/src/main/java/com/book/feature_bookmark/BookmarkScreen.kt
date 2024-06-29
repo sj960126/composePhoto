@@ -64,6 +64,7 @@ fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         FilterEditLayout(
+            modifier = Modifier.weight(1f),
             labelTitle = "금액 필터",
             text = filterPrice,
             onTextChange = { filterPrice = it },
@@ -71,11 +72,7 @@ fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
         )
         PriceFilterDefine.values().forEach { filterDefine ->
             Button(
-                onClick = {
-                    filterPrice.toIntOrNull()?.let { price ->
-                        onSearchClick(Pair(price, filterDefine))
-                    }
-                },
+                onClick = { onSearchClick(Pair(filterPrice.toIntOrNull()?:0, filterDefine)) },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = LocalColors.current.primary,
                     contentColor = LocalColors.current.tintWhite
@@ -98,6 +95,7 @@ fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         FilterEditLayout(
+            modifier = Modifier.weight(1f),
             labelTitle = "저자검색",
             text = filterAuthor,
             onTextChange = { filterAuthor = it }
@@ -116,6 +114,7 @@ fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
 
 @Composable
 fun FilterEditLayout(
+    modifier: Modifier,
     labelTitle: String,
     text: String,
     onTextChange: (String) -> Unit,
@@ -125,7 +124,7 @@ fun FilterEditLayout(
         value = text,
         onValueChange = onTextChange,
         label = { Text(labelTitle, style = LocalTypography.current.caption2) },
-        modifier = Modifier
+        modifier = modifier
             .padding(end = 8.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = LocalColors.current.transparent,
