@@ -10,5 +10,4 @@ class GetBookListUseCase @Inject constructor(
     private val repository: ISearchRepository
 ) {
     operator fun invoke(): Flow<PagingData<BookEntities.Document>> = repository.getBookList()
-
 }

@@ -107,3 +107,17 @@ fun BookmarkIcon(
         )
     }
 }
+@Composable
+fun EmptyLayout(title : String) {
+    Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            style = LocalTypography.current.title2,
+            color = LocalColors.current.gray03
+        )
+    }
+}

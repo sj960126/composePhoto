@@ -1,6 +1,5 @@
 package com.book.feature_list
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.common.entities.BookEntities
+import com.book.presentation_core.component.EmptyLayout
 import com.book.presentation_core.component.ItemCard
 
 
@@ -22,8 +22,7 @@ fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (Stri
     val viewUiState by listViewModel.uiState.collectAsState()
     when(viewUiState.state){
         ListContract.ListState.Loading -> {}
-        ListContract.ListState.Empty -> {}
-        ListContract.ListState.Error -> {}
+        ListContract.ListState.Empty -> EmptyLayout(title = "상품이 없습니다.")
         is ListContract.ListState.Success ->{
             val lazyPagingItems = (viewUiState.state as ListContract.ListState.Success).item.collectAsLazyPagingItems()
             ListLayout(

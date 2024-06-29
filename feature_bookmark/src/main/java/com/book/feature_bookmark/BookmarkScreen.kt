@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.book.domain.common.entities.BookEntities
+import com.book.presentation_core.component.EmptyLayout
 import com.book.presentation_core.component.ItemCard
 import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
@@ -26,8 +27,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onIte
         SortFilterLayout(onSortClick = { bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.SortTitle(it))})
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
-            BookmarkContract.BookmarkState.Empty -> {}
-            BookmarkContract.BookmarkState.Error -> {}
+            BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = "상품이 없습니다.")
             is BookmarkContract.BookmarkState.Success ->{
                 BookmarkListLayout(
                     itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,

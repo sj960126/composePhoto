@@ -25,8 +25,6 @@ class BookmarkContract {
     sealed class BookmarkState {
         object Loading : BookmarkState()
         object Empty : BookmarkState()
-
-        object Error : BookmarkState()
         data class Success(
             val itemList : List<BookEntities.Document>
         ) : BookmarkState()

@@ -20,7 +20,6 @@ class ListContract {
     sealed class ListState {
         object Loading : ListState()
         object Empty : ListState()
-        object Error : ListState()
         data class Success(
             val item : Flow<PagingData<BookEntities.Document>>
         ) : ListState()
@@ -28,6 +27,5 @@ class ListContract {
     }
 
     sealed class ListSideEffect : UiSideEffect {
-
     }
 }
