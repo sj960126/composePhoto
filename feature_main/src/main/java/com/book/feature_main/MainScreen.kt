@@ -89,7 +89,7 @@ private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
             Tab(
                 selected = selectedTabIndex == index,
                 onClick = { onTabSelected(index) },
-                text = { Text(text = tab.title, style = LocalTypography.current.caption2) }
+                text = { Text(text = tab.title, style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
             )
         }
     }
