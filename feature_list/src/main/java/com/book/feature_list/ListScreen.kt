@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -14,11 +16,22 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.book.domain.common.entities.BookEntities
 import com.book.presentation_core.component.EmptyLayout
 import com.book.presentation_core.component.ItemRow
+import com.book.presentation_core.extension.showToast
 
 
 @Composable
 fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (String) -> Unit) {
     val viewUiState by listViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(listViewModel.effect){
+        listViewModel.effect.collect { effect ->
+            when (effect) {
+                is ListContract.ListSideEffect.ShowToast -> {
+                    context.showToast(effect.message)
+                }
+            }
+        }
+    }
     when(viewUiState.state){
         ListContract.ListState.Loading -> {}
         ListContract.ListState.Empty -> EmptyLayout(title = "상품이 없습니다.")

@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -15,10 +16,21 @@ import com.book.presentation_core.component.EmptyLayout
 import com.book.presentation_core.component.ItemRow
 import com.book.presentation_core.design_system.LocalColors
 import com.book.presentation_core.design_system.LocalTypography
+import com.book.presentation_core.extension.showToast
 
 @Composable
 fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onItemClick: (String) -> Unit) {
     val viewUiState by bookmarkViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    LaunchedEffect(bookmarkViewModel.effect){
+        bookmarkViewModel.effect.collect { effect ->
+            when (effect) {
+                is BookmarkContract.BookmarkSideEffect.ShowToast -> {
+                    context.showToast(effect.message)
+                }
+            }
+        }
+    }
     Column{
         PriceFilter(onSearchClick = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.PriceFilter(it.first,it.second))})
         AuthorFilter(onAuthorSearch = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.AuthorFilter(it))})
@@ -55,8 +67,7 @@ fun SortFilterLayout(onSortClick :(SortDefine) -> Unit ){
 fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
     var filterPrice by remember { mutableStateOf("") }
 
-    Row(
-        modifier = Modifier
+    Row(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically

@@ -27,5 +27,6 @@ class ListContract {
     }
 
     sealed class ListSideEffect : UiSideEffect {
+        data class ShowToast(val message : String) : ListSideEffect()
     }
 }

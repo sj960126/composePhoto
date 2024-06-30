@@ -95,6 +95,7 @@ class BookmarkViewModel @Inject constructor(
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             if(!item.title.isNullOrEmpty())removeBookmarkUseCase.invoke(item.title?:"")
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("북마크 취소") }
             getBookmarkList()
         }
     }
@@ -103,6 +104,7 @@ class BookmarkViewModel @Inject constructor(
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             addBookmarkUseCase.invoke(item)
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("북마크 저장") }
             getBookmarkList()
         }
     }

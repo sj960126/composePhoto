@@ -48,12 +48,14 @@ class ListViewModel @Inject constructor(
     private fun removeBookmark(item: BookEntities.Document){
         viewModelScope.launch {
             if(!item.title.isNullOrEmpty())removeBookmarkUseCase.invoke(item.title?:"")
+            setEffect { ListContract.ListSideEffect.ShowToast("북마크 취소") }
         }
     }
 
     private fun addBookmark(item: BookEntities.Document){
         viewModelScope.launch {
             addBookmarkUseCase.invoke(item)
+            setEffect { ListContract.ListSideEffect.ShowToast("북마크 저장") }
         }
     }
 

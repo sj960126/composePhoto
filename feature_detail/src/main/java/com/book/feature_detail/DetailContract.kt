@@ -22,6 +22,7 @@ class DetailContract {
     }
 
     sealed class DetailSideEffect : UiSideEffect {
+        data class ShowToast(val message : String) : DetailSideEffect()
     }
 
 }
