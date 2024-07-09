@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.component.EmptyLayout
 import com.photo.presentation_core.component.ItemRow
 import com.photo.presentation_core.extension.showToast
@@ -54,9 +54,9 @@ fun ListScreen(listViewModel: ListViewModel = hiltViewModel(),onItemClick: (Stri
  */
 @Composable
 fun ListLayout(
-    lazyPagingItems: LazyPagingItems<BookEntities.Document>,
+    lazyPagingItems: LazyPagingItems<PhotoEntities.Document>,
     onItemClick: (String) -> Unit,
-    onBookmarkClick: (Pair<BookEntities.Document, Boolean>) -> Unit
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp)) {
         items(lazyPagingItems.itemCount) { index ->

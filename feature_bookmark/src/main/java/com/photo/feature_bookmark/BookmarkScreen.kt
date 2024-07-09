@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.component.EmptyLayout
 import com.photo.presentation_core.component.ItemRow
 import com.photo.presentation_core.design_system.LocalColors
@@ -151,7 +151,7 @@ fun FilterEditLayout(
  * https://github.com/coil-kt/coil/issues/1610
  */
 @Composable
-fun BookmarkListLayout(itemList: List<BookEntities.Document>, onItemClick: (String) -> Unit,onBookmarkClick : (Pair<BookEntities.Document,Boolean>) -> Unit) {
+fun BookmarkListLayout(itemList: List<PhotoEntities.Document>, onItemClick: (String) -> Unit, onBookmarkClick : (Pair<PhotoEntities.Document,Boolean>) -> Unit) {
     LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp)) {
         items(itemList.size) { index ->
             if (index % 2 == 0) {

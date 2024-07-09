@@ -18,7 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.feature_bookmark.BookmarkScreen
 import com.photo.feature_detail.DetailScreen
 import com.photo.feature_list.ListScreen
@@ -116,7 +116,7 @@ private fun MainScreenNavigation(
         ) { backStackEntry ->
             val bookDetailJson = backStackEntry.arguments?.getString("item")
             if (bookDetailJson != null) {
-                DetailScreen(bookDetail = Gson().fromJson(bookDetailJson, BookEntities.Document::class.java))
+                DetailScreen(bookDetail = Gson().fromJson(bookDetailJson, PhotoEntities.Document::class.java))
             }
         }
     }

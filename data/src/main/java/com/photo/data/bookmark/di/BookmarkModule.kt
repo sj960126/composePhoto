@@ -2,8 +2,8 @@ package com.photo.data.bookmark.di
 
 import android.content.Context
 import androidx.room.Room
-import com.photo.data.bookmark.data_source.local.BookmarkDatabase
 import com.photo.data.bookmark.data_source.local.BookmarkLocalDataSource
+import com.photo.data.bookmark.data_source.local.BookmarkLocalDatabase
 import com.photo.data.bookmark.model.BookmarkDao
 import com.photo.data.bookmark.repository.BookmarkRepositoryImp
 import com.photo.domain.bookmark.repository.IBookmarkRepository
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object BookmarkModule {
 
-    private const val DATABASE_NAME ="bookmark_database"
+    private const val DATABASE_NAME ="bookmark_local_database"
 
     @Provides
     fun provideBookmarkRepository(bookmarkLocalDataSource: BookmarkLocalDataSource): IBookmarkRepository = BookmarkRepositoryImp(bookmarkLocalDataSource)
@@ -27,10 +27,10 @@ object BookmarkModule {
     fun provideBookmarkLocalDataSource(bookmarkDao: BookmarkDao):  BookmarkLocalDataSource  = BookmarkLocalDataSource(bookmarkDao)
 
     @Provides
-    fun provideBookmarkDao(database: BookmarkDatabase): BookmarkDao = database.bookmarkDao()
+    fun provideBookmarkDao(database: BookmarkLocalDatabase): BookmarkDao = database.bookmarkDao()
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext appContext: Context): BookmarkDatabase = Room.databaseBuilder(appContext, BookmarkDatabase::class.java, DATABASE_NAME) .addMigrations(BookmarkDatabase.MIGRATION_1_2).build()
+    fun provideDatabase(@ApplicationContext appContext: Context): BookmarkLocalDatabase = Room.databaseBuilder(appContext, BookmarkLocalDatabase::class.java, DATABASE_NAME).build()
 
 }

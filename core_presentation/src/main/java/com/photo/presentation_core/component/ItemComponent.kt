@@ -19,7 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.photo.presentation_core.extension.convertPriceFormat
@@ -27,7 +27,7 @@ import com.photo.presentation_core.extension.noRippleClickable
 import com.google.gson.Gson
 
 @Composable
-fun ItemCard(modifier: Modifier,onItemClick: (String) -> Unit, item: BookEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
+fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
     var isBookmarked by remember { mutableStateOf(item.isBookMark) }
     LaunchedEffect(item.isBookMark) {
         isBookmarked = item.isBookMark
@@ -53,7 +53,7 @@ fun ItemCard(modifier: Modifier,onItemClick: (String) -> Unit, item: BookEntitie
                 modifier = Modifier.height(200.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(data = item.thumbnail,builder = {
+                    painter = rememberImagePainter(data = item.thumbnailUrl,builder = {
                         crossfade(true)
                     }),
                     contentDescription = null,
@@ -76,23 +76,7 @@ fun ItemCard(modifier: Modifier,onItemClick: (String) -> Unit, item: BookEntitie
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            if (item.title?.isNotEmpty() == true )Text(
-                text = item.title ?:"",
-                style = LocalTypography.current.caption1,
-                color= LocalColors.current.black,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "글쓴이 ${item.authors?.joinToString()}", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
-            if((item.price ?: 0) > (item.salePrice ?: 0)) Row{
-                Text(text = "원가", style = LocalTypography.current.caption2, color = LocalColors.current.primary)
-                Text(modifier = Modifier.padding(start = 3.dp),text = item.price?.convertPriceFormat() ?:"", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
-            }
-            Row{
-                Text(text = "판매가", style = LocalTypography.current.caption2, color = LocalColors.current.primary)
-                Text(modifier = Modifier.padding(start = 3.dp),text = item.salePrice?.convertPriceFormat() ?:"", style = LocalTypography.current.caption2, color = LocalColors.current.gray02)
-            }
+
         }
     }
 }
@@ -129,10 +113,10 @@ fun EmptyLayout(title : String) {
 
 @Composable
 fun ItemRow(
-    firstItem: BookEntities.Document,
-    secondItem: BookEntities.Document?,
+    firstItem: PhotoEntities.Document,
+    secondItem: PhotoEntities.Document?,
     onItemClick: (String) -> Unit,
-    onBookmarkClick: (Pair<BookEntities.Document, Boolean>) -> Unit
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,

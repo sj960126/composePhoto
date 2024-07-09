@@ -1,26 +1,18 @@
 package com.photo.data.search.mapper
 
-import com.photo.data.search.model.BookResponse
-import com.photo.domain.common.entities.BookEntities
+import com.photo.data.search.model.PhotoResponse
+import com.photo.domain.common.entities.PhotoEntities
 
-object BookMapper {
-    fun toDomain(bookResponse: BookResponse,bookMarkList : List<String>): BookEntities = BookEntities(documents = ArrayList(bookResponse.documents.map { mapDocumentToDomain(document = it, bookMarkList = bookMarkList) }))
-
-    private fun mapDocumentToDomain(document: BookResponse.Document, bookMarkList : List<String>): BookEntities.Document =
-        BookEntities.Document(
-            authors = document.authors,
-            contents = document.contents,
+object PhotoMapper {
+    fun toDomain(bookResponse: PhotoResponse,bookMarkList : List<String>): PhotoEntities = PhotoEntities(documents = ArrayList(bookResponse.documents.map { mapDocumentToDomain(document = it, bookMarkList = bookMarkList) }))
+    private fun mapDocumentToDomain(document: PhotoResponse.Document, bookMarkList : List<String>): PhotoEntities.Document =
+        PhotoEntities.Document(
+            collection = document.collection,
+            thumbnailUrl = document.thumbnailUrl,
+            imageUrl = document.imageUrl,
+            displaySitename = document.displaySitename,
             datetime = document.datetime,
-            isbn = document.isbn,
-            price = document.price,
-            publisher = document.publisher,
-            salePrice = document.salePrice,
-            status = document.status,
-            thumbnail = document.thumbnail,
-            title = document.title,
-            translators = document.translators,
-            url = document.url,
-            isBookMark = bookMarkList.find { it == document.title }?.isNotEmpty() == true
+            isBookMark = bookMarkList.find { it == document.thumbnailUrl }?.isNotEmpty() == true
         )
 
 

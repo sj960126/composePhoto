@@ -1,38 +1,25 @@
 package com.photo.data.bookmark.mapper
 
+import com.photo.data.bookmark.mapper.BookmarkMapper.toPhotoEntities
 import com.photo.data.bookmark.model.BookmarkEntity
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 
 object BookmarkMapper {
-    fun BookmarkEntity.toDomain(): BookEntities.Document = BookEntities.Document(
-        authors = this.authors?.split(",")?.map { it.trim() } as ArrayList<String>?,
-        contents = this.contents,
+    fun BookmarkEntity.toPhotoEntities(): PhotoEntities.Document = PhotoEntities.Document(
+        collection = this.collection,
+        thumbnailUrl = this.thumbnailUrl,
+        imageUrl = this.imageUrl,
+        displaySitename = this.displaySitename,
         datetime = this.datetime,
-        isbn = this.isbn,
-        price = this.price,
-        publisher = this.publisher,
-        salePrice = this.salePrice,
-        status = this.status,
-        thumbnail = this.thumbnail,
-        title = this.title,
-        translators = this.translators?.split(",")?.map { it.trim() } as ArrayList<String>?,
-        url = this.url,
-        isBookMark = this.isBookmark
+        isBookMark = this.isBookMark
     )
 
-    fun BookEntities.Document.toEntity(): BookmarkEntity = BookmarkEntity(
-        authors = this.authors?.joinToString(","),
-        contents = this.contents,
+    fun PhotoEntities.Document.toBookMarkEntities(): BookmarkEntity = BookmarkEntity(
+        collection = this.collection,
+        thumbnailUrl = this.thumbnailUrl,
+        imageUrl = this.imageUrl,
+        displaySitename = this.displaySitename,
         datetime = this.datetime,
-        isbn = this.isbn,
-        price = this.price,
-        publisher = this.publisher,
-        salePrice = this.salePrice,
-        status = this.status,
-        thumbnail = this.thumbnail,
-        title = this.title,
-        translators = this.translators?.joinToString(","),
-        url = this.url,
-        isBookmark = this.isBookMark
+        isBookMark = this.isBookMark
     )
 }

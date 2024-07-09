@@ -3,7 +3,7 @@ package com.photo.feature_detail
 import androidx.lifecycle.viewModelScope
 import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
-import com.photo.domain.common.entities.BookEntities
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,19 +25,19 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun rendingItem(item: BookEntities.Document){
+    private fun rendingItem(item: PhotoEntities.Document){
         setState {
             copy(state = DetailContract.DetailState.Success(item))
         }
     }
-    private fun removeBookmark(item: BookEntities.Document){
+    private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            if(!item.title.isNullOrEmpty())removeBookmarkUseCase.invoke(item.title?:"")
+            if(!item.thumbnailUrl.isNullOrEmpty())removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
             setEffect { DetailContract.DetailSideEffect.ShowToast("북마크 취소") }
         }
     }
 
-    private fun addBookmark(item: BookEntities.Document){
+    private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             addBookmarkUseCase.invoke(item)
             setEffect { DetailContract.DetailSideEffect.ShowToast("북마크 저장") }
