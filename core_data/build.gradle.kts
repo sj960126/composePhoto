@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.book.data_core"
+    namespace = "com.photo.data_core"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {

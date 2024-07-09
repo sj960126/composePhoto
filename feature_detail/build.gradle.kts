@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.book.feature_detail"
+    namespace = "com.photo.feature_detail"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {

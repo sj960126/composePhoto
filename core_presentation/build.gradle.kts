@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.book.presentation_core"
+    namespace = "com.photo.presentation_core"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
