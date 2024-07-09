@@ -14,6 +14,7 @@ import com.photo.presentation_core.component.SearchBarLayout
 import com.photo.presentation_core.component.SinglePaneLayout
 import com.photo.presentation_core.extension.showToast
 import com.photo.presentation_core.state.rememberFoldableState
+import kotlinx.coroutines.flow.debounce
 
 
 @Composable
@@ -27,25 +28,32 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
     LaunchedEffect(searchViewModel.effect){
         searchViewModel.effect.collect { effect ->
             when (effect) {
-                is SearchContract.ListSideEffect.ShowToast -> {
+                is SearchContract.SearchSideEffect.ShowToast -> {
                     context.showToast(effect.message)
                 }
             }
         }
     }
+    LaunchedEffect(searchKeyWord) {
+        snapshotFlow { searchKeyWord }
+            .debounce(1000)
+            .collect { keyword ->
+                searchViewModel.handleEvent(SearchContract.SearchEvent.Search(keyword))
+            }
+    }
     Column {
         SearchBarLayout(modifier = Modifier.fillMaxWidth(), labelTitle = "검색", text = searchKeyWord, onTextChange = {searchKeyWord = it})
         when(viewUiState.state){
-            SearchContract.ListState.Loading -> {}
-            SearchContract.ListState.Empty -> EmptyLayout(title = "상품이 없습니다.")
-            is SearchContract.ListState.Success ->{
-                val lazyPagingItems = (viewUiState.state as SearchContract.ListState.Success).item.collectAsLazyPagingItems()
+            SearchContract.SearchState.Loading -> {}
+            SearchContract.SearchState.Empty -> EmptyLayout(title = "상품이 없습니다.")
+            is SearchContract.SearchState.Success ->{
+                val lazyPagingItems = (viewUiState.state as SearchContract.SearchState.Success).item.collectAsLazyPagingItems()
                 if (isDualPane) {
                     DualPaneLayout(
                         lazyPagingItems = lazyPagingItems,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            searchViewModel.handleEvent(if(it.second) SearchContract.ListEvent.AddBookmark(it.first) else SearchContract.ListEvent.RemoveBookmark(it.first))
+                            searchViewModel.handleEvent(if(it.second) SearchContract.SearchEvent.AddBookmark(it.first) else SearchContract.SearchEvent.RemoveBookmark(it.first))
                         }
                     )
                 } else {
@@ -53,7 +61,7 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
                         lazyPagingItems = lazyPagingItems,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            searchViewModel.handleEvent(if(it.second) SearchContract.ListEvent.AddBookmark(it.first) else SearchContract.ListEvent.RemoveBookmark(it.first))
+                            searchViewModel.handleEvent(if(it.second) SearchContract.SearchEvent.AddBookmark(it.first) else SearchContract.SearchEvent.RemoveBookmark(it.first))
                         }
                     )
                 }

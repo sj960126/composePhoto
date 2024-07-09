@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -38,7 +39,6 @@ fun SinglePaneLayout(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp)
     ) {
         items(lazyPagingItems.itemCount) { index ->
             val item = lazyPagingItems[index]
@@ -62,8 +62,11 @@ fun DualPaneLayout(
     onItemClick: (String) -> Unit,
     onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
 ) {
+    val gridState = rememberLazyGridState()
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
+        state = gridState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp)
     ) {
@@ -94,7 +97,6 @@ fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntit
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
         modifier = modifier
-            .padding(8.dp)
             .fillMaxWidth()
             .wrapContentHeight()
             .noRippleClickable {
@@ -104,7 +106,7 @@ fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntit
         Column(
             modifier = Modifier
                 .background(LocalColors.current.white)
-                .padding(16.dp)
+                .padding(vertical = 8.dp, horizontal = 4.dp)
         ) {
             Box(
                 modifier = Modifier.height(200.dp)
@@ -133,8 +135,8 @@ fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntit
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            if(!item.collection.isNullOrEmpty()) Text(text = item.collection?:"", style = LocalTypography.current.body2, color = LocalColors.current.gray02)
-            if(!item.displaySitename.isNullOrEmpty()) Text(text = item.displaySitename?:"", style = LocalTypography.current.body2, color = LocalColors.current.gray02)
+            if(!item.collection.isNullOrEmpty()) Text(text = "컬렉션 : ${item.collection}", style = LocalTypography.current.body2, color = LocalColors.current.gray02)
+            if(!item.displaySitename.isNullOrEmpty()) Text(text = "출처 : ${item.displaySitename}", style = LocalTypography.current.body3, color = LocalColors.current.gray02)
         }
     }
 }

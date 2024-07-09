@@ -19,45 +19,41 @@ class SearchViewModel @Inject constructor(
     private val getBookListUseCase: GetSearchPhotoList,
     private val addBookmarkUseCase : AddBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
-    ) : BaseViewModel<SearchContract.ListEvent, SearchContract.ListUiState, SearchContract.ListSideEffect>() {
+) : BaseViewModel<SearchContract.SearchEvent, SearchContract.SearchUiState, SearchContract.SearchSideEffect>() {
 
-    init {
-        handleEvent(SearchContract.ListEvent.LoadBooks)
-    }
+    override fun createInitialState(): SearchContract.SearchUiState = SearchContract.SearchUiState(state = SearchContract.SearchState.Loading)
 
-    override fun createInitialState(): SearchContract.ListUiState = SearchContract.ListUiState(state = SearchContract.ListState.Loading)
-
-    override fun handleEvent(event: SearchContract.ListEvent) {
+    override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
-            is SearchContract.ListEvent.LoadBooks -> {
+            is SearchContract.SearchEvent.Search -> {
                 viewModelScope.launch {
-                    getSearchResults()
+                    getSearchResults(keyWord = event.keyWord)
                         .cachedIn(viewModelScope)
                         .collectLatest { pagingData ->
                             pagingData.map {  }
                             setState {
-                                copy(state = SearchContract.ListState.Success(flowOf(pagingData)))
+                                copy(state = SearchContract.SearchState.Success(flowOf(pagingData)))
                             }
                         }
                 }
             }
-            is SearchContract.ListEvent.AddBookmark -> addBookmark(item = event.item)
-            is SearchContract.ListEvent.RemoveBookmark -> removeBookmark(item = event.item)
+            is SearchContract.SearchEvent.AddBookmark -> addBookmark(item = event.item)
+            is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
         }
     }
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             if(!item.thumbnailUrl.isNullOrEmpty()) removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
-            setEffect { SearchContract.ListSideEffect.ShowToast("북마크 취소") }
+            setEffect { SearchContract.SearchSideEffect.ShowToast("북마크 취소") }
         }
     }
 
     private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             addBookmarkUseCase.invoke(item)
-            setEffect { SearchContract.ListSideEffect.ShowToast("북마크 저장") }
+            setEffect { SearchContract.SearchSideEffect.ShowToast("북마크 저장") }
         }
     }
 
-    private fun getSearchResults(): Flow<PagingData<PhotoEntities.Document>> = getBookListUseCase(keyWord = "고양이")
+    private fun getSearchResults(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = getBookListUseCase(keyWord = keyWord)
 }

@@ -8,25 +8,26 @@ import com.photo.presentation_core.base.UiState
 import kotlinx.coroutines.flow.Flow
 
 class SearchContract {
-    sealed class ListEvent : UiEvent {
-        object LoadBooks : ListEvent()
-        data class RemoveBookmark(val item : PhotoEntities.Document) : ListEvent()
-        data class AddBookmark(val item : PhotoEntities.Document) : ListEvent()
+    sealed class SearchEvent : UiEvent {
+        data class Search(val keyWord : String) : SearchEvent()
+        data class RemoveBookmark(val item : PhotoEntities.Document) : SearchEvent()
+        data class AddBookmark(val item : PhotoEntities.Document) : SearchEvent()
     }
-    data class ListUiState(
-        val state : ListState
+
+    data class SearchUiState(
+        val state : SearchState
     ) : UiState
 
-    sealed class ListState {
-        object Loading : ListState()
-        object Empty : ListState()
+    sealed class SearchState {
+        object Loading : SearchState()
+        object Empty : SearchState()
         data class Success(
             val item : Flow<PagingData<PhotoEntities.Document>>
-        ) : ListState()
+        ) : SearchState()
 
     }
 
-    sealed class ListSideEffect : UiSideEffect {
-        data class ShowToast(val message : String) : ListSideEffect()
+    sealed class SearchSideEffect : UiSideEffect {
+        data class ShowToast(val message : String) : SearchSideEffect()
     }
 }
