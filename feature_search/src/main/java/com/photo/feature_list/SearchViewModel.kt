@@ -1,8 +1,10 @@
 package com.photo.feature_list
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
@@ -21,24 +23,30 @@ class SearchViewModel @Inject constructor(
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
 ) : BaseViewModel<SearchContract.SearchEvent, SearchContract.SearchUiState, SearchContract.SearchSideEffect>() {
 
-    override fun createInitialState(): SearchContract.SearchUiState = SearchContract.SearchUiState(state = SearchContract.SearchState.Loading)
+    override fun createInitialState(): SearchContract.SearchUiState = SearchContract.SearchUiState(state = SearchContract.SearchState.Init)
 
     override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
             is SearchContract.SearchEvent.Search -> {
-                viewModelScope.launch {
-                    getSearchResults(keyWord = event.keyWord)
-                        .cachedIn(viewModelScope)
-                        .collectLatest { pagingData ->
-                            pagingData.map {  }
-                            setState {
-                                copy(state = SearchContract.SearchState.Success(flowOf(pagingData)))
+                Log.d("디버그","${event.keyWord}")
+                if(event.keyWord.isNotBlank()){
+                    viewModelScope.launch {
+                        getSearchResults(keyWord = event.keyWord)
+                            .cachedIn(viewModelScope)
+                            .collectLatest { pagingData ->
+                                setState {
+                                    copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
+                                }
                             }
-                        }
+                    }
+                }else{
+                    setState { copy(state = SearchContract.SearchState.Init) }
                 }
             }
             is SearchContract.SearchEvent.AddBookmark -> addBookmark(item = event.item)
             is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
+            is SearchContract.SearchEvent.ShowErrorLayout -> setState { copy(SearchContract.SearchState.Error(message = event.message)) }
+            is SearchContract.SearchEvent.ShowEmptyLayout -> setState { copy(SearchContract.SearchState.Empty(message = event.message)) }
         }
     }
     private fun removeBookmark(item: PhotoEntities.Document){
