@@ -21,15 +21,15 @@ import androidx.navigation.navArgument
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.feature_bookmark.BookmarkScreen
 import com.photo.feature_detail.DetailScreen
-import com.photo.feature_list.ListScreen
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.google.gson.Gson
+import com.photo.feature_list.SearchScreen
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.List.ordinal) }
+    val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.Search.ordinal) }
     val bottomBarState = rememberSaveable { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val navigation = remember {
@@ -39,7 +39,7 @@ fun MainScreen() {
                     route = "${MainNavigationConst.Detail.route}/$item",
                 ) {
                     launchSingleTop = true
-                    popUpTo(MainNavigationConst.List.route)
+                    popUpTo(MainNavigationConst.Search.route)
                 }
             }
         }
@@ -48,7 +48,7 @@ fun MainScreen() {
 
     LaunchedEffect(navBackStackEntry?.destination?.route) {
         bottomBarState.value = when (navBackStackEntry?.destination?.route) {
-            MainNavigationConst.List.route,
+            MainNavigationConst.Search.route,
             MainNavigationConst.Bookmark.route -> true
             else -> false
         }
@@ -60,8 +60,8 @@ fun MainScreen() {
                 BottomBar(selectedTabIndex = selectedTabIndex.value, onTabSelected = { index ->
                     selectedTabIndex.value = index
                     when (index) {
-                        TabDefine.List.ordinal -> navController.navigate(MainNavigationConst.List.route) {
-                            popUpTo(MainNavigationConst.List.route) { inclusive = true }
+                        TabDefine.Search.ordinal -> navController.navigate(MainNavigationConst.Search.route) {
+                            popUpTo(MainNavigationConst.Search.route) { inclusive = true }
                         }
                         TabDefine.Bookmark.ordinal -> navController.navigate(MainNavigationConst.Bookmark.route) {
                             popUpTo(MainNavigationConst.Bookmark.route) { inclusive = true }
@@ -102,10 +102,10 @@ private fun MainScreenNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = MainNavigationConst.List.route,
+        startDestination = MainNavigationConst.Search.route,
     ) {
-        composable(MainNavigationConst.List.route) {
-            ListScreen(onItemClick = { navigation.navigateToDetail(it) })
+        composable(MainNavigationConst.Search.route) {
+            SearchScreen(onItemClick = { navigation.navigateToDetail(it) })
         }
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen(onItemClick = { navigation.navigateToDetail(it) })

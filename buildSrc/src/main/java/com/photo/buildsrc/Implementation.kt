@@ -4,6 +4,7 @@ fun DependencyHandler.implementationAndroidXCore() {
     add("implementation", Dependencies.AndroidX.coreKtx)
     add("implementation", Dependencies.AndroidX.appcompat)
     add("implementation", Dependencies.AndroidX.annotation)
+    add("implementation", Dependencies.AndroidX.window)
 }
 fun DependencyHandler.implementationKotlin() {
     add("implementation", Dependencies.jdk7)

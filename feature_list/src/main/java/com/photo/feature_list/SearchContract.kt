@@ -7,7 +7,7 @@ import com.photo.presentation_core.base.UiSideEffect
 import com.photo.presentation_core.base.UiState
 import kotlinx.coroutines.flow.Flow
 
-class ListContract {
+class SearchContract {
     sealed class ListEvent : UiEvent {
         object LoadBooks : ListEvent()
         data class RemoveBookmark(val item : PhotoEntities.Document) : ListEvent()

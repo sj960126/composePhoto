@@ -44,4 +44,5 @@ dependencies {
     implementaionCoroutines()
     implementationCompose()
     implementationGson()
+    implementaionPaging()
 }

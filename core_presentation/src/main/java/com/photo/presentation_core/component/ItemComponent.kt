@@ -4,6 +4,9 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -18,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.rememberImagePainter
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.design_system.LocalColors
@@ -27,12 +31,65 @@ import com.photo.presentation_core.extension.noRippleClickable
 import com.google.gson.Gson
 
 @Composable
+fun SinglePaneLayout(
+    lazyPagingItems: LazyPagingItems<PhotoEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        items(lazyPagingItems.itemCount) { index ->
+            val item = lazyPagingItems[index]
+            if (item != null) {
+                ItemCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    onItemClick = onItemClick,
+                    item = item,
+                    onBookmarkClick = { isBookmarked ->
+                        onBookmarkClick(item to isBookmarked)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun DualPaneLayout(
+    lazyPagingItems: LazyPagingItems<PhotoEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        items(lazyPagingItems.itemCount) { index ->
+            val item = lazyPagingItems[index]
+            if (item != null) {
+                ItemCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    onItemClick = onItemClick,
+                    item = item,
+                    onBookmarkClick = { isBookmarked ->
+                        onBookmarkClick(item to isBookmarked)
+                    }
+                )
+            }
+        }
+    }
+}
+@Composable
 fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntities.Document, onBookmarkClick : (Boolean) -> Unit) {
     var isBookmarked by remember { mutableStateOf(item.isBookMark) }
     LaunchedEffect(item.isBookMark) {
         isBookmarked = item.isBookMark
     }
-
     Card(
         shape = RoundedCornerShape(8.dp),
         elevation = 0.dp,
@@ -76,7 +133,8 @@ fun ItemCard(modifier: Modifier, onItemClick: (String) -> Unit, item: PhotoEntit
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-
+            if(!item.collection.isNullOrEmpty()) Text(text = item.collection?:"", style = LocalTypography.current.body2, color = LocalColors.current.gray02)
+            if(!item.displaySitename.isNullOrEmpty()) Text(text = item.displaySitename?:"", style = LocalTypography.current.body2, color = LocalColors.current.gray02)
         }
     }
 }
@@ -99,8 +157,8 @@ fun BookmarkIcon(
 @Composable
 fun EmptyLayout(title : String) {
     Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+        .fillMaxSize()
+        .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(

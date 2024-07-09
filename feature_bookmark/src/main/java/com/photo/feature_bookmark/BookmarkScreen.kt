@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.component.EmptyLayout
 import com.photo.presentation_core.component.ItemRow
+import com.photo.presentation_core.component.SearchBarLayout
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.photo.presentation_core.extension.showToast
@@ -72,7 +73,7 @@ fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        FilterEditLayout(
+        SearchBarLayout(
             modifier = Modifier.weight(1f),
             labelTitle = "금액 필터",
             text = filterPrice,
@@ -103,7 +104,7 @@ fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        FilterEditLayout(
+        SearchBarLayout(
             modifier = Modifier.weight(1f),
             labelTitle = "저자검색",
             text = filterAuthor,
@@ -121,30 +122,7 @@ fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
     }
 }
 
-@Composable
-fun FilterEditLayout(
-    modifier: Modifier,
-    labelTitle: String,
-    text: String,
-    onTextChange: (String) -> Unit,
-    keyboardType: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-) {
-    OutlinedTextField(
-        value = text,
-        onValueChange = onTextChange,
-        label = { Text(labelTitle, style = LocalTypography.current.caption2) },
-        modifier = modifier
-            .padding(end = 8.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = LocalColors.current.transparent,
-            focusedBorderColor = LocalColors.current.primary,
-            unfocusedBorderColor = LocalColors.current.primary,
-            cursorColor = LocalColors.current.primary
-        ),
-        textStyle = LocalTypography.current.caption2,
-        keyboardOptions= keyboardType
-    )
-}
+
 
 /**
  * LazyVerticalGrid 이미지 로드 성능 이슈로 직접 구현하였습니다.

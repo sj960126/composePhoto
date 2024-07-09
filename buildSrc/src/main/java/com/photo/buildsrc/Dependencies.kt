@@ -16,6 +16,7 @@ object Dependencies {
         val activity = "androidx.activity:activity-ktx:1.1.0"
         val fragment = "androidx.fragment:fragment-ktx:1.1.0"
         val workRuntimeKtx = "androidx.work:work-runtime-ktx:2.7.1"
+        val window = "androidx.window:window:1.0.0"
     }
 
     object Android {
