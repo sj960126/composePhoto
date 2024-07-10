@@ -220,19 +220,3 @@ fun EmptyLayout(title : String) {
         )
     }
 }
-
-@Composable
-fun ItemRow(
-    firstItem: PhotoEntities.Document,
-    secondItem: PhotoEntities.Document?,
-    onItemClick: (String) -> Unit,
-    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
-) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        ItemCard(modifier = Modifier.weight(1f),item = firstItem, onItemClick = onItemClick, onBookmarkClick = {onBookmarkClick.invoke(Pair(firstItem,it))})
-        if (secondItem != null) ItemCard(modifier = Modifier.weight(1f),item = secondItem, onItemClick = onItemClick, onBookmarkClick = {onBookmarkClick.invoke(Pair(secondItem,it))}) else Spacer(modifier = Modifier.weight(1f))
-    }
-}

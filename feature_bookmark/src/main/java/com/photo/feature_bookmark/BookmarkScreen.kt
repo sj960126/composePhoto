@@ -1,12 +1,15 @@
 package com.photo.feature_bookmark
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +19,7 @@ import com.photo.presentation_core.component.SearchBarLayout
 import com.photo.presentation_core.component.SinglePaneLayout
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
+import com.photo.presentation_core.extension.noRippleClickable
 import com.photo.presentation_core.extension.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
@@ -35,6 +39,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
             }
         }
     }
+
     LaunchedEffect(searchKeyWord) {
         snapshotFlow { searchKeyWord }
             .filterNotNull()
@@ -44,8 +49,17 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
             }
     }
     Column{
-        SearchBarLayout(modifier = Modifier.fillMaxWidth(), labelTitle = "컬렉션 검색", text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
-        Text(modifier = Modifier.padding(start = 8.dp),text = "컬렉션을 검색해주세요", color = LocalColors.current.gray01, style = LocalTypography.current.body2)
+        SearchBarLayout(modifier = Modifier.fillMaxWidth(), hint = "컬렉션을 검색해주세요",labelTitle = "컬렉션 검색", text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
+        Button(
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(horizontal = 8.dp,vertical = 5.dp),
+            onClick = {bookmarkViewModel.setEvent(BookmarkContract.BookmarkEvent.ClearBookmark)},
+            colors = ButtonDefaults.buttonColors(backgroundColor = LocalColors.current.secondary, contentColor = LocalColors.current.tintWhite),
+            content = {
+                Text(text = "북마크 전체삭제", style = LocalTypography.current.body2)
+            }
+        )
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
             BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = "상품이 없습니다.")

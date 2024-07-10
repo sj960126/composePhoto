@@ -9,7 +9,6 @@ class BookmarkContract {
     sealed class BookmarkEvent : UiEvent {
         object GetBookmarkList : BookmarkEvent()
         object ClearBookmark : BookmarkEvent()
-
         data class RemoveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
         data class AddBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
         data class Search(val keyword : String) : BookmarkEvent()

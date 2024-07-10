@@ -17,12 +17,16 @@ fun SearchBarLayout(
     modifier: Modifier,
     labelTitle: String,
     text: String,
+    hint : String? = null,
     onTextChange: (String) -> Unit,
     keyboardType: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
 ) {
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
+        placeholder = {
+           if(hint != null) Text(text = hint, style = LocalTypography.current.body4)
+        },
         label = { Text(labelTitle, style = LocalTypography.current.caption2) },
         modifier = modifier.padding(end = 8.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
