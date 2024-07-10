@@ -4,10 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -32,6 +29,7 @@ fun MainScreen() {
     val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.Search.ordinal) }
     val bottomBarState = rememberSaveable { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    var topBarTitle by rememberSaveable { mutableStateOf(MainNavigationConst.Search.topBarTitle) }
     val navigation = remember {
         object : MainNavigation {
             override fun navigateToDetail(item: String) {
@@ -52,9 +50,15 @@ fun MainScreen() {
             MainNavigationConst.Bookmark.route -> true
             else -> false
         }
+        topBarTitle = MainNavigationConst.getTopBarTitle(navBackStackEntry?.destination?.route?:"")
     }
 
     Scaffold(
+        topBar = {
+            TopAppBar(backgroundColor = LocalColors.current.primary ) {
+                Text(text = topBarTitle, color = LocalColors.current.tintWhite, style = LocalTypography.current.title1)
+            }
+        },
         bottomBar = {
             if (bottomBarState.value) {
                 BottomBar(selectedTabIndex = selectedTabIndex.value, onTabSelected = { index ->

@@ -1,11 +1,8 @@
 package com.photo.feature_list
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.filter
-import androidx.paging.map
 import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
@@ -28,7 +25,6 @@ class SearchViewModel @Inject constructor(
     override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
             is SearchContract.SearchEvent.Search -> {
-                Log.d("디버그","${event.keyWord}")
                 if(event.keyWord.isNotBlank()){
                     viewModelScope.launch {
                         getSearchResults(keyWord = event.keyWord)
