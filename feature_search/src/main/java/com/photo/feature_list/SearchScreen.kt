@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,12 +24,10 @@ import kotlinx.coroutines.flow.filterNotNull
 
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick: (String) -> Unit) {
+fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick: (String) -> Unit, isDualPane : Boolean) {
     val viewUiState by searchViewModel.uiState.collectAsState()
-    var searchKeyWord by remember { mutableStateOf<String?>(null) }
+    var searchKeyWord by rememberSaveable { mutableStateOf<String?>(null) }
     val context = LocalContext.current
-    val foldableState by rememberFoldableState(context)
-    val isDualPane = foldableState?.state == FoldingFeature.State.HALF_OPENED && foldableState?.isSeparating == true
 
     LaunchedEffect(searchViewModel.effect){
         searchViewModel.effect.collect { effect ->

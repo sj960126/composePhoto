@@ -31,7 +31,6 @@ class BookmarkViewModel @Inject constructor(
             BookmarkContract.BookmarkEvent.GetBookmarkList -> getBookmarkList()
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.AddBookmark -> addBookmark(item = event.item)
-            is BookmarkContract.BookmarkEvent.SortTitle -> sortBookmarksByTitle(sortDefine = event.sortDefine)
 //            is BookmarkContract.BookmarkEvent.PriceFilter -> filterBookmarksByPrice(filterDefine = event.priceFilterDefine, price = event.price)
 //            is BookmarkContract.BookmarkEvent.AuthorFilter -> filterBookmarksByAuthor(author = event.author)
             else->{}
@@ -65,21 +64,21 @@ class BookmarkViewModel @Inject constructor(
 //            }
 //        }
 //    }
-    private fun sortBookmarksByTitle(sortDefine: SortDefine){
-        viewModelScope.launch {
-            setState { copy(BookmarkContract.BookmarkState.Loading) }
-            getBookmarkUseCase.invoke().let { bookmarkList ->
-                setState {
-                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = when(sortDefine){
-                            SortDefine.ASCENDING -> bookmarkList.sortedBy { it.thumbnailUrl }
-                            SortDefine.DESCENDING -> bookmarkList.sortedByDescending { it.thumbnailUrl }
-                        }
-                    ))
-                }
-            }
-        }
-    }
+//    private fun sortBookmarksByTitle(sortDefine: SortDefine){
+//        viewModelScope.launch {
+//            setState { copy(BookmarkContract.BookmarkState.Loading) }
+//            getBookmarkUseCase.invoke().let { bookmarkList ->
+//                setState {
+//                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
+//                        itemList = when(sortDefine){
+//                            SortDefine.ASCENDING -> bookmarkList.sortedBy { it.thumbnailUrl }
+//                            SortDefine.DESCENDING -> bookmarkList.sortedByDescending { it.thumbnailUrl }
+//                        }
+//                    ))
+//                }
+//            }
+//        }
+//    }
 
     private fun getBookmarkList(){
         viewModelScope.launch {

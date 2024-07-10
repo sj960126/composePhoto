@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -84,6 +86,54 @@ fun DualPaneLayout(
                     }
                 )
             }
+        }
+    }
+}
+@Composable
+fun SinglePaneLayout(
+    itemList : List<PhotoEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        items(itemList) {
+            ItemCard(
+                modifier = Modifier.fillMaxWidth(),
+                onItemClick = onItemClick,
+                item = it,
+                onBookmarkClick = { isBookmarked ->
+                    onBookmarkClick(it to isBookmarked)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun DualPaneLayout(
+    itemList : List<PhotoEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
+) {
+    val gridState = rememberLazyGridState()
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = gridState,
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        items(itemList) {
+            ItemCard(
+                modifier = Modifier.fillMaxWidth(),
+                onItemClick = onItemClick,
+                item = it,
+                onBookmarkClick = { isBookmarked ->
+                    onBookmarkClick(it to isBookmarked)
+                }
+            )
         }
     }
 }

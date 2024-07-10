@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.window.layout.FoldingFeature
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.feature_bookmark.BookmarkScreen
 import com.photo.feature_detail.DetailScreen
@@ -22,6 +24,7 @@ import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.google.gson.Gson
 import com.photo.feature_list.SearchScreen
+import com.photo.presentation_core.state.rememberFoldableState
 
 @Composable
 fun MainScreen() {
@@ -30,6 +33,9 @@ fun MainScreen() {
     val bottomBarState = rememberSaveable { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     var topBarTitle by rememberSaveable { mutableStateOf(MainNavigationConst.Search.topBarTitle) }
+    val foldableState by rememberFoldableState(LocalContext.current)
+    val isDualPane = foldableState?.state == FoldingFeature.State.HALF_OPENED && foldableState?.isSeparating == true
+
     val navigation = remember {
         object : MainNavigation {
             override fun navigateToDetail(item: String) {
@@ -81,7 +87,7 @@ fun MainScreen() {
                 .background(LocalColors.current.white)
                 .padding(innerPadding)
         ) {
-            MainScreenNavigation(navController = navController, navigation = navigation)
+            MainScreenNavigation(navController = navController, navigation = navigation, isDualPane = isDualPane)
         }
     }
 }
@@ -102,17 +108,18 @@ private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
 @Composable
 private fun MainScreenNavigation(
     navController: NavHostController,
-    navigation: MainNavigation
+    navigation: MainNavigation,
+    isDualPane : Boolean
 ) {
     NavHost(
         navController = navController,
         startDestination = MainNavigationConst.Search.route,
     ) {
         composable(MainNavigationConst.Search.route) {
-            SearchScreen(onItemClick = { navigation.navigateToDetail(it) })
+            SearchScreen(isDualPane = isDualPane,onItemClick = { navigation.navigateToDetail(it) })
         }
         composable(MainNavigationConst.Bookmark.route) {
-            BookmarkScreen(onItemClick = { navigation.navigateToDetail(it) })
+            BookmarkScreen(isDualPane = isDualPane,onItemClick = { navigation.navigateToDetail(it) })
         }
         composable(
             route = MainNavigationConst.Detail.route + "/{item}",

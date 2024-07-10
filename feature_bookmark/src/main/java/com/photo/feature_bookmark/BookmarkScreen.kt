@@ -1,10 +1,12 @@
 package com.photo.feature_bookmark
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -12,17 +14,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.component.EmptyLayout
-import com.photo.presentation_core.component.ItemRow
-import com.photo.presentation_core.component.SearchBarLayout
+import com.photo.presentation_core.component.*
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.photo.presentation_core.extension.showToast
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterNotNull
 
 @Composable
-fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onItemClick: (String) -> Unit) {
+fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDualPane : Boolean,onItemClick: (String) -> Unit) {
     val viewUiState by bookmarkViewModel.uiState.collectAsState()
+    var searchKeyWord by rememberSaveable { mutableStateOf<String?>(null) }
     val context = LocalContext.current
+
     LaunchedEffect(bookmarkViewModel.effect){
         bookmarkViewModel.effect.collect { effect ->
             when (effect) {
@@ -32,123 +36,39 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), onIte
             }
         }
     }
+    LaunchedEffect(searchKeyWord) {
+        snapshotFlow { searchKeyWord }
+            .filterNotNull()
+            .debounce(1000)
+            .collect { keyword ->
+//                searchViewModel.handleEvent(SearchContract.SearchEvent.Search(keyword))
+            }
+    }
     Column{
-        PriceFilter(onSearchClick = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.PriceFilter(it.first,it.second))})
-        AuthorFilter(onAuthorSearch = {bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.AuthorFilter(it))})
-        SortFilterLayout(onSortClick = { bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.SortTitle(it))})
+        SearchBarLayout(modifier = Modifier.fillMaxWidth(), labelTitle = "컬렉션 검색", text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
+        Text(modifier = Modifier.padding(start = 8.dp),text = "컬렉션을 검색해주세요", color = LocalColors.current.gray01, style = LocalTypography.current.body2)
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
             BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = "상품이 없습니다.")
             is BookmarkContract.BookmarkState.Success ->{
-                BookmarkListLayout(
-                    itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
-                    onItemClick = onItemClick,
-                    onBookmarkClick = {
-                        bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.AddBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
-                    }
-                )
+                if (isDualPane) {
+                    DualPaneLayout(
+                        itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
+                        onItemClick = onItemClick,
+                        onBookmarkClick = {
+                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.AddBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
+                        }
+                    )
+                } else {
+                    SinglePaneLayout(
+                        itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
+                        onItemClick = onItemClick,
+                        onBookmarkClick = {
+                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.AddBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
+                        }
+                    )
+                }
             }
         }
     }
-}
-@Composable
-fun SortFilterLayout(onSortClick :(SortDefine) -> Unit ){
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp)) {
-        SortDefine.values().forEach {
-            Button(modifier = Modifier.weight(1f),onClick = { onSortClick.invoke(it) }, colors = ButtonDefaults.buttonColors( backgroundColor = LocalColors.current.primary,contentColor = LocalColors.current.tintWhite,)) {
-                Text("${it.title}정렬")
-            }
-        }
-    }
-}
-
-@Composable
-fun PriceFilter(onSearchClick: (Pair<Int, PriceFilterDefine>) -> Unit) {
-    var filterPrice by remember { mutableStateOf("") }
-
-    Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SearchBarLayout(
-            modifier = Modifier.weight(1f),
-            labelTitle = "금액 필터",
-            text = filterPrice,
-            onTextChange = { filterPrice = it },
-            keyboardType = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-        PriceFilterDefine.values().forEach { filterDefine ->
-            Button(
-                onClick = { onSearchClick(Pair(filterPrice.toIntOrNull()?:0, filterDefine)) },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = LocalColors.current.primary,
-                    contentColor = LocalColors.current.tintWhite
-                ),
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Text(filterDefine.title)
-            }
-        }
-    }
-}
-@Composable
-fun AuthorFilter(onAuthorSearch: (String) -> Unit) {
-    var filterAuthor by remember { mutableStateOf("") }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SearchBarLayout(
-            modifier = Modifier.weight(1f),
-            labelTitle = "저자검색",
-            text = filterAuthor,
-            onTextChange = { filterAuthor = it }
-        )
-        Button(
-            onClick = { onAuthorSearch(filterAuthor) },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = LocalColors.current.primary,
-                contentColor = LocalColors.current.tintWhite
-            ),
-        ) {
-            Text("검색")
-        }
-    }
-}
-
-
-
-/**
- * LazyVerticalGrid 이미지 로드 성능 이슈로 직접 구현하였습니다.
- * https://github.com/coil-kt/coil/issues/1610
- */
-@Composable
-fun BookmarkListLayout(itemList: List<PhotoEntities.Document>, onItemClick: (String) -> Unit, onBookmarkClick : (Pair<PhotoEntities.Document,Boolean>) -> Unit) {
-    LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(8.dp)) {
-        items(itemList.size) { index ->
-            if (index % 2 == 0) {
-                ItemRow(
-                    firstItem = itemList[index],
-                    secondItem = itemList.getOrNull(index +1),
-                    onItemClick = onItemClick,
-                    onBookmarkClick = onBookmarkClick
-                )
-            }
-        }
-    }
-}
-
-enum class SortDefine(val title : String) {
-    ASCENDING("오름차순"),
-    DESCENDING("내림차순")
-}
-enum class PriceFilterDefine(val title : String) {
-    UP("이상"),
-    DOWN("이하")
 }

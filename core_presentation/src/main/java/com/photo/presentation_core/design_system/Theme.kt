@@ -3,8 +3,12 @@ package com.photo.presentation_core.design_system
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.window.layout.FoldingFeature
+import com.photo.presentation_core.state.rememberFoldableState
 
 val LocalColors = staticCompositionLocalOf { lightColors }
 
