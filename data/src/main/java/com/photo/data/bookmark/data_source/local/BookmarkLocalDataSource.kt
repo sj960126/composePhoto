@@ -10,5 +10,6 @@ class BookmarkLocalDataSource @Inject constructor(private val bookmarkDao: Bookm
     suspend fun getAllTitles(): List<String> = bookmarkDao.getAllThumbnailUrl()
     suspend fun addBookmark(bookmarkEntity: BookmarkEntity) = bookmarkDao.insert(bookmarkEntity)
     suspend fun removeBookmark(title: String) = bookmarkDao.delete(title)
-
+    suspend fun clearBookmark() = bookmarkDao.deleteAll()
+    suspend fun getByCollection(keyword : String) = bookmarkDao.getByCollection(keyword)
 }

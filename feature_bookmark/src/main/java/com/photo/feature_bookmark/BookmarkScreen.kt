@@ -1,20 +1,19 @@
 package com.photo.feature_bookmark
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.component.*
+import com.photo.presentation_core.component.DualPaneLayout
+import com.photo.presentation_core.component.EmptyLayout
+import com.photo.presentation_core.component.SearchBarLayout
+import com.photo.presentation_core.component.SinglePaneLayout
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.photo.presentation_core.extension.showToast
@@ -41,7 +40,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
             .filterNotNull()
             .debounce(1000)
             .collect { keyword ->
-//                searchViewModel.handleEvent(SearchContract.SearchEvent.Search(keyword))
+                bookmarkViewModel.handleEvent(if(keyword.isBlank()) BookmarkContract.BookmarkEvent.GetBookmarkList else BookmarkContract.BookmarkEvent.Search(keyword))
             }
     }
     Column{

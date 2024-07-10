@@ -14,5 +14,8 @@ interface BookmarkDao {
     suspend fun insert(bookmark: BookmarkEntity)
     @Query("DELETE FROM bookmark WHERE thumbnailUrl = :thumbnailUrl")
     suspend fun delete(thumbnailUrl: String)
-
+    @Query("DELETE FROM bookmark")
+    suspend fun deleteAll()
+    @Query("SELECT * FROM bookmark WHERE collection = :collection")
+    suspend fun getByCollection(collection: String): List<BookmarkEntity>
 }

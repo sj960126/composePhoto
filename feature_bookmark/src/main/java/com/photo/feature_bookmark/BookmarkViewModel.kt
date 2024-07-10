@@ -1,9 +1,7 @@
 package com.photo.feature_bookmark
 
 import androidx.lifecycle.viewModelScope
-import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
-import com.photo.domain.bookmark.usecase.GetBookmarksUseCase
-import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
+import com.photo.domain.bookmark.usecase.*
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +16,9 @@ import javax.inject.Inject
 class BookmarkViewModel @Inject constructor(
     private val getBookmarkUseCase: GetBookmarksUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
-    private val addBookmarkUseCase : AddBookmarkUseCase
+    private val addBookmarkUseCase : AddBookmarkUseCase,
+    private val clearBookmarkUseCase: ClearBookmarkUseCase,
+    private val searchCollectionBookmarkUseCase: SearchCollectionBookmarkUseCase
 ) : BaseViewModel<BookmarkContract.BookmarkEvent,BookmarkContract.BookmarkUiState,BookmarkContract.BookmarkSideEffect>(){
     override fun createInitialState(): BookmarkContract.BookmarkUiState = BookmarkContract.BookmarkUiState(state = BookmarkContract.BookmarkState.Loading)
 
@@ -29,56 +29,12 @@ class BookmarkViewModel @Inject constructor(
     override fun handleEvent(event: BookmarkContract.BookmarkEvent) {
         when(event){
             BookmarkContract.BookmarkEvent.GetBookmarkList -> getBookmarkList()
+            BookmarkContract.BookmarkEvent.ClearBookmark -> clearBookmark()
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.AddBookmark -> addBookmark(item = event.item)
-//            is BookmarkContract.BookmarkEvent.PriceFilter -> filterBookmarksByPrice(filterDefine = event.priceFilterDefine, price = event.price)
-//            is BookmarkContract.BookmarkEvent.AuthorFilter -> filterBookmarksByAuthor(author = event.author)
-            else->{}
+            is BookmarkContract.BookmarkEvent.Search -> searchBookmark(event.keyword)
         }
     }
-
-//    private fun filterBookmarksByAuthor(author : String) {
-//        viewModelScope.launch {
-//            setState { copy(BookmarkContract.BookmarkState.Loading) }
-//            getBookmarkUseCase.invoke().let { bookmarkList ->
-//                setState {
-//                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-//                        itemList = if(author.isNotEmpty()) bookmarkList.filter { it.authors?.contains(author) ?: false} else bookmarkList
-//                    ))
-//                }
-//            }
-//        }
-//    }
-//    private fun filterBookmarksByPrice(filterDefine: PriceFilterDefine, price : Int) {
-//        viewModelScope.launch {
-//            setState { copy(BookmarkContract.BookmarkState.Loading) }
-//            getBookmarkUseCase.invoke().let { bookmarkList ->
-//                setState {
-//                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-//                        itemList = if(price == 0) bookmarkList else when(filterDefine){
-//                            PriceFilterDefine.UP -> bookmarkList.filter { (it.salePrice ?: 0) >= price }
-//                            PriceFilterDefine.DOWN -> bookmarkList.filter { (it.salePrice ?: 0) <= price }
-//                        }
-//                    ))
-//                }
-//            }
-//        }
-//    }
-//    private fun sortBookmarksByTitle(sortDefine: SortDefine){
-//        viewModelScope.launch {
-//            setState { copy(BookmarkContract.BookmarkState.Loading) }
-//            getBookmarkUseCase.invoke().let { bookmarkList ->
-//                setState {
-//                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-//                        itemList = when(sortDefine){
-//                            SortDefine.ASCENDING -> bookmarkList.sortedBy { it.thumbnailUrl }
-//                            SortDefine.DESCENDING -> bookmarkList.sortedByDescending { it.thumbnailUrl }
-//                        }
-//                    ))
-//                }
-//            }
-//        }
-//    }
 
     private fun getBookmarkList(){
         viewModelScope.launch {
@@ -105,6 +61,28 @@ class BookmarkViewModel @Inject constructor(
             addBookmarkUseCase.invoke(item)
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("북마크 저장") }
             getBookmarkList()
+        }
+    }
+    private fun searchBookmark(keyword :String){
+        viewModelScope.launch {
+            setState { copy(BookmarkContract.BookmarkState.Loading) }
+            searchCollectionBookmarkUseCase.invoke(keyword).let { bookmarkList ->
+                setState {
+                    copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(itemList = bookmarkList))
+                }
+            }
+        }
+    }
+
+    private fun clearBookmark(){
+        if(currentState.state is BookmarkContract.BookmarkState.Empty) {
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("삭제할 북마크가 없어요") }
+        } else {
+            viewModelScope.launch {
+                clearBookmarkUseCase.invoke()
+                setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("전체 삭제했습니다.") }
+                setState { copy(BookmarkContract.BookmarkState.Empty) }
+            }
         }
     }
 
