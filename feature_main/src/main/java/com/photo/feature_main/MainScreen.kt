@@ -1,5 +1,6 @@
 package com.photo.feature_main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,10 +42,7 @@ fun MainScreen() {
             override fun navigateToDetail(item: String) {
                 navController.navigate(
                     route = "${MainNavigationConst.Detail.route}/$item",
-                ) {
-                    launchSingleTop = true
-                    popUpTo(MainNavigationConst.Search.route)
-                }
+                )
             }
         }
     }
@@ -71,10 +69,12 @@ fun MainScreen() {
                     selectedTabIndex.value = index
                     when (index) {
                         TabDefine.Search.ordinal -> navController.navigate(MainNavigationConst.Search.route) {
-                            popUpTo(MainNavigationConst.Search.route) { inclusive = true }
+                            popUpTo(MainNavigationConst.Search.route) { saveState = true }
+                            launchSingleTop = true
                         }
                         TabDefine.Bookmark.ordinal -> navController.navigate(MainNavigationConst.Bookmark.route) {
-                            popUpTo(MainNavigationConst.Bookmark.route) { inclusive = true }
+                            popUpTo(MainNavigationConst.Bookmark.route) { saveState = true }
+                            launchSingleTop = true
                         }
                     }
                 })
@@ -116,6 +116,7 @@ private fun MainScreenNavigation(
         startDestination = MainNavigationConst.Search.route,
     ) {
         composable(MainNavigationConst.Search.route) {
+            Log.d("디버그","${it}")
             SearchScreen(isDualPane = isDualPane,onItemClick = { navigation.navigateToDetail(it) })
         }
         composable(MainNavigationConst.Bookmark.route) {

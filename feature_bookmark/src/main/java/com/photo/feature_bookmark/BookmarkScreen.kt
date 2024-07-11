@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,7 +18,6 @@ import com.photo.presentation_core.component.SearchBarLayout
 import com.photo.presentation_core.component.SinglePaneLayout
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
-import com.photo.presentation_core.extension.noRippleClickable
 import com.photo.presentation_core.extension.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
@@ -48,6 +46,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
                 bookmarkViewModel.handleEvent(if(keyword.isBlank()) BookmarkContract.BookmarkEvent.GetBookmarkList else BookmarkContract.BookmarkEvent.Search(keyword))
             }
     }
+
     Column{
         SearchBarLayout(modifier = Modifier.fillMaxWidth(), hint = "컬렉션을 검색해주세요",labelTitle = "컬렉션 검색", text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
         Button(

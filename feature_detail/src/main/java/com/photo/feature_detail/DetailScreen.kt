@@ -49,42 +49,28 @@ fun DetailScreen(bookDetail: PhotoEntities.Document, detailViewModel: DetailView
 @Composable
 fun DetailItem(bookDetail: PhotoEntities.Document, onBookmarkClick : (Boolean) -> Unit){
     var isBookmarked by remember { mutableStateOf(bookDetail.isBookMark) }
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.padding(16.dp)) {
-            item {
-                Box{
-                    Image(
-                        painter = rememberImagePainter(data = bookDetail.thumbnailUrl, builder = {
-                            crossfade(true)
-                        }),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp),
-                    )
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.TopEnd,
-                    ) {
-                        BookmarkIcon(
-                            isBookmarked = isBookmarked,
-                            onBookmarkClick = {
-                                isBookmarked = !isBookmarked
-                                onBookmarkClick.invoke(!bookDetail.isBookMark)
-                            }
-                        )
-                    }
+    Box(modifier = Modifier.fillMaxSize()){
+        Image(
+            painter = rememberImagePainter(data = bookDetail.thumbnailUrl, builder = {
+                crossfade(true)
+            }),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopEnd,
+        ) {
+            BookmarkIcon(
+                isBookmarked = isBookmarked,
+                onBookmarkClick = {
+                    isBookmarked = !isBookmarked
+                    onBookmarkClick.invoke(!bookDetail.isBookMark)
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "출판일: ${bookDetail.datetime}",
-                    style = LocalTypography.current.body1,
-                    color = LocalColors.current.gray02
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+            )
         }
     }
 }
