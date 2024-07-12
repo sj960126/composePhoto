@@ -1,15 +1,17 @@
 package com.photo.feature_main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -24,11 +26,12 @@ import com.photo.feature_detail.DetailScreen
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
 import com.google.gson.Gson
-import com.photo.feature_list.SearchScreen
+import com.photo.feature_search.SearchScreen
+import com.photo.presentation_core.language.LanguageDefine
 import com.photo.presentation_core.state.rememberFoldableState
 
 @Composable
-fun MainScreen() {
+fun MainScreen(onLanguageChange: (String) -> Unit) {
     val navController = rememberNavController()
     val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.Search.ordinal) }
     val bottomBarState = rememberSaveable { mutableStateOf(true) }
@@ -59,9 +62,7 @@ fun MainScreen() {
 
     Scaffold(
         topBar = {
-            TopAppBar(backgroundColor = LocalColors.current.primary ) {
-                Text(text = topBarTitle, color = LocalColors.current.tintWhite, style = LocalTypography.current.title1)
-            }
+            TopBar(title = topBarTitle, onLanguageChange = onLanguageChange)
         },
         bottomBar = {
             if (bottomBarState.value) {
@@ -93,19 +94,6 @@ fun MainScreen() {
 }
 
 @Composable
-private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
-    TabRow(selectedTabIndex = selectedTabIndex, backgroundColor = LocalColors.current.primary) {
-        TabDefine.values().forEachIndexed { index, tab ->
-            Tab(
-                selected = selectedTabIndex == index,
-                onClick = { onTabSelected(index) },
-                text = { Text(text = tab.title, style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
-            )
-        }
-    }
-}
-
-@Composable
 private fun MainScreenNavigation(
     navController: NavHostController,
     navigation: MainNavigation,
@@ -129,6 +117,53 @@ private fun MainScreenNavigation(
             if (bookDetailJson != null) {
                 DetailScreen(bookDetail = Gson().fromJson(bookDetailJson, PhotoEntities.Document::class.java))
             }
+        }
+    }
+}
+
+@Composable
+fun TopBar(title: String, onLanguageChange: (String) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    TopAppBar(backgroundColor = LocalColors.current.primary) {
+        Text(
+            text = title,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 16.dp),
+            color = LocalColors.current.tintWhite,
+            style = LocalTypography.current.title1
+        )
+
+        Box {
+            IconButton(onClick = { expanded = true }) {
+                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                LanguageDefine.values().forEach {
+                    DropdownMenuItem(onClick = {
+                        onLanguageChange(it.code)
+                        expanded = false
+                    }) {
+                        Text(it.title)
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
+    TabRow(selectedTabIndex = selectedTabIndex, backgroundColor = LocalColors.current.primary) {
+        TabDefine.values().forEachIndexed { index, tab ->
+            Tab(
+                selected = selectedTabIndex == index,
+                onClick = { onTabSelected(index) },
+                text = { Text(text = tab.title, style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
+            )
         }
     }
 }

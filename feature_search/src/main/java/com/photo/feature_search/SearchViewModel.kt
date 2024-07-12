@@ -1,5 +1,6 @@
-package com.photo.feature_list
+package com.photo.feature_search
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -7,6 +8,7 @@ import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.domain.search.usecase.GetSearchPhotoList
+import com.photo.feature_list.R
 import com.photo.presentation_core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -48,14 +50,15 @@ class SearchViewModel @Inject constructor(
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             if(!item.thumbnailUrl.isNullOrEmpty()) removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
-            setEffect { SearchContract.SearchSideEffect.ShowToast("북마크 취소") }
+            setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove) }
+
         }
     }
 
     private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             addBookmarkUseCase.invoke(item)
-            setEffect { SearchContract.SearchSideEffect.ShowToast("북마크 저장") }
+            setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
         }
     }
 

@@ -29,7 +29,7 @@ class BookmarkContract {
     }
 
     sealed class BookmarkSideEffect : UiSideEffect {
-        data class ShowToast(val message : String) : BookmarkSideEffect()
+        data class ShowToast(val id : Int) : BookmarkSideEffect()
     }
 
 }

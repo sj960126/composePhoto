@@ -10,6 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.photo.presentation_core.component.DualPaneLayout
@@ -32,7 +33,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
         bookmarkViewModel.effect.collect { effect ->
             when (effect) {
                 is BookmarkContract.BookmarkSideEffect.ShowToast -> {
-                    context.showToast(effect.message)
+                    context.showToast(context.getString(effect.id))
                 }
             }
         }
@@ -48,20 +49,22 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
     }
 
     Column{
-        SearchBarLayout(modifier = Modifier.fillMaxWidth(), hint = "컬렉션을 검색해주세요",labelTitle = "컬렉션 검색", text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
+        SearchBarLayout(modifier = Modifier.fillMaxWidth(), hint = stringResource(id = com.photo.presentation_core.R.string.bookmark_search_hint),labelTitle = stringResource(
+            id = com.photo.presentation_core.R.string.bookmark_search_label
+        ), text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
         Button(
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(horizontal = 8.dp,vertical = 5.dp),
+                .padding(horizontal = 8.dp, vertical = 5.dp),
             onClick = {bookmarkViewModel.setEvent(BookmarkContract.BookmarkEvent.ClearBookmark)},
             colors = ButtonDefaults.buttonColors(backgroundColor = LocalColors.current.secondary, contentColor = LocalColors.current.tintWhite),
             content = {
-                Text(text = "북마크 전체삭제", style = LocalTypography.current.body2)
+                Text(text = stringResource(id = com.photo.presentation_core.R.string.bookmark_all_delete_button), style = LocalTypography.current.body2)
             }
         )
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
-            BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = "상품이 없습니다.")
+            BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = stringResource(id = com.photo.presentation_core.R.string.bookmark_empty))
             is BookmarkContract.BookmarkState.Success ->{
                 if (isDualPane) {
                     DualPaneLayout(

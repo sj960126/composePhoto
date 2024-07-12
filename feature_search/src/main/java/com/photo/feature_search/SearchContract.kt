@@ -1,4 +1,4 @@
-package com.photo.feature_list
+package com.photo.feature_search
 
 import androidx.paging.PagingData
 import com.photo.domain.common.entities.PhotoEntities
@@ -32,6 +32,6 @@ class SearchContract {
     }
 
     sealed class SearchSideEffect : UiSideEffect {
-        data class ShowToast(val message : String) : SearchSideEffect()
+        data class ShowToast(val id : Int) : SearchSideEffect()
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_label">Search</string>
+    <string name="search_empty_hint">Please enter a search term.</string>
+    <string name="error_message">An error occurred.</string>
+    <string name="bookmark_save">Save Bookmark</string>
+    <string name="bookmark_remove">Remove Bookmark</string>
+    <string name="bookmark_remove_empty">There are no bookmarks to delete.</string>
+    <string name="bookmark_all_delete">All bookmarks have been deleted.</string>
+    <string name="bookmark_all_delete_button">Delete Bookmarks</string>
+    <string name="bookmark_empty">There are no bookmarks.</string>
+    <string name="bookmark_search_label">Collection Search</string>
+    <string name="bookmark_search_hint">Please search your collection.</string>
+</resources>

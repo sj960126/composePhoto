@@ -50,7 +50,7 @@ class BookmarkViewModel @Inject constructor(
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             if(!item.thumbnailUrl.isNullOrEmpty())removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
-            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("북마크 취소") }
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove) }
             getBookmarkList()
         }
     }
@@ -59,7 +59,7 @@ class BookmarkViewModel @Inject constructor(
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             addBookmarkUseCase.invoke(item)
-            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("북마크 저장") }
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
             getBookmarkList()
         }
     }
@@ -76,11 +76,11 @@ class BookmarkViewModel @Inject constructor(
 
     private fun clearBookmark(){
         if(currentState.state is BookmarkContract.BookmarkState.Empty) {
-            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("삭제할 북마크가 없어요") }
+            setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove_empty) }
         } else {
             viewModelScope.launch {
                 clearBookmarkUseCase.invoke()
-                setEffect { BookmarkContract.BookmarkSideEffect.ShowToast("전체 삭제했습니다.") }
+                setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_all_delete) }
                 setState { copy(BookmarkContract.BookmarkState.Empty) }
             }
         }

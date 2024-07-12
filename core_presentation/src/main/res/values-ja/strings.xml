@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_label">検索</string>
+    <string name="search_empty_hint">検索語を入力してください。</string>
+    <string name="error_message">エラーが発生しました。</string>
+    <string name="bookmark_save">ブックマークを保存</string>
+    <string name="bookmark_remove">ブックマークを削除</string>
+    <string name="bookmark_remove_empty">削除するブックマークはありません。</string>
+    <string name="bookmark_all_delete">すべてのブックマークが削除されました。</string>
+    <string name="bookmark_all_delete_button">ブックマークを削除</string>
+    <string name="bookmark_empty">ブックマークはありません。</string>
+    <string name="bookmark_search_label">コレクション検索</string>
+    <string name="bookmark_search_hint">コレクションを検索してください。</string>
+</resources>
