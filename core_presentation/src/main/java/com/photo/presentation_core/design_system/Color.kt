@@ -1,6 +1,5 @@
 package com.photo.presentation_core.design_system
 
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 

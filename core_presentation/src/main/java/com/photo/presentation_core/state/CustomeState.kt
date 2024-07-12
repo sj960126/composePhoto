@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.compose.runtime.*
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
-import androidx.window.layout.WindowLayoutInfo
 import kotlinx.coroutines.launch
 
 @Composable

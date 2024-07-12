@@ -5,10 +5,9 @@ import android.content.Context
 import android.content.res.Configuration
 import java.util.*
 
-fun updateLocale(context: Context, languageCode: String) {
+fun changeLanguage(context: Context, languageCode: String) {
     val locale = Locale(languageCode).apply { Locale.setDefault(this) }
     val config = Configuration(context.resources.configuration).apply { setLocale(locale) }
-
     context.resources.updateConfiguration(config, context.resources.displayMetrics)
     (context as Activity).recreate()
 }

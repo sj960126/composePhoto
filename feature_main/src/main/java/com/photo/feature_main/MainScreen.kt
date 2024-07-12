@@ -1,6 +1,5 @@
 package com.photo.feature_main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -22,13 +23,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.window.layout.FoldingFeature
+import com.google.gson.Gson
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.feature_bookmark.BookmarkScreen
 import com.photo.feature_detail.DetailScreen
+import com.photo.feature_search.SearchScreen
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
-import com.google.gson.Gson
-import com.photo.feature_search.SearchScreen
 import com.photo.presentation_core.language.LanguageDefine
 import com.photo.presentation_core.state.rememberFoldableState
 
@@ -51,7 +52,6 @@ fun MainScreen(onLanguageChange: (String) -> Unit) {
             }
         }
     }
-
 
     LaunchedEffect(navBackStackEntry?.destination?.route) {
         if(navBackStackEntry?.destination?.route == null) return@LaunchedEffect
@@ -139,7 +139,7 @@ fun TopBar(titleRes: Int, onLanguageChange: (String) -> Unit) {
 
         Box {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                Icon(Icons.Default.MoreVert, contentDescription = null, tint = LocalColors.current.tintWhite)
             }
 
             DropdownMenu(

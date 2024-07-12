@@ -22,14 +22,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.rememberImagePainter
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.design_system.LocalColors
 import com.photo.presentation_core.design_system.LocalTypography
-import com.photo.presentation_core.extension.convertPriceFormat
 import com.photo.presentation_core.extension.noRippleClickable
 import com.google.gson.Gson
 

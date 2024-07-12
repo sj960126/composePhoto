@@ -4,10 +4,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
-import java.util.*
 
 fun Int.textDp(density: Density?): TextUnit =
     if(density == null) {
@@ -17,15 +13,5 @@ fun Int.textDp(density: Density?): TextUnit =
             this@textDp.dp.toSp()
         }
     }
-
-
-fun Int.convertPriceFormat(): String{
-    val format = NumberFormat.getCurrencyInstance(Locale.KOREA) as DecimalFormat
-    val customFormatSymbols = DecimalFormatSymbols(Locale.KOREA)
-    customFormatSymbols.currencySymbol = ""
-    format.decimalFormatSymbols = customFormatSymbols
-    format.negativePrefix = "-"
-    return format.format(this)+"원"
-}
 
 
