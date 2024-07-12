@@ -1,7 +1,7 @@
 package com.photo.feature_detail
 
 import androidx.lifecycle.viewModelScope
-import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
+import com.photo.domain.bookmark.usecase.InsertBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.base.BaseViewModel
@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
-    private val addBookmarkUseCase : AddBookmarkUseCase
+    private val insertBookmarkUseCase : InsertBookmarkUseCase
 ) : BaseViewModel<DetailContract.DetailEvent,DetailContract.DetailUiState,DetailContract.DetailSideEffect>(){
 
     override fun createInitialState(): DetailContract.DetailUiState = DetailContract.DetailUiState(state = DetailContract.DetailState.Loading)
@@ -39,7 +39,7 @@ class DetailViewModel @Inject constructor(
 
     private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            addBookmarkUseCase.invoke(item)
+            insertBookmarkUseCase.invoke(item)
             setEffect { DetailContract.DetailSideEffect.ShowToast("북마크 저장") }
         }
     }

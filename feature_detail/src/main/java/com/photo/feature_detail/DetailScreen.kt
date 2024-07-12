@@ -1,23 +1,19 @@
 package com.photo.feature_detail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.presentation_core.component.BookmarkIcon
-import com.photo.presentation_core.design_system.LocalColors
-import com.photo.presentation_core.design_system.LocalTypography
-import com.photo.presentation_core.extension.convertPriceFormat
 import com.photo.presentation_core.extension.showToast
 
 

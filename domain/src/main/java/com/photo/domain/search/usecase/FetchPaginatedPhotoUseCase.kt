@@ -6,8 +6,8 @@ import com.photo.domain.search.repository.ISearchRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetSearchPhotoList @Inject constructor(
+class FetchPaginatedPhotoUseCase @Inject constructor(
     private val repository: ISearchRepository
 ) {
-    operator fun invoke(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = repository.getPhotoList(keyword = keyWord)
+    operator fun invoke(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = repository.fetchPaginatedPhotos(keyword = keyWord)
 }

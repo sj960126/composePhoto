@@ -8,9 +8,9 @@ import com.photo.domain.common.entities.PhotoEntities
 import javax.inject.Inject
 
 class BookmarkRepositoryImp @Inject constructor(private val localDataSource: BookmarkLocalDataSource) : IBookmarkRepository {
-    override suspend fun getBookmarks(): List<PhotoEntities.Document> = localDataSource.getBookmarks().map { it.toPhotoEntities() }
-    override suspend fun addBookmark(document: PhotoEntities.Document) = localDataSource.addBookmark(document.toBookMarkEntities())
+    override suspend fun fetchAllBookmarks(): List<PhotoEntities.Document> = localDataSource.fetchAllBookmarks().map { it.toPhotoEntities() }
+    override suspend fun insertBookmark(document: PhotoEntities.Document) = localDataSource.insertBookmark(document.toBookMarkEntities())
     override suspend fun removeBookmark(title: String) =  localDataSource.removeBookmark(title)
-    override suspend fun clearBookmark()  = localDataSource.clearBookmark()
-    override suspend fun getByCollection(keyword: String) : List<PhotoEntities.Document> = localDataSource.getByCollection(keyword = keyword).map { it.toPhotoEntities() }
+    override suspend fun clearAllBookmarks()  = localDataSource.clearAllBookmarks()
+    override suspend fun fetchBookmarksByKeyword(keyword: String) : List<PhotoEntities.Document> = localDataSource.fetchBookmarksByKeyword(keyword = keyword).map { it.toPhotoEntities() }
 }

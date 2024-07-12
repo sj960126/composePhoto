@@ -19,7 +19,7 @@ class SearchRepositoryImp @Inject constructor(
     companion object{
         private const val PAGING_SIZE = 20
     }
-    override fun getPhotoList(keyword : String): Flow<PagingData<PhotoEntities.Document>> =
+    override fun fetchPaginatedPhotos(keyword : String): Flow<PagingData<PhotoEntities.Document>> =
         Pager(
             config = PagingConfig(
                 pageSize = PAGING_SIZE,
@@ -30,7 +30,7 @@ class SearchRepositoryImp @Inject constructor(
                 SearchBookPagingSource(
                     remoteDataSource = remoteDataSource,
                     query = keyword,
-                    bookmarkList = runBlocking {bookmarkLocalDataSource.getAllTitles()}
+                    bookmarkList = runBlocking {bookmarkLocalDataSource.fetchAllBookmarkThumbnail()}
                 )
             }
         ).flow

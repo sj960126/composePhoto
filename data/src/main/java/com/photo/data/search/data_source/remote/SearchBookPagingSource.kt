@@ -1,6 +1,5 @@
 package com.photo.data.search.data_source.remote
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.photo.data.search.mapper.PhotoMapper
@@ -23,7 +22,7 @@ class SearchBookPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoEntities.Document> {
         return try {
             val pageNumber = params.key ?: 1
-            val response = remoteDataSource.getSearchBook(SearchPhotoRequest(query = query, page = pageNumber, size = params.loadSize))
+            val response = remoteDataSource.fetchPhotos(SearchPhotoRequest(query = query, page = pageNumber, size = params.loadSize))
             LoadResult.Page(
                 data = PhotoMapper.toDomain(response, bookMarkList = bookmarkList).documents,
                 prevKey = if (pageNumber == 1) null else pageNumber - 1,

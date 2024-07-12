@@ -11,7 +11,7 @@ interface ISearchApi {
     }
 
     @GET(PHOTO)
-    suspend fun getSearchPhoto(
+    suspend fun fetchPhotos(
         @Query("query") query : String,
         @Query("sort") sort : String?,
         @Query("page") page : Int?,

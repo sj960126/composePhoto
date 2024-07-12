@@ -5,5 +5,5 @@ import com.photo.domain.common.entities.PhotoEntities
 import kotlinx.coroutines.flow.Flow
 
 interface ISearchRepository {
-    fun getPhotoList(keyword : String) : Flow<PagingData<PhotoEntities.Document>>
+    fun fetchPaginatedPhotos(keyword : String) : Flow<PagingData<PhotoEntities.Document>>
 }

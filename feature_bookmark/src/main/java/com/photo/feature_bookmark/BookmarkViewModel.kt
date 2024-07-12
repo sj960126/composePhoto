@@ -14,11 +14,11 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val getBookmarkUseCase: GetBookmarksUseCase,
+    private val fetchAllBookmarksUseCase : FetchAllBookmarksUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
-    private val addBookmarkUseCase : AddBookmarkUseCase,
-    private val clearBookmarkUseCase: ClearBookmarkUseCase,
-    private val searchCollectionBookmarkUseCase: SearchCollectionBookmarkUseCase
+    private val insertBookmarkUseCase : InsertBookmarkUseCase,
+    private val clearAllBookmarkUseCase: ClearAllBookmarkUseCase,
+    private val fetchBookmarksByKeywordUseCase: FetchBookmarksByKeywordUseCase
 ) : BaseViewModel<BookmarkContract.BookmarkEvent,BookmarkContract.BookmarkUiState,BookmarkContract.BookmarkSideEffect>(){
     override fun createInitialState(): BookmarkContract.BookmarkUiState = BookmarkContract.BookmarkUiState(state = BookmarkContract.BookmarkState.Loading)
 
@@ -38,7 +38,7 @@ class BookmarkViewModel @Inject constructor(
 
     private fun getBookmarkList(){
         viewModelScope.launch {
-            getBookmarkUseCase.invoke().let { bookmarkList ->
+            fetchAllBookmarksUseCase.invoke().let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(itemList = bookmarkList))
                 }
@@ -58,7 +58,7 @@ class BookmarkViewModel @Inject constructor(
     private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
-            addBookmarkUseCase.invoke(item)
+            insertBookmarkUseCase.invoke(item)
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
             getBookmarkList()
         }
@@ -66,7 +66,7 @@ class BookmarkViewModel @Inject constructor(
     private fun searchBookmark(keyword :String){
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
-            searchCollectionBookmarkUseCase.invoke(keyword).let { bookmarkList ->
+            fetchBookmarksByKeywordUseCase.invoke(keyword).let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(itemList = bookmarkList))
                 }
@@ -79,7 +79,7 @@ class BookmarkViewModel @Inject constructor(
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove_empty) }
         } else {
             viewModelScope.launch {
-                clearBookmarkUseCase.invoke()
+                clearAllBookmarkUseCase.invoke()
                 setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_all_delete) }
                 setState { copy(BookmarkContract.BookmarkState.Empty) }
             }

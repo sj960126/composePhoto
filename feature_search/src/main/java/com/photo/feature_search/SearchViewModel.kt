@@ -1,14 +1,12 @@
 package com.photo.feature_search
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.photo.domain.bookmark.usecase.AddBookmarkUseCase
+import com.photo.domain.bookmark.usecase.InsertBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.domain.search.usecase.GetSearchPhotoList
-import com.photo.feature_list.R
+import com.photo.domain.search.usecase.FetchPaginatedPhotoUseCase
 import com.photo.presentation_core.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -17,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val getBookListUseCase: GetSearchPhotoList,
-    private val addBookmarkUseCase : AddBookmarkUseCase,
+    private val fetchPaginatedPhotoUseCase: FetchPaginatedPhotoUseCase,
+    private val insertBookmarkUseCase : InsertBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
 ) : BaseViewModel<SearchContract.SearchEvent, SearchContract.SearchUiState, SearchContract.SearchSideEffect>() {
 
@@ -29,7 +27,7 @@ class SearchViewModel @Inject constructor(
             is SearchContract.SearchEvent.Search -> {
                 if(event.keyWord.isNotBlank()){
                     viewModelScope.launch {
-                        getSearchResults(keyWord = event.keyWord)
+                        fetchPaginatedPhotos(keyWord = event.keyWord)
                             .cachedIn(viewModelScope)
                             .collectLatest { pagingData ->
                                 setState {
@@ -57,10 +55,10 @@ class SearchViewModel @Inject constructor(
 
     private fun addBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            addBookmarkUseCase.invoke(item)
+            insertBookmarkUseCase.invoke(item)
             setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
         }
     }
 
-    private fun getSearchResults(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = getBookListUseCase(keyWord = keyWord)
+    private fun fetchPaginatedPhotos(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = fetchPaginatedPhotoUseCase(keyWord = keyWord)
 }

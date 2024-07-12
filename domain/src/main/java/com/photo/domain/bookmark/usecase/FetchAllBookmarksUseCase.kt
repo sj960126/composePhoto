@@ -5,6 +5,6 @@ import com.photo.domain.common.entities.PhotoEntities
 import javax.inject.Inject
 
 
-class GetBookmarksUseCase @Inject constructor(private val repository: IBookmarkRepository) {
-    suspend fun invoke(): List<PhotoEntities.Document> = repository.getBookmarks()
+class FetchAllBookmarksUseCase @Inject constructor(private val repository: IBookmarkRepository) {
+    suspend fun invoke(): List<PhotoEntities.Document> = repository.fetchAllBookmarks()
 }
