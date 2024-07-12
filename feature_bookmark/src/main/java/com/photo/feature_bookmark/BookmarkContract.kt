@@ -10,7 +10,7 @@ class BookmarkContract {
         object GetBookmarkList : BookmarkEvent()
         object ClearBookmark : BookmarkEvent()
         data class RemoveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
-        data class AddBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
+        data class SaveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
         data class Search(val keyword : String) : BookmarkEvent()
 
     }

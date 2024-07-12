@@ -71,7 +71,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
                         itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.AddBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
+                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.SaveBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
                         }
                     )
                 } else {
@@ -79,7 +79,7 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
                         itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.AddBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
+                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.SaveBookmark(it.first) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first))
                         }
                     )
                 }

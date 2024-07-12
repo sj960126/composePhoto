@@ -23,20 +23,20 @@ class BookmarkViewModel @Inject constructor(
     override fun createInitialState(): BookmarkContract.BookmarkUiState = BookmarkContract.BookmarkUiState(state = BookmarkContract.BookmarkState.Loading)
 
     init {
-        getBookmarkList()
+        fetchALlBookmarks()
     }
 
     override fun handleEvent(event: BookmarkContract.BookmarkEvent) {
         when(event){
-            BookmarkContract.BookmarkEvent.GetBookmarkList -> getBookmarkList()
+            BookmarkContract.BookmarkEvent.GetBookmarkList -> fetchALlBookmarks()
             BookmarkContract.BookmarkEvent.ClearBookmark -> clearBookmark()
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
-            is BookmarkContract.BookmarkEvent.AddBookmark -> addBookmark(item = event.item)
+            is BookmarkContract.BookmarkEvent.SaveBookmark -> saveBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.Search -> searchBookmark(event.keyword)
         }
     }
 
-    private fun getBookmarkList(){
+    private fun fetchALlBookmarks(){
         viewModelScope.launch {
             fetchAllBookmarksUseCase.invoke().let { bookmarkList ->
                 setState {
@@ -51,16 +51,16 @@ class BookmarkViewModel @Inject constructor(
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             if(!item.thumbnailUrl.isNullOrEmpty())removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove) }
-            getBookmarkList()
+            fetchALlBookmarks()
         }
     }
 
-    private fun addBookmark(item: PhotoEntities.Document){
+    private fun saveBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             setState { copy(BookmarkContract.BookmarkState.Loading) }
             insertBookmarkUseCase.invoke(item)
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
-            getBookmarkList()
+            fetchALlBookmarks()
         }
     }
     private fun searchBookmark(keyword :String){

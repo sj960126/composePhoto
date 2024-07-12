@@ -11,7 +11,7 @@ class SearchContract {
     sealed class SearchEvent : UiEvent {
         data class Search(val keyWord : String) : SearchEvent()
         data class RemoveBookmark(val item : PhotoEntities.Document) : SearchEvent()
-        data class AddBookmark(val item : PhotoEntities.Document) : SearchEvent()
+        data class SaveBookmark(val item : PhotoEntities.Document) : SearchEvent()
         data class ShowErrorLayout(val message: String) : SearchEvent()
         data class ShowEmptyLayout(val message: String) : SearchEvent()
     }

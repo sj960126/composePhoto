@@ -39,7 +39,7 @@ class SearchViewModel @Inject constructor(
                     setState { copy(state = SearchContract.SearchState.Init) }
                 }
             }
-            is SearchContract.SearchEvent.AddBookmark -> addBookmark(item = event.item)
+            is SearchContract.SearchEvent.SaveBookmark -> saveBookmark(item = event.item)
             is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is SearchContract.SearchEvent.ShowErrorLayout -> setState { copy(SearchContract.SearchState.Error(message = event.message)) }
             is SearchContract.SearchEvent.ShowEmptyLayout -> setState { copy(SearchContract.SearchState.Empty(message = event.message)) }
@@ -53,7 +53,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun addBookmark(item: PhotoEntities.Document){
+    private fun saveBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             insertBookmarkUseCase.invoke(item)
             setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }

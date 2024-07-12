@@ -21,14 +21,16 @@ import com.photo.presentation_core.extension.showToast
 fun DetailScreen(bookDetail: PhotoEntities.Document, detailViewModel: DetailViewModel = hiltViewModel()) {
     val viewUiState by detailViewModel.uiState.collectAsState()
     val context = LocalContext.current
+
     LaunchedEffect(bookDetail) {
         detailViewModel.setEvent(DetailContract.DetailEvent.Rending(bookDetail))
     }
+
     LaunchedEffect(detailViewModel.effect){
         detailViewModel.effect.collect { effect ->
             when (effect) {
                 is DetailContract.DetailSideEffect.ShowToast -> {
-                    context.showToast(effect.message)
+                    context.showToast(context.getString(effect.id))
                 }
             }
         }
@@ -37,34 +39,36 @@ fun DetailScreen(bookDetail: PhotoEntities.Document, detailViewModel: DetailView
         DetailContract.DetailState.Loading ->{}
         is DetailContract.DetailState.Success ->{
             val item = (viewUiState.state as DetailContract.DetailState.Success).item
-            DetailItem(bookDetail = item, onBookmarkClick = { detailViewModel.setEvent(if(it) DetailContract.DetailEvent.AddBookmark(item) else DetailContract.DetailEvent.RemoveBookmark(item))})
+            DetailItem(bookDetail = item, onBookmarkClick = { detailViewModel.setEvent(if(it) DetailContract.DetailEvent.SaveBookmark(item) else DetailContract.DetailEvent.RemoveBookmark(item))})
         }
     }
 }
 
 @Composable
-fun DetailItem(bookDetail: PhotoEntities.Document, onBookmarkClick : (Boolean) -> Unit){
+fun DetailItem(
+    bookDetail: PhotoEntities.Document,
+    onBookmarkClick: (Boolean) -> Unit
+) {
     var isBookmarked by remember { mutableStateOf(bookDetail.isBookMark) }
-    Box(modifier = Modifier.fillMaxSize()){
+
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = rememberImagePainter(data = bookDetail.thumbnailUrl, builder = {
-                crossfade(true)
-            }),
+            painter = rememberImagePainter(data = bookDetail.thumbnailUrl),
             contentDescription = null,
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
         )
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopEnd,
+            contentAlignment = Alignment.TopEnd
         ) {
             BookmarkIcon(
                 isBookmarked = isBookmarked,
                 onBookmarkClick = {
                     isBookmarked = !isBookmarked
-                    onBookmarkClick.invoke(!bookDetail.isBookMark)
+                    onBookmarkClick(isBookmarked)
                 }
             )
         }

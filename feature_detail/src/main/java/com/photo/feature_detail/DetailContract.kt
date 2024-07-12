@@ -9,7 +9,7 @@ class DetailContract {
     sealed class DetailEvent : UiEvent {
         data class Rending(val item : PhotoEntities.Document) : DetailEvent()
         data class RemoveBookmark(val item : PhotoEntities.Document) : DetailEvent()
-        data class AddBookmark(val item : PhotoEntities.Document) : DetailEvent()
+        data class SaveBookmark(val item : PhotoEntities.Document) : DetailEvent()
     }
 
     data class DetailUiState(
@@ -22,7 +22,7 @@ class DetailContract {
     }
 
     sealed class DetailSideEffect : UiSideEffect {
-        data class ShowToast(val message : String) : DetailSideEffect()
+        data class ShowToast(val id : Int) : DetailSideEffect()
     }
 
 }

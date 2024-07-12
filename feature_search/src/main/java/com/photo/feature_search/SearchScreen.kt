@@ -85,7 +85,7 @@ private fun LoadItemsHandler(
                     onItemClick = onItemClick,
                     onBookmarkClick = {
                         searchViewModel.handleEvent(
-                            if (it.second) SearchContract.SearchEvent.AddBookmark(it.first)
+                            if (it.second) SearchContract.SearchEvent.SaveBookmark(it.first)
                             else SearchContract.SearchEvent.RemoveBookmark(it.first)
                         )
                     }
@@ -96,7 +96,7 @@ private fun LoadItemsHandler(
                     onItemClick = onItemClick,
                     onBookmarkClick = {
                         searchViewModel.handleEvent(
-                            if (it.second) SearchContract.SearchEvent.AddBookmark(it.first)
+                            if (it.second) SearchContract.SearchEvent.SaveBookmark(it.first)
                             else SearchContract.SearchEvent.RemoveBookmark(it.first)
                         )
                     }

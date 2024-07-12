@@ -20,7 +20,7 @@ class DetailViewModel @Inject constructor(
     override fun handleEvent(event: DetailContract.DetailEvent) {
         when(event){
             is DetailContract.DetailEvent.Rending ->  rendingItem(item = event.item)
-            is DetailContract.DetailEvent.AddBookmark -> addBookmark(item = event.item)
+            is DetailContract.DetailEvent.SaveBookmark -> saveBookmark(item = event.item)
             is DetailContract.DetailEvent.RemoveBookmark -> removeBookmark(item = event.item)
         }
     }
@@ -33,14 +33,15 @@ class DetailViewModel @Inject constructor(
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             if(!item.thumbnailUrl.isNullOrEmpty())removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
-            setEffect { DetailContract.DetailSideEffect.ShowToast("북마크 취소") }
+            setEffect { DetailContract.DetailSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove) }
+
         }
     }
 
-    private fun addBookmark(item: PhotoEntities.Document){
+    private fun saveBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             insertBookmarkUseCase.invoke(item)
-            setEffect { DetailContract.DetailSideEffect.ShowToast("북마크 저장") }
+            setEffect { DetailContract.DetailSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
         }
     }
 
