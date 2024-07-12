@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_label">검색</string>
+    <string name="bookmark_label">북마크</string>
+    <string name="detail_label">상세페이지</string>
     <string name="search_empty_hint">검색어를 입력해주세요.</string>
     <string name="error_message">에러 발생</string>
     <string name="bookmark_save">북마크 저장</string>

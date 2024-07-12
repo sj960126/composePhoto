@@ -1,5 +1,6 @@
 package com.photo.feature_main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -36,7 +38,7 @@ fun MainScreen(onLanguageChange: (String) -> Unit) {
     val selectedTabIndex = rememberSaveable { mutableStateOf(TabDefine.Search.ordinal) }
     val bottomBarState = rememberSaveable { mutableStateOf(true) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    var topBarTitle by rememberSaveable { mutableStateOf(MainNavigationConst.Search.topBarTitle) }
+    var topBarTitleRes by rememberSaveable { mutableStateOf(MainNavigationConst.Search.topBarTitleRes) }
     val foldableState by rememberFoldableState(LocalContext.current)
     val isDualPane = foldableState?.state == FoldingFeature.State.HALF_OPENED && foldableState?.isSeparating == true
 
@@ -52,17 +54,18 @@ fun MainScreen(onLanguageChange: (String) -> Unit) {
 
 
     LaunchedEffect(navBackStackEntry?.destination?.route) {
+        if(navBackStackEntry?.destination?.route == null) return@LaunchedEffect
         bottomBarState.value = when (navBackStackEntry?.destination?.route) {
             MainNavigationConst.Search.route,
             MainNavigationConst.Bookmark.route -> true
             else -> false
         }
-        topBarTitle = MainNavigationConst.getTopBarTitle(navBackStackEntry?.destination?.route?:"")
+        topBarTitleRes = MainNavigationConst.getTopBarTitleRes(navBackStackEntry?.destination?.route ?:"") ?:0
     }
 
     Scaffold(
         topBar = {
-            TopBar(title = topBarTitle, onLanguageChange = onLanguageChange)
+            TopBar(titleRes = topBarTitleRes, onLanguageChange = onLanguageChange)
         },
         bottomBar = {
             if (bottomBarState.value) {
@@ -122,11 +125,11 @@ private fun MainScreenNavigation(
 }
 
 @Composable
-fun TopBar(title: String, onLanguageChange: (String) -> Unit) {
+fun TopBar(titleRes: Int, onLanguageChange: (String) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(backgroundColor = LocalColors.current.primary) {
         Text(
-            text = title,
+            text = stringResource(id = titleRes),
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp),
@@ -162,7 +165,7 @@ private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
             Tab(
                 selected = selectedTabIndex == index,
                 onClick = { onTabSelected(index) },
-                text = { Text(text = tab.title, style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
+                text = { Text(text = stringResource(id = tab.titleRes), style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
             )
         }
     }

@@ -2,35 +2,34 @@ package com.photo.feature_main
 
 sealed class MainNavigationConst(
     val route: String,
-    val topBarTitle : String
+    val topBarTitleRes : Int
 ) {
     object Search : MainNavigationConst(
         route = "Search",
-        topBarTitle = "검색"
+        topBarTitleRes = com.photo.presentation_core.R.string.search_label
     )
     object Bookmark : MainNavigationConst(
         route = "Bookmark",
-        topBarTitle = "북마크"
+        topBarTitleRes = com.photo.presentation_core.R.string.bookmark_label
     )
     object Detail : MainNavigationConst(
         route = "Detail",
-        topBarTitle = "상세페이지"
+        topBarTitleRes = com.photo.presentation_core.R.string.detail_label
     )
 
     companion object {
-        fun getTopBarTitle(route: String): String = when (route) {
-            Search.route -> Search.topBarTitle
-            Bookmark.route -> Bookmark.topBarTitle
-            Detail.route -> Detail.topBarTitle
-            else -> ""
+        fun getTopBarTitleRes(route: String): Int? = when {
+            route.startsWith(Search.route) -> Search.topBarTitleRes
+            route.startsWith(Bookmark.route) -> Bookmark.topBarTitleRes
+            route.startsWith(Detail.route) -> Detail.topBarTitleRes
+            else -> null
         }
-
     }
 }
 
 interface MainNavigation {
     fun navigateToDetail(item : String)
 }
-enum class TabDefine(val title : String){
-    Search("검색"),Bookmark("즐겨찾기")
+enum class TabDefine(val titleRes : Int){
+    Search(com.photo.presentation_core.R.string.search_label),Bookmark(com.photo.presentation_core.R.string.bookmark_label)
 }
