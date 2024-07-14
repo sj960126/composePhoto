@@ -8,10 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * @author songhyeonsu
- * Created 6/28/24 at 4:09 PM
- */
+
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
     private val fetchAllBookmarksUseCase : FetchAllBookmarksUseCase,
