@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 
 class FetchAllBookmarksUseCase @Inject constructor(private val repository: IBookmarkRepository) {
-    suspend fun invoke(): List<PhotoEntities.Document> = repository.fetchAllBookmarks()
+    suspend operator fun invoke(): List<PhotoEntities.Document> = repository.fetchAllBookmarks()
 }

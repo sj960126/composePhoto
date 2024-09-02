@@ -47,7 +47,7 @@ class SearchViewModel @Inject constructor(
     }
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            if(!item.thumbnailUrl.isNullOrEmpty()) removeBookmarkUseCase.invoke(item.thumbnailUrl?:"")
+            if(!item.thumbnailUrl.isNullOrEmpty()) removeBookmarkUseCase(item.thumbnailUrl?:"")
             setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_remove) }
 
         }
@@ -55,7 +55,7 @@ class SearchViewModel @Inject constructor(
 
     private fun saveBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            insertBookmarkUseCase.invoke(item)
+            insertBookmarkUseCase(item)
             setEffect { SearchContract.SearchSideEffect.ShowToast(com.photo.presentation_core.R.string.bookmark_save) }
         }
     }
