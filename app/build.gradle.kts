@@ -34,12 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
-    }
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -48,12 +42,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
     implementation(project(":feature:main"))
-    implementation(project(":data"))
-    implementation(project(":domain"))
     implementationKotlin()
     implementationAndroidXCore()
-    implementationCompose()
     implementationHilt()
 }

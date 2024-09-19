@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Photo"
         tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name="com.photo.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Photo">
