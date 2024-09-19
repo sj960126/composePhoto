@@ -3,8 +3,8 @@ package com.photo.bookmark
 import androidx.lifecycle.viewModelScope
 import com.photo.domain.bookmark.usecase.*
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.R
-import com.photo.presentation_core.base.BaseViewModel
+import com.photo.ui.R
+import com.photo.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

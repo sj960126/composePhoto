@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core_presentation"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:search"))
     implementation(project(":feature:detail"))
     implementation(project(":feature:bookmark"))

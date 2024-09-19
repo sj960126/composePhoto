@@ -1,20 +1,22 @@
 package com.photo.main
 
+import com.photo.ui.R
+
 sealed class MainNavigationConst(
     val route: String,
     val topBarTitleRes : Int
 ) {
     object Search : MainNavigationConst(
         route = "Search",
-        topBarTitleRes = com.photo.presentation_core.R.string.search_label
+        topBarTitleRes = R.string.search_label
     )
     object Bookmark : MainNavigationConst(
         route = "Bookmark",
-        topBarTitleRes = com.photo.presentation_core.R.string.bookmark_label
+        topBarTitleRes = R.string.bookmark_label
     )
     object Detail : MainNavigationConst(
         route = "Detail",
-        topBarTitleRes = com.photo.presentation_core.R.string.detail_label
+        topBarTitleRes = R.string.detail_label
     )
 
     companion object {
@@ -31,5 +33,5 @@ interface MainNavigation {
     fun navigateToDetail(item : String)
 }
 enum class TabDefine(val titleRes : Int){
-    Search(com.photo.presentation_core.R.string.search_label),Bookmark(com.photo.presentation_core.R.string.bookmark_label)
+    Search(R.string.search_label),Bookmark(R.string.bookmark_label)
 }

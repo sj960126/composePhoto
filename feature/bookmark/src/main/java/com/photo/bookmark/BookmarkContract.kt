@@ -1,9 +1,9 @@
 package com.photo.bookmark
 
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.base.UiEvent
-import com.photo.presentation_core.base.UiSideEffect
-import com.photo.presentation_core.base.UiState
+import com.photo.base.UiEvent
+import com.photo.base.UiSideEffect
+import com.photo.base.UiState
 
 class BookmarkContract {
     sealed class BookmarkEvent : UiEvent {

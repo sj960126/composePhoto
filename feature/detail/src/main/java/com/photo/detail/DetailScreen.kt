@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.component.BookmarkIcon
-import com.photo.presentation_core.extension.showToast
+import com.photo.component.BookmarkIcon
+import com.photo.extension.showToast
 
 
 @Composable
@@ -64,7 +64,7 @@ fun DetailItem(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.TopEnd
         ) {
-            BookmarkIcon(
+            com.photo.component.BookmarkIcon(
                 isBookmarked = isBookmarked,
                 onBookmarkClick = {
                     isBookmarked = !isBookmarked

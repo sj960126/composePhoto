@@ -41,7 +41,7 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":core_presentation"))
+    implementation(project(":core:ui"))
     implementationKotlin()
     implementationCompose()
     implementaionCoroutines()

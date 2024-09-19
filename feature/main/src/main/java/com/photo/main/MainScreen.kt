@@ -26,10 +26,10 @@ import com.photo.domain.common.entities.PhotoEntities
 import com.photo.bookmark.BookmarkScreen
 import com.photo.detail.DetailScreen
 import com.photo.search.SearchScreen
-import com.photo.presentation_core.design_system.LocalColors
-import com.photo.presentation_core.design_system.LocalTypography
-import com.photo.presentation_core.language.LanguageDefine
-import com.photo.presentation_core.state.rememberFoldableState
+import com.photo.design_system.LocalColors
+import com.photo.design_system.LocalTypography
+import com.photo.language.LanguageDefine
+import com.photo.state.rememberFoldableState
 
 @Composable
 fun MainScreen(onLanguageChange: (String) -> Unit) {
@@ -174,7 +174,7 @@ private fun BottomBar(selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
             Tab(
                 selected = selectedTabIndex == index,
                 onClick = { onTabSelected(index) },
-                text = { Text(text = stringResource(id = tab.titleRes), style = if(selectedTabIndex == index)LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
+                text = { Text(text = stringResource(id = tab.titleRes), style = if(selectedTabIndex == index) LocalTypography.current.caption1 else LocalTypography.current.caption2 ) }
             )
         }
     }

@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core_presentation"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:main"))
     implementation(project(":data"))
     implementation(project(":domain"))

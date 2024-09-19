@@ -7,8 +7,8 @@ import com.photo.domain.bookmark.usecase.InsertBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.domain.search.usecase.FetchPaginatedPhotoUseCase
-import com.photo.presentation_core.R
-import com.photo.presentation_core.base.BaseViewModel
+import com.photo.ui.R
+import com.photo.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

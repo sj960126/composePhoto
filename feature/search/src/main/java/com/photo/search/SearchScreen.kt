@@ -12,12 +12,12 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.photo.domain.common.entities.PhotoEntities
-import com.photo.presentation_core.R
-import com.photo.presentation_core.component.DualPaneLayout
-import com.photo.presentation_core.component.EmptyLayout
-import com.photo.presentation_core.component.SearchBarLayout
-import com.photo.presentation_core.component.SinglePaneLayout
-import com.photo.presentation_core.extension.showToast
+import com.photo.ui.R
+import com.photo.component.DualPaneLayout
+import com.photo.component.EmptyLayout
+import com.photo.component.SearchBarLayout
+import com.photo.component.SinglePaneLayout
+import com.photo.extension.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -48,9 +48,17 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
     }
 
     Column {
-        SearchBarLayout(modifier = Modifier.fillMaxWidth(), labelTitle = stringResource(id = com.photo.presentation_core.R.string.search_label), text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
+        SearchBarLayout(
+            modifier = Modifier.fillMaxWidth(),
+            labelTitle = stringResource(id = R.string.search_label),
+            text = searchKeyWord ?: "",
+            onTextChange = { searchKeyWord = it })
         when(viewUiState.state){
-            SearchContract.SearchState.Init -> EmptyLayout(title = stringResource(id =com.photo.presentation_core.R.string.search_empty_hint))
+            SearchContract.SearchState.Init -> EmptyLayout(
+                title = stringResource(
+                    id = R.string.search_empty_hint
+                )
+            )
             is SearchContract.SearchState.Empty -> EmptyLayout(title = (viewUiState.state as SearchContract.SearchState.Empty).message)
             is SearchContract.SearchState.Error -> EmptyLayout(title = (viewUiState.state as SearchContract.SearchState.Error).message)
             is SearchContract.SearchState.Load -> {

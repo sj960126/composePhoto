@@ -1,7 +1,7 @@
 package com.photo.data.di
 
-import com.photo.data_core.remote.interceptor.HeaderInterceptor
-import com.photo.data_core.remote.interceptor.LogInterceptor
+import com.photo.data.data_core.remote.interceptor.HeaderInterceptor
+import com.photo.data.data_core.remote.interceptor.LogInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -33,8 +33,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(
-        loggingInterceptor: LogInterceptor,
-        headerInterceptor: HeaderInterceptor
+        loggingInterceptor: com.photo.data.data_core.remote.interceptor.LogInterceptor,
+        headerInterceptor: com.photo.data.data_core.remote.interceptor.HeaderInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .readTimeout(60L, TimeUnit.SECONDS)
         .connectTimeout(60L, TimeUnit.SECONDS)
@@ -46,11 +46,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): LogInterceptor = LogInterceptor()
+    fun provideHttpLoggingInterceptor(): com.photo.data.data_core.remote.interceptor.LogInterceptor =
+        com.photo.data.data_core.remote.interceptor.LogInterceptor()
 
     @Provides
     @Singleton
-    fun provideHeaderInterceptor(): HeaderInterceptor = HeaderInterceptor()
+    fun provideHeaderInterceptor(): com.photo.data.data_core.remote.interceptor.HeaderInterceptor =
+        com.photo.data.data_core.remote.interceptor.HeaderInterceptor()
 
     @Provides
     @Singleton

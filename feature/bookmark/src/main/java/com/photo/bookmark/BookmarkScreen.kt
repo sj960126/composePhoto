@@ -12,13 +12,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.photo.presentation_core.component.DualPaneLayout
-import com.photo.presentation_core.component.EmptyLayout
-import com.photo.presentation_core.component.SearchBarLayout
-import com.photo.presentation_core.component.SinglePaneLayout
-import com.photo.presentation_core.design_system.LocalColors
-import com.photo.presentation_core.design_system.LocalTypography
-import com.photo.presentation_core.extension.showToast
+import com.photo.component.DualPaneLayout
+import com.photo.component.EmptyLayout
+import com.photo.component.SearchBarLayout
+import com.photo.component.SinglePaneLayout
+import com.photo.ui.R
+import com.photo.design_system.LocalColors
+import com.photo.design_system.LocalTypography
+import com.photo.extension.showToast
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -51,9 +52,13 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
     }
 
     Column{
-        SearchBarLayout(modifier = Modifier.fillMaxWidth(), hint = stringResource(id = com.photo.presentation_core.R.string.bookmark_search_hint),labelTitle = stringResource(
-            id = com.photo.presentation_core.R.string.bookmark_search_label
-        ), text = searchKeyWord?:"", onTextChange = {searchKeyWord = it})
+        SearchBarLayout(modifier = Modifier.fillMaxWidth(),
+            hint = stringResource(id = R.string.bookmark_search_hint),
+            labelTitle = stringResource(
+                id = R.string.bookmark_search_label
+            ),
+            text = searchKeyWord ?: "",
+            onTextChange = { searchKeyWord = it })
         Button(
             modifier = Modifier
                 .align(Alignment.End)
@@ -61,21 +66,26 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
             onClick = {bookmarkViewModel.setEvent(BookmarkContract.BookmarkEvent.ClearBookmark)},
             colors = ButtonDefaults.buttonColors(backgroundColor = LocalColors.current.secondary, contentColor = LocalColors.current.tintWhite),
             content = {
-                Text(text = stringResource(id = com.photo.presentation_core.R.string.bookmark_all_delete_button), style = LocalTypography.current.body2)
+                Text(text = stringResource(id = R.string.bookmark_all_delete_button), style = LocalTypography.current.body2)
             }
         )
         when(viewUiState.state){
             BookmarkContract.BookmarkState.Loading -> {}
-            BookmarkContract.BookmarkState.Empty -> EmptyLayout(title = stringResource(id = com.photo.presentation_core.R.string.bookmark_empty))
+            BookmarkContract.BookmarkState.Empty -> EmptyLayout(
+                title = stringResource(
+                    id = R.string.bookmark_empty
+                )
+            )
             is BookmarkContract.BookmarkState.Success ->{
                 if (isDualPane) {
                     DualPaneLayout(
                         itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.SaveBookmark(
-                                it.first
-                            ) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first)
+                            bookmarkViewModel.handleEvent(
+                                if (it.second) BookmarkContract.BookmarkEvent.SaveBookmark(
+                                    it.first
+                                ) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first)
                             )
                         }
                     )
@@ -84,9 +94,10 @@ fun BookmarkScreen(bookmarkViewModel: BookmarkViewModel = hiltViewModel(), isDua
                         itemList = (viewUiState.state as BookmarkContract.BookmarkState.Success).itemList,
                         onItemClick = onItemClick,
                         onBookmarkClick = {
-                            bookmarkViewModel.handleEvent(if(it.second) BookmarkContract.BookmarkEvent.SaveBookmark(
-                                it.first
-                            ) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first)
+                            bookmarkViewModel.handleEvent(
+                                if (it.second) BookmarkContract.BookmarkEvent.SaveBookmark(
+                                    it.first
+                                ) else BookmarkContract.BookmarkEvent.RemoveBookmark(it.first)
                             )
                         }
                     )
