@@ -1,27 +1,21 @@
 
 object Dependencies {
 
-    val junit = "junit:junit:4.13.2"
-    val kotlinxCoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
-    val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
-    val jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlinVersion}"
-    val kotlinBom = "org.jetbrains.kotlin:kotlin-bom:${Versions.kotlinVersion}"
+    object Kotlin {
+        val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+        val jdk7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlinVersion}"
+        val kotlinBom = "org.jetbrains.kotlin:kotlin-bom:${Versions.kotlinVersion}"
+        val imutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7"
+    }
 
     object AndroidX {
         val core = "androidx.core:core:${Versions.coreKtx}"
         val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
         val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
         val annotation = "androidx.annotation:annotation:${Versions.annotation}"
-        val coreTesting = "androidx.arch.core:core-testing:2.1.0"
-        val activity = "androidx.activity:activity-ktx:1.1.0"
-        val fragment = "androidx.fragment:fragment-ktx:1.1.0"
-        val workRuntimeKtx = "androidx.work:work-runtime-ktx:2.7.1"
         val window = "androidx.window:window:1.0.0"
     }
 
-    object Android {
-        val extensions = "android.arch.lifecycle:extensions:1.1.1"
-    }
     object Room {
         val runtime = "androidx.room:room-runtime:${Versions.room}"
         val roomKtx = "androidx.room:room-ktx:${Versions.room}"
@@ -48,7 +42,6 @@ object Dependencies {
         val composeFoundationLayout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
         val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
-        val composePreview = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
         val composeActivity = "androidx.activity:activity-compose:1.4.0"
         val composeCoil = "io.coil-kt:coil-compose:2.2.0"
         val navigation  ="androidx.navigation:navigation-compose:2.5.3"

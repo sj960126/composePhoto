@@ -7,8 +7,9 @@ fun DependencyHandler.implementationAndroidXCore() {
     add("implementation", Dependencies.AndroidX.window)
 }
 fun DependencyHandler.implementationKotlin() {
-    add("implementation", Dependencies.jdk7)
-    add("implementation", Dependencies.kotlinBom)
+    add("implementation", Dependencies.Kotlin.jdk7)
+    add("implementation", Dependencies.Kotlin.kotlinBom)
+    add("implementation", Dependencies.Kotlin.imutable)
 }
 fun DependencyHandler.implementationRetrofitOkHttp() {
     add("implementation", Dependencies.SquareUp.retrofit)
@@ -26,7 +27,7 @@ fun DependencyHandler.implementationHilt() {
     add("kaptTest", Dependencies.Hilt.androidCompiler)
 }
 fun DependencyHandler.implementaionCoroutines() {
-    add("implementation", Dependencies.coroutines)
+    add("implementation", Dependencies.Kotlin.coroutines)
 }
 fun DependencyHandler.implementaionPaging() {
     add("implementation", Dependencies.Paging.pagingRuntime)
