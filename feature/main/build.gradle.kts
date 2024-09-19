@@ -1,30 +1,26 @@
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = ConfigData.nameSpace
+    namespace = "com.photo.main"
     compileSdk = ConfigData.compileSdkVersion
 
     defaultConfig {
-        applicationId = "com.photo.photo"
         minSdk = ConfigData.minSdkVersion
-        targetSdk = ConfigData.targetSdkVersion
-        versionCode = ConfigData.versionCode
-        versionName = ConfigData.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -34,26 +30,25 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.2.0"
     }
-    packagingOptions {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+    buildFeatures {
+        compose = true
     }
 }
 
 dependencies {
     implementation(project(":core_presentation"))
-    implementation(project(":feature:main"))
+    implementation(project(":feature:search"))
+    implementation(project(":feature:detail"))
+    implementation(project(":feature:bookmark"))
     implementation(project(":data"))
     implementation(project(":domain"))
     implementationKotlin()
     implementationAndroidXCore()
     implementationCompose()
+    implementaionCoroutines()
     implementationHilt()
+    implementationGson()
 }
