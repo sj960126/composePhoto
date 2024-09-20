@@ -15,7 +15,7 @@ class BookmarkContract {
         data class RemoveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
         data class SaveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
         data class Search(val keyword : String) : BookmarkEvent()
-
+        data class ClickItem(val item : String) : BookmarkEvent()
     }
 
     @Stable
@@ -35,6 +35,7 @@ class BookmarkContract {
     }
 
     sealed class BookmarkSideEffect : UiSideEffect {
+        data class MoveDetailPage(val item : String) : BookmarkSideEffect()
         data class ShowToast(val id : Int) : BookmarkSideEffect()
     }
 

@@ -114,7 +114,7 @@ private fun MainScreenNavigation(
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen(
                 isDualPane = isDualPane,
-                onItemClick = { navigation.navigateToDetail(it) })
+                onNavigateToDetail = { navigation.navigateToDetail(it) })
         }
         composable(
             route = MainNavigationConst.Detail.route + "/{item}",

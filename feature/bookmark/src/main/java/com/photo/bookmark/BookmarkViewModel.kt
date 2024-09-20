@@ -33,6 +33,7 @@ class BookmarkViewModel @Inject constructor(
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.SaveBookmark -> saveBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.Search -> searchBookmark(event.keyword)
+            is BookmarkContract.BookmarkEvent.ClickItem -> setEffect { BookmarkContract.BookmarkSideEffect.MoveDetailPage(item = event.item) }
         }
     }
 
@@ -41,8 +42,7 @@ class BookmarkViewModel @Inject constructor(
             fetchAllBookmarksUseCase().let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = bookmarkList.toPersistentList()
-                    )
+                        itemList = bookmarkList.toPersistentList())
                     )
                 }
             }
