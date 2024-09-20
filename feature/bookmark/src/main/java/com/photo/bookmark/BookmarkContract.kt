@@ -1,9 +1,12 @@
 package com.photo.bookmark
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.base.UiEvent
 import com.photo.base.UiSideEffect
 import com.photo.base.UiState
+import kotlinx.collections.immutable.ImmutableList
 
 class BookmarkContract {
     sealed class BookmarkEvent : UiEvent {
@@ -15,6 +18,7 @@ class BookmarkContract {
 
     }
 
+    @Stable
     data class BookmarkUiState(
         val state : BookmarkState
     ) : UiState
@@ -22,8 +26,10 @@ class BookmarkContract {
     sealed class BookmarkState {
         object Loading : BookmarkState()
         object Empty : BookmarkState()
+
+        @Immutable
         data class Success(
-            val itemList : List<PhotoEntities.Document>
+            val itemList : ImmutableList<PhotoEntities.Document>
         ) : BookmarkState()
 
     }

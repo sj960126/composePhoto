@@ -6,6 +6,7 @@ import com.photo.domain.common.entities.PhotoEntities
 import com.photo.ui.R
 import com.photo.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,7 +41,7 @@ class BookmarkViewModel @Inject constructor(
             fetchAllBookmarksUseCase().let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = bookmarkList
+                        itemList = bookmarkList.toPersistentList()
                     )
                     )
                 }
@@ -71,7 +72,7 @@ class BookmarkViewModel @Inject constructor(
             fetchBookmarksByKeywordUseCase(keyword).let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkState.Empty else BookmarkContract.BookmarkState.Success(
-                        itemList = bookmarkList
+                        itemList = bookmarkList.toPersistentList()
                     )
                     )
                 }
