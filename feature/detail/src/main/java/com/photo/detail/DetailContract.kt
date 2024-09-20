@@ -1,5 +1,6 @@
 package com.photo.detail
 
+import androidx.compose.runtime.Stable
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.base.UiEvent
 import com.photo.base.UiSideEffect
@@ -12,6 +13,7 @@ class DetailContract {
         data class SaveBookmark(val item : PhotoEntities.Document) : DetailEvent()
     }
 
+    @Stable
     data class DetailUiState(
         val state : DetailState
     ) : UiState
