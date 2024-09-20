@@ -21,6 +21,7 @@ import com.photo.design_system.LocalColors
 import com.photo.design_system.LocalTypography
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.extension.showToast
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -49,27 +50,33 @@ fun BookmarkScreen(
             .filterNotNull()
             .debounce(1000)
             .collect { keyword ->
-                bookmarkViewModel.handleEvent(if(keyword.isBlank()) BookmarkContract.BookmarkEvent.GetBookmarkList else BookmarkContract.BookmarkEvent.Search(keyword)
-                )
+                bookmarkViewModel.handleEvent(if(keyword.isBlank()) BookmarkContract.BookmarkEvent.GetBookmarkList else BookmarkContract.BookmarkEvent.Search(keyword))
             }
     }
 
     Column{
-        SearchBarLayout(modifier = Modifier.fillMaxWidth(),
-            hint = stringResource(id = R.string.bookmark_search_hint),
-            labelTitle = stringResource(
-                id = R.string.bookmark_search_label
-            ),
-            text = searchKeyWord ?: "",
-            onTextChange = { searchKeyWord = it })
+        BookmarkSearchBar(
+            searchKeyWord = searchKeyWord,
+            onSearchChange = {
+                searchKeyWord = it
+            }
+        )
         Button(
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(horizontal = 8.dp, vertical = 5.dp),
-            onClick = {bookmarkViewModel.setEvent(BookmarkContract.BookmarkEvent.ClearBookmark)},
-            colors = ButtonDefaults.buttonColors(backgroundColor = LocalColors.current.secondary, contentColor = LocalColors.current.tintWhite),
+            onClick = {
+                bookmarkViewModel.setEvent(BookmarkContract.BookmarkEvent.ClearBookmark)
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = LocalColors.current.secondary,
+                contentColor = LocalColors.current.tintWhite
+            ),
             content = {
-                Text(text = stringResource(id = R.string.bookmark_all_delete_button), style = LocalTypography.current.body2)
+                Text(
+                    text = stringResource(id = R.string.bookmark_all_delete_button),
+                    style = LocalTypography.current.body2
+                )
             }
         )
         BookmarkContent(
@@ -79,13 +86,27 @@ fun BookmarkScreen(
                 bookmarkViewModel.handleEvent(BookmarkContract.BookmarkEvent.ClickItem(it))
             },
             onBookmarkClick = {
-                val(item,isBookMark) = it
+                val (item,isBookMark) = it
                 bookmarkViewModel.handleEvent(
                     if (isBookMark) BookmarkContract.BookmarkEvent.SaveBookmark(item) else BookmarkContract.BookmarkEvent.RemoveBookmark(item)
                 )
             }
         )
     }
+}
+
+@Composable
+fun BookmarkSearchBar(
+    searchKeyWord: String?,
+    onSearchChange: (String) -> Unit
+) {
+    SearchBarLayout(
+        modifier = Modifier.fillMaxWidth(),
+        hint = stringResource(id = R.string.bookmark_search_hint),
+        labelTitle = stringResource(id = R.string.bookmark_search_label),
+        text = searchKeyWord ?: "",
+        onTextChange = onSearchChange
+    )
 }
 
 @Composable
