@@ -109,7 +109,7 @@ private fun MainScreenNavigation(
         composable(MainNavigationConst.Search.route) {
             SearchScreen(
                 isDualPane = isDualPane,
-                onItemClick = { navigation.navigateToDetail(it) })
+                onNavigateToDetail = { navigation.navigateToDetail(it) })
         }
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen(
