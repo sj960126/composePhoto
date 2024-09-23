@@ -4,7 +4,7 @@ import com.photo.data.search.model.PhotoResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ISearchApi {
+internal interface ISearchApi {
     companion object{
         private const val SEARCH ="/search"
         private const val PHOTO ="/v2${SEARCH}/image"

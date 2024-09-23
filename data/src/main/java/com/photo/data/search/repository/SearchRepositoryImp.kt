@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class SearchRepositoryImp @Inject constructor(
+internal class SearchRepositoryImp @Inject constructor(
     private val remoteDataSource: SearchRemoteDataSource,
     private val bookmarkLocalDataSource: BookmarkLocalDataSource
 ) : ISearchRepository {

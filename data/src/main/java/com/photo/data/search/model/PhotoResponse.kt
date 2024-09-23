@@ -2,7 +2,7 @@ package com.photo.data.search.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PhotoResponse(
+internal data class PhotoResponse(
     val documents: List<Document>,
     val meta: Meta
 ) {

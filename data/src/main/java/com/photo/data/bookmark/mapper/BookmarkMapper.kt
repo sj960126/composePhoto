@@ -4,7 +4,7 @@ import com.photo.data.bookmark.mapper.BookmarkMapper.toPhotoEntities
 import com.photo.data.bookmark.model.BookmarkEntity
 import com.photo.domain.common.entities.PhotoEntities
 
-object BookmarkMapper {
+internal object BookmarkMapper {
     fun BookmarkEntity.toPhotoEntities(): PhotoEntities.Document = PhotoEntities.Document(
         collection = this.collection,
         thumbnailUrl = this.thumbnailUrl,

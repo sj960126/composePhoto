@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface BookmarkDao {
+internal interface BookmarkDao {
     @Query("SELECT * FROM bookmark")
     suspend fun getAll(): List<BookmarkEntity>
     @Query("SELECT thumbnailUrl FROM bookmark")

@@ -6,6 +6,6 @@ import com.photo.data.bookmark.model.BookmarkDao
 import com.photo.data.bookmark.model.BookmarkEntity
 
 @Database(entities = [BookmarkEntity::class], version = 1, exportSchema = false)
-abstract class BookmarkLocalDatabase : RoomDatabase() {
+internal abstract class BookmarkLocalDatabase : RoomDatabase() {
     abstract fun bookmarkDao(): BookmarkDao
 }

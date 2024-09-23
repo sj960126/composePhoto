@@ -5,9 +5,9 @@ import com.photo.domain.search.entities.SearchPhotoRequest
 import com.photo.data.data_core.base.AbstractBaseRetrofitRemoteDataSource
 import javax.inject.Inject
 
-class SearchRemoteDataSource @Inject constructor(
+internal class SearchRemoteDataSource @Inject constructor(
     private val iSearchApi: ISearchApi
-) : com.photo.data.data_core.base.AbstractBaseRetrofitRemoteDataSource(){
+) : AbstractBaseRetrofitRemoteDataSource(){
     suspend fun fetchPhotos(searchPhotoRequest: SearchPhotoRequest) : PhotoResponse = iSearchApi.fetchPhotos(query = searchPhotoRequest.query,sort = searchPhotoRequest.sort,page = searchPhotoRequest.page,size = searchPhotoRequest.size,)
 
 }

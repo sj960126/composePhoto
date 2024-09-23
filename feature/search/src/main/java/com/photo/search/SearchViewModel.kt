@@ -41,6 +41,7 @@ class SearchViewModel @Inject constructor(
                     setState { copy(state = SearchContract.SearchState.Init) }
                 }
             }
+            is SearchContract.SearchEvent.ClickItem -> setEffect { SearchContract.SearchSideEffect.MoveDetailPage(item = event.item) }
             is SearchContract.SearchEvent.SaveBookmark -> saveBookmark(item = event.item)
             is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is SearchContract.SearchEvent.ShowErrorLayout -> setState { copy(

@@ -23,7 +23,12 @@ import kotlinx.coroutines.flow.filterNotNull
 
 
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick: (String) -> Unit, isDualPane : Boolean) {
+fun SearchScreen(
+    searchViewModel: SearchViewModel = hiltViewModel(),
+    onNavigateToDetail: (String) -> Unit,
+    isDualPane : Boolean,
+    modifier: Modifier = Modifier
+) {
     val viewUiState by searchViewModel.uiState.collectAsState()
     var searchKeyWord by rememberSaveable { mutableStateOf<String?>(null) }
     val context = LocalContext.current
@@ -31,9 +36,8 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
     LaunchedEffect(searchViewModel.effect){
         searchViewModel.effect.collect { effect ->
             when (effect) {
-                is SearchContract.SearchSideEffect.ShowToast -> {
-                    context.showToast(context.getString(effect.id))
-                }
+                is SearchContract.SearchSideEffect.ShowToast -> context.showToast(context.getString(effect.id))
+                is SearchContract.SearchSideEffect.MoveDetailPage -> onNavigateToDetail.invoke(effect.item)
             }
         }
     }
@@ -47,7 +51,9 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
             }
     }
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         SearchBarLayout(
             modifier = Modifier.fillMaxWidth(),
             labelTitle = stringResource(id = R.string.search_label),
@@ -66,7 +72,9 @@ fun SearchScreen(searchViewModel: SearchViewModel = hiltViewModel(), onItemClick
                 LoadItemsHandler(
                     lazyPagingItems = lazyPagingItems,
                     isDualPane = isDualPane,
-                    onItemClick = onItemClick,
+                    onItemClick = {
+                        searchViewModel.handleEvent(SearchContract.SearchEvent.ClickItem(it))
+                    },
                     searchViewModel = searchViewModel
                 )
             }

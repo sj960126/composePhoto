@@ -1,5 +1,6 @@
 package com.photo.search
 
+import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.base.UiEvent
@@ -14,8 +15,10 @@ class SearchContract {
         data class SaveBookmark(val item : PhotoEntities.Document) : SearchEvent()
         data class ShowErrorLayout(val message: String) : SearchEvent()
         data class ShowEmptyLayout(val message: String) : SearchEvent()
+        data class ClickItem(val item : String) : SearchEvent()
     }
 
+    @Stable
     data class SearchUiState(
         val state : SearchState
     ) : UiState
@@ -25,6 +28,7 @@ class SearchContract {
         data class Empty(val message : String) : SearchState()
         data class Error(val message : String) : SearchState()
 
+        @Stable
         data class Load(
             val item : Flow<PagingData<PhotoEntities.Document>>
         ) : SearchState()
@@ -33,5 +37,6 @@ class SearchContract {
 
     sealed class SearchSideEffect : UiSideEffect {
         data class ShowToast(val id : Int) : SearchSideEffect()
+        data class MoveDetailPage(val item : String) : SearchSideEffect()
     }
 }

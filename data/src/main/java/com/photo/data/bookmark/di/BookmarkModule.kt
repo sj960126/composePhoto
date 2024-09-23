@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object BookmarkModule {
+internal object BookmarkModule {
 
     private const val DATABASE_NAME ="bookmark_local_database"
 

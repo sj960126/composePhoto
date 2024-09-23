@@ -6,7 +6,7 @@ import com.photo.data.search.mapper.PhotoMapper
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.domain.search.entities.SearchPhotoRequest
 
-class SearchBookPagingSource(
+internal class SearchBookPagingSource(
     private val remoteDataSource: SearchRemoteDataSource,
     private val query: String,
     private val bookmarkList : List<String>

@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+internal object NetworkModule {
 
     private const val BASE_URL = "https://dapi.kakao.com/v3/"
 
@@ -33,8 +33,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpClient(
-        loggingInterceptor: com.photo.data.data_core.remote.interceptor.LogInterceptor,
-        headerInterceptor: com.photo.data.data_core.remote.interceptor.HeaderInterceptor
+        loggingInterceptor: LogInterceptor,
+        headerInterceptor: HeaderInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .readTimeout(60L, TimeUnit.SECONDS)
         .connectTimeout(60L, TimeUnit.SECONDS)
@@ -46,13 +46,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): com.photo.data.data_core.remote.interceptor.LogInterceptor =
-        com.photo.data.data_core.remote.interceptor.LogInterceptor()
+    fun provideHttpLoggingInterceptor(): LogInterceptor = LogInterceptor()
 
     @Provides
     @Singleton
-    fun provideHeaderInterceptor(): com.photo.data.data_core.remote.interceptor.HeaderInterceptor =
-        com.photo.data.data_core.remote.interceptor.HeaderInterceptor()
+    fun provideHeaderInterceptor(): HeaderInterceptor = HeaderInterceptor()
 
     @Provides
     @Singleton

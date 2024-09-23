@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SearchModule {
+internal object SearchModule {
     @Provides
     @Singleton
     fun provideSearchRepository(remoteDataSource: SearchRemoteDataSource,bookmarkLocalDataSource: BookmarkLocalDataSource) : ISearchRepository = SearchRepositoryImp(remoteDataSource,bookmarkLocalDataSource)
