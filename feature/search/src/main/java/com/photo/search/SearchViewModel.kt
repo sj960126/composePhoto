@@ -26,41 +26,44 @@ class SearchViewModel @Inject constructor(
 
     override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
-            is SearchContract.SearchEvent.Search -> {
-                if(event.keyWord.isNotBlank()){
-                    viewModelScope.launch {
-                        fetchPaginatedPhotos(keyWord = event.keyWord)
-                            .cachedIn(viewModelScope)
-                            .collectLatest { pagingData ->
-                                setState {
-                                    copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
-                                }
-                            }
-                    }
-                }else{
-                    setState { copy(state = SearchContract.SearchState.Init) }
-                }
-            }
+            is SearchContract.SearchEvent.Search -> if(event.keyWord.isNotBlank()) searchPhoto(event.keyWord) else resetSearchState()
             is SearchContract.SearchEvent.ClickItem -> setEffect { SearchContract.SearchSideEffect.MoveDetailPage(item = event.item) }
             is SearchContract.SearchEvent.SaveBookmark -> saveBookmark(item = event.item)
             is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
-            is SearchContract.SearchEvent.ShowErrorLayout -> setState { copy(
-                SearchContract.SearchState.Error(
-                    message = event.message
-                )
-            ) }
-            is SearchContract.SearchEvent.ShowEmptyLayout -> setState { copy(
-                SearchContract.SearchState.Empty(
-                    message = event.message
-                )
-            ) }
+            is SearchContract.SearchEvent.ShowErrorLayout -> updateSearchStateWithError(event.message)
+            is SearchContract.SearchEvent.ShowEmptyLayout -> updateSearchStateWithEmpty(event.message)
         }
     }
+
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
             if(!item.thumbnailUrl.isNullOrEmpty()) removeBookmarkUseCase(item.thumbnailUrl?:"")
             setEffect { SearchContract.SearchSideEffect.ShowToast(R.string.bookmark_remove) }
 
+        }
+    }
+
+    private fun updateSearchStateWithError(errorMessage: String?) {
+        setState {
+            copy(state = SearchContract.SearchState.Error(errorMessage ?: "An unknown error occurred"))
+        }
+    }
+
+    private fun updateSearchStateWithEmpty(emptyMessage: String?) {
+        setState {
+            copy(state = SearchContract.SearchState.Empty(emptyMessage ?: "Empty Layout"))
+        }
+    }
+
+    private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>) {
+        setState {
+            copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
+        }
+    }
+
+    private fun resetSearchState() {
+        setState {
+            copy(state = SearchContract.SearchState.Init)
         }
     }
 
@@ -71,5 +74,19 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    private fun searchPhoto(keyWord: String) {
+        viewModelScope.launch {
+            fetchPaginatedPhotos(keyWord = keyWord)
+                .cachedIn(viewModelScope)
+                .catch { error ->
+                    updateSearchStateWithError(errorMessage = error.message)
+                }
+                .collectLatest { pagingData ->
+                    updateSearchStateWithPagingData(pagingData = pagingData)
+                }
+        }
+    }
+
     private fun fetchPaginatedPhotos(keyWord : String): Flow<PagingData<PhotoEntities.Document>> = fetchPaginatedPhotoUseCase(keyWord = keyWord)
+
 }
