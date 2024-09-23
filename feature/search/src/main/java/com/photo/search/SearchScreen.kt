@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -58,72 +59,102 @@ fun SearchScreen(
             modifier = Modifier.fillMaxWidth(),
             labelTitle = stringResource(id = R.string.search_label),
             text = searchKeyWord ?: "",
-            onTextChange = { searchKeyWord = it })
-        when(viewUiState.state){
-            SearchContract.SearchState.Init -> EmptyLayout(
-                title = stringResource(
-                    id = R.string.search_empty_hint
-                )
+            onTextChange = { searchKeyWord = it }
+        )
+        SearchContent(
+            state = viewUiState.state,
+            isDualPane = isDualPane,
+            searchViewModel = searchViewModel
+        )
+    }
+}
+
+@Composable
+private fun SearchContent(
+    state : SearchContract.SearchState,
+    isDualPane: Boolean,
+    searchViewModel: SearchViewModel
+){
+    when(state){
+        SearchContract.SearchState.Init -> EmptyLayout(
+            title = stringResource(
+                id = R.string.search_empty_hint
             )
-            is SearchContract.SearchState.Empty -> EmptyLayout(title = (viewUiState.state as SearchContract.SearchState.Empty).message)
-            is SearchContract.SearchState.Error -> EmptyLayout(title = (viewUiState.state as SearchContract.SearchState.Error).message)
-            is SearchContract.SearchState.Load -> {
-                val lazyPagingItems = (viewUiState.state as SearchContract.SearchState.Load).item.collectAsLazyPagingItems()
-                LoadItemsHandler(
-                    lazyPagingItems = lazyPagingItems,
-                    isDualPane = isDualPane,
-                    onItemClick = {
-                        searchViewModel.handleEvent(SearchContract.SearchEvent.ClickItem(it))
-                    },
-                    searchViewModel = searchViewModel
-                )
-            }
+        )
+        is SearchContract.SearchState.Empty -> EmptyLayout(title = state.message)
+        is SearchContract.SearchState.Error -> EmptyLayout(title = state.message)
+        is SearchContract.SearchState.Load -> {
+            SearchResult(
+                lazyPagingItems = state.item.collectAsLazyPagingItems(),
+                isDualPane = isDualPane,
+                onItemClick = {
+                    searchViewModel.handleEvent(SearchContract.SearchEvent.ClickItem(it))
+                },
+                searchViewModel = searchViewModel
+            )
         }
     }
 }
+
 @Composable
-private fun LoadItemsHandler(
+private fun SearchResult(
     lazyPagingItems: LazyPagingItems<PhotoEntities.Document>,
     isDualPane: Boolean,
     onItemClick: (String) -> Unit,
-    searchViewModel: SearchViewModel
-) {
-    val loadState = lazyPagingItems.loadState
+    searchViewModel: SearchViewModel) {
+    HandleLoadState(
+        loadState = lazyPagingItems.loadState,
+        searchViewModel =searchViewModel) {
+        LayoutSelector(
+            isDualPane = isDualPane,
+            lazyPagingItems = lazyPagingItems,
+            onItemClick = onItemClick,
+            onBookmarkClick = { (item, isBookmarked)  ->
+                searchViewModel.handleEvent(
+                    if (isBookmarked) SearchContract.SearchEvent.SaveBookmark(item)
+                    else SearchContract.SearchEvent.RemoveBookmark(item)
+                )
+            }
+        )
+    }
+}
 
+@Composable
+private fun HandleLoadState(
+    loadState: CombinedLoadStates,
+    searchViewModel: SearchViewModel,
+    content: @Composable () -> Unit
+) {
     when {
         loadState.refresh is LoadState.Error || loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
             searchViewModel.setEvent(
                 SearchContract.SearchEvent.ShowErrorLayout(
-                    message = stringResource(
-                        id = R.string.error_message
-                    )
+                    message = stringResource(id = R.string.error_message)
                 )
             )
         }
-        else -> {
-            if (isDualPane) {
-                DualPaneLayout(
-                    lazyPagingItems = lazyPagingItems,
-                    onItemClick = onItemClick,
-                    onBookmarkClick = {
-                        searchViewModel.handleEvent(
-                            if (it.second) SearchContract.SearchEvent.SaveBookmark(it.first)
-                            else SearchContract.SearchEvent.RemoveBookmark(it.first)
-                        )
-                    }
-                )
-            } else {
-                SinglePaneLayout(
-                    lazyPagingItems = lazyPagingItems,
-                    onItemClick = onItemClick,
-                    onBookmarkClick = {
-                        searchViewModel.handleEvent(
-                            if (it.second) SearchContract.SearchEvent.SaveBookmark(it.first)
-                            else SearchContract.SearchEvent.RemoveBookmark(it.first)
-                        )
-                    }
-                )
-            }
-        }
+        else -> content()
+    }
+}
+
+@Composable
+private fun LayoutSelector(
+    isDualPane: Boolean,
+    lazyPagingItems: LazyPagingItems<PhotoEntities.Document>,
+    onItemClick: (String) -> Unit,
+    onBookmarkClick: (Pair<PhotoEntities.Document, Boolean>) -> Unit
+) {
+    if (isDualPane) {
+        DualPaneLayout(
+            lazyPagingItems = lazyPagingItems,
+            onItemClick = onItemClick,
+            onBookmarkClick = onBookmarkClick
+        )
+    } else {
+        SinglePaneLayout(
+            lazyPagingItems = lazyPagingItems,
+            onItemClick = onItemClick,
+            onBookmarkClick = onBookmarkClick
+        )
     }
 }
