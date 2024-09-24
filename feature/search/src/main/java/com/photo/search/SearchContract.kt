@@ -20,6 +20,7 @@ class SearchContract {
 
     @Stable
     data class SearchUiState(
+        val searchKeyWord :String? = null,
         val state : SearchState
     ) : UiState
 

@@ -19,8 +19,11 @@ import com.photo.component.EmptyLayout
 import com.photo.component.SearchBarLayout
 import com.photo.component.SinglePaneLayout
 import com.photo.extension.showToast
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -31,8 +34,8 @@ fun SearchScreen(
     modifier: Modifier = Modifier
 ) {
     val viewUiState by searchViewModel.uiState.collectAsState()
-    var searchKeyWord by rememberSaveable { mutableStateOf<String?>(null) }
     val context = LocalContext.current
+    val rememberCoroutineScope  = rememberCoroutineScope()
 
     LaunchedEffect(searchViewModel.effect){
         searchViewModel.effect.collect { effect ->
@@ -43,23 +46,22 @@ fun SearchScreen(
         }
     }
 
-    LaunchedEffect(searchKeyWord) {
-        snapshotFlow { searchKeyWord }
-            .filterNotNull()
-            .debounce(1000)
-            .collect { keyword ->
-                searchViewModel.handleEvent(SearchContract.SearchEvent.Search(keyword))
-            }
-    }
-
     Column(
         modifier = modifier
     ) {
         SearchBarLayout(
             modifier = Modifier.fillMaxWidth(),
             labelTitle = stringResource(id = R.string.search_label),
-            text = searchKeyWord ?: "",
-            onTextChange = { searchKeyWord = it }
+            text = viewUiState.searchKeyWord ?: "",
+            onTextChange = {
+                rememberCoroutineScope.launch {
+                    flowOf(it)
+                        .debounce(1000)
+                        .collectLatest { keyword ->
+                            searchViewModel.handleEvent(SearchContract.SearchEvent.Search(keyword))
+                        }
+                }
+            }
         )
         SearchContent(
             state = viewUiState.state,
@@ -104,7 +106,8 @@ private fun SearchResult(
     searchViewModel: SearchViewModel) {
     HandleLoadState(
         loadState = lazyPagingItems.loadState,
-        searchViewModel =searchViewModel) {
+        searchViewModel =searchViewModel,
+        itemCount = lazyPagingItems.itemCount ?:0) {
         LayoutSelector(
             isDualPane = isDualPane,
             lazyPagingItems = lazyPagingItems,
@@ -123,13 +126,21 @@ private fun SearchResult(
 private fun HandleLoadState(
     loadState: CombinedLoadStates,
     searchViewModel: SearchViewModel,
-    content: @Composable () -> Unit
+    itemCount : Int,
+    content: @Composable () -> Unit,
 ) {
     when {
         loadState.refresh is LoadState.Error || loadState.append is LoadState.Error || loadState.prepend is LoadState.Error -> {
             searchViewModel.setEvent(
                 SearchContract.SearchEvent.ShowErrorLayout(
                     message = stringResource(id = R.string.error_message)
+                )
+            )
+        }
+        loadState.refresh is LoadState.NotLoading && itemCount == 0 -> {
+            searchViewModel.setEvent(
+                SearchContract.SearchEvent.ShowEmptyLayout(
+                    message = stringResource(id = R.string.search_empty_hint)
                 )
             )
         }

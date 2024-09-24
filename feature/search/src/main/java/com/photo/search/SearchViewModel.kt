@@ -3,6 +3,7 @@ package com.photo.search
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.photo.domain.bookmark.usecase.InsertBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
@@ -55,9 +56,9 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>) {
+    private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>, searchKeyWord : String) {
         setState {
-            copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
+            copy(searchKeyWord = searchKeyWord, state = SearchContract.SearchState.Load(flowOf(pagingData)))
         }
     }
 
@@ -82,7 +83,7 @@ class SearchViewModel @Inject constructor(
                     updateSearchStateWithError(errorMessage = error.message)
                 }
                 .collectLatest { pagingData ->
-                    updateSearchStateWithPagingData(pagingData = pagingData)
+                    updateSearchStateWithPagingData(pagingData = pagingData, searchKeyWord = keyWord)
                 }
         }
     }
