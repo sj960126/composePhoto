@@ -6,8 +6,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -35,10 +37,11 @@ fun SearchScreen(
 ) {
     val viewUiState by searchViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     val rememberCoroutineScope  = rememberCoroutineScope()
 
-    LaunchedEffect(searchViewModel.effect){
-        searchViewModel.effect.collect { effect ->
+    LaunchedEffect(searchViewModel.effect,lifecycleOwner){
+        searchViewModel.effect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle).collect { effect ->
             when (effect) {
                 is SearchContract.SearchSideEffect.ShowToast -> context.showToast(context.getString(effect.id))
                 is SearchContract.SearchSideEffect.MoveDetailPage -> onNavigateToDetail.invoke(effect.item)
