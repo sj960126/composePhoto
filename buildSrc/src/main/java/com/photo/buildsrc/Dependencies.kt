@@ -46,6 +46,7 @@ object Dependencies {
         val composeCoil = "io.coil-kt:coil-compose:2.2.0"
         val navigation  ="androidx.navigation:navigation-compose:2.5.3"
         val hilt =  "androidx.hilt:hilt-navigation-compose:1.0.0"
+        val composeLifecycle ="androidx.lifecycle:lifecycle-runtime-compose:2.7.0"
     }
 
     object SquareUp {

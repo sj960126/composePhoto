@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -35,7 +36,7 @@ fun SearchScreen(
     isDualPane : Boolean,
     modifier: Modifier = Modifier
 ) {
-    val viewUiState by searchViewModel.uiState.collectAsState()
+    val viewUiState by searchViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val rememberCoroutineScope  = rememberCoroutineScope()

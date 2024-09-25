@@ -49,6 +49,7 @@ fun DependencyHandler.implementationCompose() {
     add("implementation", Dependencies.Compose.composeCoil)
     add("implementation", Dependencies.Compose.navigation)
     add("implementation", Dependencies.Compose.hilt)
+    add("implementation", Dependencies.Compose.composeLifecycle)
 }
 fun DependencyHandler.implementationGson() {
     add("implementation", Dependencies.Gson.gson)
