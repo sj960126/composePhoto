@@ -1,5 +1,7 @@
 package com.photo.search
 
+import android.util.Log
+import androidx.compose.runtime.key
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -27,7 +29,10 @@ class SearchViewModel @Inject constructor(
 
     override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
-            is SearchContract.SearchEvent.Search -> if(event.keyWord.isNotBlank()) searchPhoto(event.keyWord) else resetSearchState()
+            is SearchContract.SearchEvent.Search -> {
+                updateSearchKeyword(event.keyWord)
+                if(event.keyWord.isNotBlank()) searchPhoto(event.keyWord) else resetSearchState()
+            }
             is SearchContract.SearchEvent.ClickItem -> setEffect { SearchContract.SearchSideEffect.MoveDetailPage(item = event.item) }
             is SearchContract.SearchEvent.SaveBookmark -> saveBookmark(item = event.item)
             is SearchContract.SearchEvent.RemoveBookmark -> removeBookmark(item = event.item)
@@ -55,10 +60,15 @@ class SearchViewModel @Inject constructor(
             copy(state = SearchContract.SearchState.Empty(emptyMessage ?: "Empty Layout"))
         }
     }
-
-    private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>, searchKeyWord : String) {
+    private fun updateSearchKeyword(keyWord: String){
         setState {
-            copy(searchKeyWord = searchKeyWord, state = SearchContract.SearchState.Load(flowOf(pagingData)))
+            copy(searchKeyWord = keyWord)
+        }
+    }
+
+    private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>) {
+        setState {
+            copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
         }
     }
 
@@ -83,7 +93,7 @@ class SearchViewModel @Inject constructor(
                     updateSearchStateWithError(errorMessage = error.message)
                 }
                 .collectLatest { pagingData ->
-                    updateSearchStateWithPagingData(pagingData = pagingData, searchKeyWord = keyWord)
+                    updateSearchStateWithPagingData(pagingData = pagingData)
                 }
         }
     }
