@@ -22,10 +22,10 @@ class SearchViewModel @Inject constructor(
     private val fetchPaginatedPhotoUseCase: FetchPaginatedPhotoUseCase,
     private val insertBookmarkUseCase : InsertBookmarkUseCase,
     private val removeBookmarkUseCase: RemoveBookmarkUseCase,
-) : BaseViewModel<SearchContract.SearchEvent, SearchContract.SearchUiState, SearchContract.SearchSideEffect>() {
+) : BaseViewModel<SearchContract.SearchEvent, SearchContract.SearchState, SearchContract.SearchSideEffect>() {
 
-    override fun createInitialState(): SearchContract.SearchUiState =
-        SearchContract.SearchUiState(state = SearchContract.SearchState.Init)
+    override fun createInitialState(): SearchContract.SearchState =
+        SearchContract.SearchState(state = SearchContract.SearchUiState.Init)
 
     override fun handleEvent(event: SearchContract.SearchEvent) {
         when (event) {
@@ -51,13 +51,13 @@ class SearchViewModel @Inject constructor(
 
     private fun updateSearchStateWithError(errorMessage: String?) {
         setState {
-            copy(state = SearchContract.SearchState.Error(errorMessage ?: "An unknown error occurred"))
+            copy(state = SearchContract.SearchUiState.Error(errorMessage ?: "An unknown error occurred"))
         }
     }
 
     private fun updateSearchStateWithEmpty(emptyMessage: String?) {
         setState {
-            copy(state = SearchContract.SearchState.Empty(emptyMessage ?: "Empty Layout"))
+            copy(state = SearchContract.SearchUiState.Empty(emptyMessage ?: "Empty Layout"))
         }
     }
     private fun updateSearchKeyword(keyWord: String){
@@ -68,13 +68,13 @@ class SearchViewModel @Inject constructor(
 
     private fun updateSearchStateWithPagingData(pagingData: PagingData<PhotoEntities.Document>) {
         setState {
-            copy(state = SearchContract.SearchState.Load(flowOf(pagingData)))
+            copy(state = SearchContract.SearchUiState.Load(flowOf(pagingData)))
         }
     }
 
     private fun resetSearchState() {
         setState {
-            copy(state = SearchContract.SearchState.Init)
+            copy(state = SearchContract.SearchUiState.Init)
         }
     }
 

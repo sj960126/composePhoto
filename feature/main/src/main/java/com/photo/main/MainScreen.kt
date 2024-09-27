@@ -4,11 +4,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -22,13 +35,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.window.layout.FoldingFeature
 import com.google.gson.Gson
-import com.photo.domain.common.entities.PhotoEntities
 import com.photo.bookmark.BookmarkScreen
-import com.photo.detail.DetailScreen
-import com.photo.search.SearchScreen
 import com.photo.design_system.LocalColors
 import com.photo.design_system.LocalTypography
+import com.photo.detail.DetailScreen
+import com.photo.domain.common.entities.PhotoEntities
 import com.photo.language.LanguageDefine
+import com.photo.search.SearchRoute
 import com.photo.state.rememberFoldableState
 
 @Composable
@@ -107,14 +120,16 @@ private fun MainScreenNavigation(
         startDestination = MainNavigationConst.Search.route,
     ) {
         composable(MainNavigationConst.Search.route) {
-            SearchScreen(
+            SearchRoute(
                 isDualPane = isDualPane,
-                onNavigateToDetail = { navigation.navigateToDetail(it) })
+                onNavigateToDetail = { navigation.navigateToDetail(it) }
+            )
         }
         composable(MainNavigationConst.Bookmark.route) {
             BookmarkScreen(
                 isDualPane = isDualPane,
-                onNavigateToDetail = { navigation.navigateToDetail(it) })
+                onNavigateToDetail = { navigation.navigateToDetail(it) }
+            )
         }
         composable(
             route = MainNavigationConst.Detail.route + "/{item}",
