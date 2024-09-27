@@ -9,34 +9,34 @@ import com.photo.base.UiState
 import kotlinx.collections.immutable.ImmutableList
 
 class BookmarkContract {
-    sealed class BookmarkEvent : UiEvent {
-        object GetBookmarkList : BookmarkEvent()
-        object ClearBookmark : BookmarkEvent()
-        data class RemoveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
-        data class SaveBookmark(val item : PhotoEntities.Document) : BookmarkEvent()
-        data class Search(val keyword : String) : BookmarkEvent()
-        data class ClickItem(val item : String) : BookmarkEvent()
+    sealed interface BookmarkEvent : UiEvent {
+        object GetBookmarkList : BookmarkEvent
+        object ClearBookmark : BookmarkEvent
+        data class RemoveBookmark(val item : PhotoEntities.Document) : BookmarkEvent
+        data class SaveBookmark(val item : PhotoEntities.Document) : BookmarkEvent
+        data class Search(val keyword : String) : BookmarkEvent
+        data class ClickItem(val item : String) : BookmarkEvent
     }
 
     @Stable
-    data class BookmarkUiState(
-        val state : BookmarkState
+    data class BookmarkState(
+        val state : BookmarkUiState
     ) : UiState
 
-    sealed class BookmarkState {
-        object Loading : BookmarkState()
-        object Empty : BookmarkState()
+    sealed interface BookmarkUiState {
+        object Loading : BookmarkUiState
+        object Empty : BookmarkUiState
 
         @Immutable
         data class Success(
             val itemList : ImmutableList<PhotoEntities.Document>
-        ) : BookmarkState()
+        ) : BookmarkUiState
 
     }
 
-    sealed class BookmarkSideEffect : UiSideEffect {
-        data class MoveDetailPage(val item : String) : BookmarkSideEffect()
-        data class ShowToast(val id : Int) : BookmarkSideEffect()
+    sealed interface BookmarkSideEffect : UiSideEffect {
+        data class MoveDetailPage(val item : String) : BookmarkSideEffect
+        data class ShowToast(val id : Int) : BookmarkSideEffect
     }
 
 }
