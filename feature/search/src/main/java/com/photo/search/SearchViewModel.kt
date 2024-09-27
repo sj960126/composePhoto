@@ -1,19 +1,19 @@
 package com.photo.search
 
-import android.util.Log
-import androidx.compose.runtime.key
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
+import com.photo.base.BaseViewModel
 import com.photo.domain.bookmark.usecase.InsertBookmarkUseCase
 import com.photo.domain.bookmark.usecase.RemoveBookmarkUseCase
 import com.photo.domain.common.entities.PhotoEntities
 import com.photo.domain.search.usecase.FetchPaginatedPhotoUseCase
 import com.photo.ui.R
-import com.photo.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -20,7 +20,8 @@ class BookmarkContract {
 
     @Stable
     data class BookmarkState(
-        val state : BookmarkUiState
+        val keyword : String? = null,
+        val state : BookmarkUiState,
     ) : UiState
 
     sealed interface BookmarkUiState {

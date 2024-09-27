@@ -33,7 +33,14 @@ class BookmarkViewModel @Inject constructor(
             BookmarkContract.BookmarkEvent.ClearBookmark -> clearBookmark()
             is BookmarkContract.BookmarkEvent.RemoveBookmark -> removeBookmark(item = event.item)
             is BookmarkContract.BookmarkEvent.SaveBookmark -> saveBookmark(item = event.item)
-            is BookmarkContract.BookmarkEvent.Search -> searchBookmark(event.keyword)
+            is BookmarkContract.BookmarkEvent.Search -> {
+                updateSearchKeyword(keyWord = event.keyword)
+                if(event.keyword.isNotEmpty()){
+                    searchBookmark(event.keyword)
+                }else {
+                    fetchALlBookmarks()
+                }
+            }
             is BookmarkContract.BookmarkEvent.ClickItem -> setEffect { BookmarkContract.BookmarkSideEffect.MoveDetailPage(item = event.item) }
         }
     }
@@ -52,7 +59,7 @@ class BookmarkViewModel @Inject constructor(
 
     private fun removeBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            setState { copy(BookmarkContract.BookmarkUiState.Loading) }
+            setState { copy(state = BookmarkContract.BookmarkUiState.Loading) }
             if(!item.thumbnailUrl.isNullOrEmpty())removeBookmarkUseCase(item.thumbnailUrl?:"")
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(R.string.bookmark_remove) }
             fetchALlBookmarks()
@@ -61,7 +68,7 @@ class BookmarkViewModel @Inject constructor(
 
     private fun saveBookmark(item: PhotoEntities.Document){
         viewModelScope.launch {
-            setState { copy(BookmarkContract.BookmarkUiState.Loading) }
+            setState { copy(state =  BookmarkContract.BookmarkUiState.Loading) }
             insertBookmarkUseCase(item)
             setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(R.string.bookmark_save) }
             fetchALlBookmarks()
@@ -69,7 +76,7 @@ class BookmarkViewModel @Inject constructor(
     }
     private fun searchBookmark(keyword :String){
         viewModelScope.launch {
-            setState { copy(BookmarkContract.BookmarkUiState.Loading) }
+            setState { copy(state = BookmarkContract.BookmarkUiState.Loading) }
             fetchBookmarksByKeywordUseCase(keyword).let { bookmarkList ->
                 setState {
                     copy(state = if(bookmarkList.isEmpty()) BookmarkContract.BookmarkUiState.Empty else BookmarkContract.BookmarkUiState.Success(
@@ -88,9 +95,14 @@ class BookmarkViewModel @Inject constructor(
             viewModelScope.launch {
                 clearAllBookmarkUseCase()
                 setEffect { BookmarkContract.BookmarkSideEffect.ShowToast(R.string.bookmark_all_delete) }
-                setState { copy(BookmarkContract.BookmarkUiState.Empty) }
+                setState { copy(state = BookmarkContract.BookmarkUiState.Empty) }
             }
         }
     }
 
+    private fun updateSearchKeyword(keyWord: String){
+        setState {
+            copy(keyword = keyWord)
+        }
+    }
 }

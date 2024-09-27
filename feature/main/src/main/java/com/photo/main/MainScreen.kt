@@ -35,7 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.window.layout.FoldingFeature
 import com.google.gson.Gson
-import com.photo.bookmark.BookmarkScreen
+import com.photo.bookmark.BookmarkRoute
 import com.photo.design_system.LocalColors
 import com.photo.design_system.LocalTypography
 import com.photo.detail.DetailScreen
@@ -126,7 +126,7 @@ private fun MainScreenNavigation(
             )
         }
         composable(MainNavigationConst.Bookmark.route) {
-            BookmarkScreen(
+            BookmarkRoute(
                 isDualPane = isDualPane,
                 onNavigateToDetail = { navigation.navigateToDetail(it) }
             )
